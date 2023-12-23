@@ -1,0 +1,109 @@
+C51 COMPILER V9.60.0.0   DISPLAY                                                           11/13/2021 16:35:42 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DISPLAY
+OBJECT MODULE PLACED IN .\Objects\display.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE display.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\d
+                    -isplay.lst) TABS(2) OBJECT(.\Objects\display.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include <stdio.h>
+   3          
+   4          #define LED P0
+   5          
+   6          // Selecting Channel 
+   7          sbit A=P2^4;
+   8          sbit b=P2^3;
+   9          sbit C=P2^2;
+  10          
+  11          void timerdelay();
+  12          
+  13          void main(void)
+  14          {
+  15   1          int x;
+  16   1          
+  17   1          A=1;  b=1; C=1;
+  18   1          LED = 0xFF;  
+  19   1          for (x=0; x<20; x++)
+  20   1        {
+  21   2          timerdelay();  //25 ms
+  22   2        }
+  23   1      
+  24   1          A=1;  b=1; C=0;
+  25   1          LED = 0xFF;  
+  26   1          for (x=0; x<20; x++)
+  27   1        {
+  28   2          timerdelay();
+  29   2        }
+  30   1          
+  31   1          A=1;  b=0; C=1;
+  32   1          LED = 0xFF;  
+  33   1          for (x=0; x<20; x++)
+  34   1        {
+  35   2          timerdelay();
+  36   2        }
+  37   1          
+  38   1          A=1;  b=0; C=0;
+  39   1          LED = 0xFF;  
+  40   1          for (x=0; x<20; x++)
+  41   1        {
+  42   2          timerdelay();
+  43   2        }
+  44   1          
+  45   1          A=0;  b=1; C=1;
+  46   1          LED = 0xFF;  
+  47   1          for (x=0; x<20; x++)
+  48   1        {
+  49   2          timerdelay();
+  50   2        }
+  51   1          
+  52   1          A=0;  b=1; C=0;
+  53   1          LED = 0xFF;  
+  54   1          for (x=0; x<20; x++)
+C51 COMPILER V9.60.0.0   DISPLAY                                                           11/13/2021 16:35:42 PAGE 2   
+
+  55   1        {
+  56   2          timerdelay();
+  57   2        }
+  58   1          
+  59   1          A=0;  b=0; C=1;
+  60   1          LED = 0xFF;  
+  61   1          for (x=0; x<20; x++)
+  62   1        {
+  63   2          timerdelay();
+  64   2        }
+  65   1          A=0;  b=0; C=0;
+  66   1          LED = 0xFF;  
+  67   1          for (x=0; x<20; x++)
+  68   1        {
+  69   2          timerdelay();
+  70   2        }
+  71   1      }
+  72           void timerdelay()
+  73           {
+  74   1          TMOD=0x01;  //Using timer 0 in 16 Bit mode 1
+  75   1          
+  76   1          TH0=0xA5; //Generating 25 ms delay
+  77   1          TL0=0xFE;
+  78   1         
+  79   1          TR0=1;
+  80   1          while (TF0==0);
+  81   1          TR0=0;
+  82   1          TF0=0;
+  83   1        }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    308    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

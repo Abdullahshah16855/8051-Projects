@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\interrupt and polling both.obj" 
+TO ".\Objects\interrupt and polling both" 
+PRINT(".\Listings\interrupt and polling both.m51") RAMSIZE(256) 

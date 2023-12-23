@@ -1,0 +1,3 @@
+".\Objects\hercules.obj" 
+TO ".\Objects\last_task_rtc" 
+PRINT(".\Listings\last_task_rtc.m51") RAMSIZE(256) 

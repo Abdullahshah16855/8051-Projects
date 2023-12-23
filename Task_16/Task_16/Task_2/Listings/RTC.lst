@@ -1,0 +1,357 @@
+C51 COMPILER V9.60.0.0   RTC                                                               10/05/2021 04:07:57 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE RTC
+OBJECT MODULE PLACED IN .\Objects\RTC.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE RTC.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\RTC.l
+                    -st) TABS(2) OBJECT(.\Objects\RTC.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include <stdio.h>
+   3          #include <intrins.h>
+   4          sbit scl=P2^0;
+   5          sbit sda=P2^1;
+   6          sbit rw=P2^3;
+   7          sbit rs=P2^2;
+   8          sbit en=P2^4;
+   9          void start();
+  10          void delay();
+  11          void check();
+  12          void stop();
+  13          void lcd_display();
+  14          void lcd_init();
+  15          void string(unsigned char*);
+  16          void lcdcmd(unsigned char);
+  17          void write(unsigned char);
+  18          void lcddat(unsigned char);
+  19          void delay3();
+  20          unsigned char read();
+  21          void enter();
+  22          void ack();
+  23          void display();
+  24          void delay2();
+  25          void serial_init();
+  26          void ser_msg(unsigned char *);
+  27          void conversion(unsigned char);
+  28          unsigned char sec,min,hr,day,date,mon,yr,ch;
+  29          bit c=0;
+  30          
+  31          void main()
+  32          {
+  33   1        serial_init();
+  34   1         start();
+  35   1      write(0xd0);
+  36   1      write(0x00);
+  37   1      write(0x40);   
+  38   1      write(0x28);
+  39   1      write(0x14);   
+  40   1      write(0x06);
+  41   1      write(0x02);   
+  42   1      write(0x03);
+  43   1      write(0x18);
+  44   1      stop();
+  45   1      while(1)
+  46   1      {
+  47   2      serial_init();
+  48   2      start();
+  49   2      write(0xd0);
+  50   2      write(0x00);
+  51   2      start();
+  52   2      write(0xd1);
+  53   2      read();
+  54   2      sec=ch;
+C51 COMPILER V9.60.0.0   RTC                                                               10/05/2021 04:07:57 PAGE 2   
+
+  55   2      sec=sec&0x7f;
+  56   2      stop();
+  57   2         
+  58   2      start();
+  59   2      write(0xd0);
+  60   2      write(0x01);
+  61   2      start();
+  62   2      write(0xd1);
+  63   2      read();
+  64   2      min=ch;
+  65   2      min=min&0x7f;
+  66   2      stop();
+  67   2         
+  68   2      start();   
+  69   2      write(0xd0);
+  70   2      write(0x02);
+  71   2      start();
+  72   2      write(0xd1);
+  73   2      read();
+  74   2      hr=ch;
+  75   2      hr=hr&0x3f;
+  76   2      stop();
+  77   2      
+  78   2      start();   
+  79   2      write(0xd0);
+  80   2      write(0x03);
+  81   2      start();
+  82   2      write(0xd1);
+  83   2      read();
+  84   2      day=ch;
+  85   2      day=day&0x0f;
+  86   2      stop();
+  87   2      
+  88   2      start();   
+  89   2      write(0xd0);
+  90   2      write(0x04);
+  91   2      start();
+  92   2      write(0xd1);
+  93   2      read();
+  94   2      date=ch;
+  95   2      date=date&0x03f;
+  96   2      stop();
+  97   2      
+  98   2      start();   
+  99   2      write(0xd0);
+ 100   2      write(0x05);
+ 101   2      start();
+ 102   2      write(0xd1);
+ 103   2      read();
+ 104   2      mon=ch;
+ 105   2      mon=mon&0x0f;
+ 106   2      stop();
+ 107   2      
+ 108   2      start();   
+ 109   2      write(0xd0);
+ 110   2      write(0x06);
+ 111   2      start();
+ 112   2      write(0xd1);
+ 113   2      read();
+ 114   2      yr=ch;
+ 115   2      yr=yr&0x3f;
+ 116   2      stop();
+C51 COMPILER V9.60.0.0   RTC                                                               10/05/2021 04:07:57 PAGE 3   
+
+ 117   2      display();
+ 118   2      lcd_display();
+ 119   2      
+ 120   2      }
+ 121   1      }
+ 122          void display()
+ 123          {
+ 124   1       conversion(hr);
+ 125   1       conversion(min);
+ 126   1       conversion(sec);
+ 127   1        enter();
+ 128   1        conversion(date);
+ 129   1         conversion(mon);
+ 130   1         conversion(yr);
+ 131   1         enter(); 
+ 132   1      }
+ 133          
+ 134          void conversion(unsigned char res)
+ 135          {
+ 136   1      unsigned char v4,v5;
+ 137   1      v4=res&0x0f;
+ 138   1      v5=res&0xf0;
+ 139   1      v5=v5>>4;
+ 140   1      v4=v4|0x30;
+ 141   1      v5=v5|0x30;
+ 142   1      SBUF=v5;while(TI==0);TI=0;
+ 143   1      SBUF=v4;while(TI==0);TI=0;
+ 144   1      SBUF=':'; while(TI==0); TI=0;
+ 145   1      }
+ 146          
+ 147          void lcd_display()
+ 148          {
+ 149   1       unsigned char v9,v10;
+ 150   1       lcd_init();
+ 151   1       string("TIME:");
+ 152   1       lcdcmd(0xc0);
+ 153   1       string("DATE:");
+ 154   1       v9=hr&0x0f;
+ 155   1       v10=(hr&0xf0)>>4;
+ 156   1       lcdcmd(0x86);
+ 157   1       lcddat(v10|0x30);
+ 158   1       lcddat(v9|0x30);
+ 159   1       lcddat(':');
+ 160   1       v9=min&0x0f;
+ 161   1        v10=(min&0xf0)>>4;
+ 162   1       lcddat(v10|0x30);
+ 163   1       lcddat(v9|0x30);
+ 164   1        lcddat(':');  
+ 165   1       v9=sec&0x0f;
+ 166   1        v10=(sec&0xf0)>>4;
+ 167   1       lcddat(v10|0x30);
+ 168   1       lcddat(v9|0x30);
+ 169   1      lcdcmd(0xc6);
+ 170   1      
+ 171   1      v9=date&0x0f;
+ 172   1       v10=(date&0xf0)>>4;
+ 173   1       lcddat(v10|0x30);
+ 174   1       lcddat(v9|0x30);
+ 175   1       lcddat(':');
+ 176   1       v9=mon&0x0f;
+ 177   1        v10=(mon&0xf0)>>4;
+ 178   1       lcddat(v10|0x30);
+C51 COMPILER V9.60.0.0   RTC                                                               10/05/2021 04:07:57 PAGE 4   
+
+ 179   1       lcddat(v9|0x30);  
+ 180   1       lcddat(':');
+ 181   1       v9=yr&0x0f;
+ 182   1        v10=(yr&0xf0)>>4;
+ 183   1       lcddat(v10|0x30);
+ 184   1       lcddat(v9|0x30);
+ 185   1       delay3();
+ 186   1      }
+ 187          
+ 188          void delay3()
+ 189          {
+ 190   1         unsigned int v11;
+ 191   1      for(v11=0;v11<32000;v11++);
+ 192   1      }
+ 193          
+ 194          void lcd_init()
+ 195          {
+ 196   1         lcdcmd(0x38);
+ 197   1         lcdcmd(0x01);
+ 198   1         lcdcmd(0x10);
+ 199   1         lcdcmd(0x0c);
+ 200   1         lcdcmd(0x80);
+ 201   1      }
+ 202          
+ 203          void enter()
+ 204          {
+ 205   1         SBUF=0x0D;
+ 206   1         while(TI==0);
+ 207   1         TI=0;   
+ 208   1      }
+ 209          
+ 210          void write(unsigned char val)
+ 211          {
+ 212   1       unsigned char v2=0x80,v3,v5;
+ 213   1       v5=val;
+ 214   1       for(v3=0;v3<8;v3++)
+ 215   1      {
+ 216   2       sda=v5&v2;
+ 217   2       scl=1;
+ 218   2       delay();
+ 219   2       scl=0;
+ 220   2       v5=v5<<1;  
+ 221   2       }
+ 222   1      c=sda;
+ 223   1      scl=1;
+ 224   1      delay();
+ 225   1      scl=0;
+ 226   1      if(c==1)
+ 227   1      {
+ 228   2        stop();
+ 229   2        while(1);
+ 230   2       } 
+ 231   1       }
+ 232          
+ 233           void stop()
+ 234           {
+ 235   1       scl=1;
+ 236   1      sda=0;
+ 237   1      delay();
+ 238   1      sda=1;
+ 239   1      scl=0;
+ 240   1      delay();
+C51 COMPILER V9.60.0.0   RTC                                                               10/05/2021 04:07:57 PAGE 5   
+
+ 241   1       }
+ 242          
+ 243          void delay()
+ 244          {
+ 245   1       //int i,j;
+ 246   1      //for(i=0;i<1000;i++)
+ 247   1      //for(j=0;j<1000;j++);  
+ 248   1        _nop_();
+ 249   1        _nop_();
+ 250   1      }   
+ 251          
+ 252          unsigned char read()
+ 253          {
+ 254   1       unsigned char v16;
+ 255   1       bit m=0;
+ 256   1       for(v16=0;v16<=7;v16++)
+ 257   1       {
+ 258   2        scl=1;
+ 259   2        delay();
+ 260   2        m=sda;
+ 261   2        scl=0;
+ 262   2        if(m==1)
+ 263   2        {
+ 264   3         ch|=0x01;
+ 265   3        }
+ 266   2      if(v16<=6)
+ 267   2       ch=ch<<1;
+ 268   2      delay();
+ 269   2      }
+ 270   1      return ch;
+ 271   1      }
+ 272          
+ 273          void start()
+ 274          {
+ 275   1      scl=1;
+ 276   1      sda=1;
+ 277   1      delay();
+ 278   1      sda=0;
+ 279   1      delay();
+ 280   1      scl=0;   
+ 281   1      }
+ 282          
+ 283          void serial_init()
+ 284          {
+ 285   1       SCON=0x50;
+ 286   1       TMOD=0x20;
+ 287   1       TH1=-3;
+ 288   1       TR1=1;
+ 289   1      }
+ 290          
+ 291          void string(unsigned char *m)
+ 292          {
+ 293   1        while(*m)
+ 294   1        {
+ 295   2          lcddat(*m++);
+ 296   2        }
+ 297   1       }
+ 298           
+ 299          void lcddat(unsigned char val)
+ 300          {
+ 301   1       P1=val;
+ 302   1       rs=1;
+C51 COMPILER V9.60.0.0   RTC                                                               10/05/2021 04:07:57 PAGE 6   
+
+ 303   1         rw=0;
+ 304   1       en=1;
+ 305   1       delay2();
+ 306   1       en=0;  
+ 307   1       } 
+ 308          
+ 309          void lcdcmd(unsigned char val)
+ 310          {
+ 311   1         P1=val;
+ 312   1         rs=0;
+ 313   1         rw=0;
+ 314   1         en=1;
+ 315   1         delay2();
+ 316   1         en=0;
+ 317   1       }
+ 318           
+ 319           void dealy2()
+ 320           {
+ 321   1          unsigned int v1;
+ 322   1          for(v1=0;v1<2000;v1++);
+ 323   1        }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    863    ----
+   CONSTANT SIZE    =     12    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

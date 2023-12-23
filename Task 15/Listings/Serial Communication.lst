@@ -1,0 +1,125 @@
+C51 COMPILER V9.60.0.0   SERIAL_COMMUNICATION                                              09/30/2021 16:46:25 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE SERIAL_COMMUNICATION
+OBJECT MODULE PLACED IN .\Objects\Serial Communication.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Serial Communication.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\Serial Communication.lst) TABS(2) OBJECT(.\Objects\Serial Communication.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #define lcd P1
+   3          
+   4          sbit rs=P2^0;
+   5          sbit e=P2^1;
+   6          sbit rw=P2^5;
+   7          
+   8          void delay (int);
+   9          void cmd (char);
+  10          void display (char);
+  11          void Write (char *);
+  12          void init (void);
+  13          void Rx ();
+  14          
+  15          int length, flag,counter=0,j; 
+  16          unsigned char RxData[16], temp;
+  17          
+  18          
+  19          void delay (int d)
+  20          {
+  21   1        unsigned char i;
+  22   1        for(;d>0;d--)
+  23   1        {
+  24   2          for(i=250;i>0;i--);
+  25   2          for(i=248;i>0;i--);
+  26   2        }
+  27   1      }
+  28          
+  29          void cmd (char c)
+  30          {
+  31   1        lcd=c;    // LCD assign to P3
+  32   1        rs=0;     // RS=0, Read Data or Initiaze Data
+  33   1        rw=0;
+  34   1        e=1;      // Enable from 1 to 0, or 0 to 1 to latch Data
+  35   1        delay(5);
+  36   1        e=0;
+  37   1      }
+  38          void display (char c)
+  39          {
+  40   1        lcd=c;
+  41   1        rs=1; // RS=1 , to write data on LCD
+  42   1        rw=0;
+  43   1        e=1;   // Enable from 1 to 0, or 0 to 1 to latch Data
+  44   1        delay(1);
+  45   1        e=0;
+  46   1      }
+  47          
+  48          void Write (char *p)
+  49          {
+  50   1        while(*p)
+  51   1        {
+  52   2          display(*p++);
+  53   2        }
+  54   1      }
+C51 COMPILER V9.60.0.0   SERIAL_COMMUNICATION                                              09/30/2021 16:46:25 PAGE 2   
+
+  55          void init (void)
+  56          {
+  57   1        cmd(0x0c);    // Display ON and Cursor OFF
+  58   1        cmd(0x38);    //  Use two Lines
+  59   1        cmd(0x01);    // Clear Screen
+  60   1        cmd(0x80);    // Beginning of First Line
+  61   1      }
+  62          
+  63           void Serial (void) interrupt 4
+  64           {
+  65   1        if (RI==1)
+  66   1        {
+  67   2            temp=SBUF;
+  68   2            RxData[counter] = temp;
+  69   2            length = counter;
+  70   2            if (temp == '\n')
+  71   2              flag=1;
+  72   2              RI=0;   
+  73   2        }
+  74   1            counter++;
+  75   1       }
+  76          void main()
+  77          {
+  78   1        EA=1;
+  79   1        ES=1;
+  80   1        
+  81   1        TMOD = 0x20;
+  82   1        TH1 = 0xFD;
+  83   1        SCON = 0x50;
+  84   1        TR1 = 1;
+  85   1        init();
+  86   1        
+  87   1        while(1)
+  88   1        {
+  89   2          if (flag==1)
+  90   2          {
+  91   3            for(j=0; j<=length; j++)
+  92   3            {
+  93   4              display(RxData[j]);
+  94   4              flag=0;
+  95   4              counter=0;
+  96   4            }
+  97   3          }
+  98   2        }
+  99   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    274    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     25       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\Last.obj" 
+TO ".\Objects\lastTask" 
+PRINT(".\Listings\lastTask.m51") RAMSIZE(256) 

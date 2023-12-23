@@ -1,0 +1,290 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/22/2021  15:01:00  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\New Text Document.obj TO .\Objects\jogarh PRINT (.\Listings\jogarh.m51) RAMSIZE (2
+>> 56)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\New Text Document.obj (NEW_TEXT_DOCUMENT)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\jogarh (NEW_TEXT_DOCUMENT)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+                    0008H     0018H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         ?BI?NEW_TEXT_DOCUMENT
+                    0020H.1   0000H.7                *** GAP ***
+            DATA    0021H     001CH     UNIT         ?DT?NEW_TEXT_DOCUMENT
+            IDATA   003DH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     0064H     UNIT         ?PR?READ?NEW_TEXT_DOCUMENT
+            CODE    08F0H     0032H     UNIT         ?PR?READ_BYTE?NEW_TEXT_DOCUMENT
+            CODE    0922H     0025H     UNIT         ?PR?_SEND_BYTE?NEW_TEXT_DOCUMENT
+            CODE    0947H     0020H     UNIT         ?C_INITSEG
+            CODE    0967H     0017H     UNIT         ?PR?AKNOWLEDGE?NEW_TEXT_DOCUMENT
+            CODE    097EH     0014H     UNIT         ?PR?SAVE?NEW_TEXT_DOCUMENT
+            CODE    0992H     0012H     UNIT         ?PR?DELAY?NEW_TEXT_DOCUMENT
+            CODE    09A4H     000DH     UNIT         ?PR?MAIN?NEW_TEXT_DOCUMENT
+            CODE    09B1H     000BH     UNIT         ?PR?START?NEW_TEXT_DOCUMENT
+            CODE    09BCH     000BH     UNIT         ?PR?STOP?NEW_TEXT_DOCUMENT
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\jogarh (NEW_TEXT_DOCUMENT)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?NEW_TEXT_DOCUMENT
+  +--> ?C_INITSEG
+
+?PR?MAIN?NEW_TEXT_DOCUMENT
+  +--> ?PR?SAVE?NEW_TEXT_DOCUMENT
+  +--> ?PR?READ?NEW_TEXT_DOCUMENT
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/22/2021  15:01:00  PAGE 2
+
+
+
+?PR?SAVE?NEW_TEXT_DOCUMENT
+  +--> ?PR?AKNOWLEDGE?NEW_TEXT_DOCUMENT
+  +--> ?PR?_SEND_BYTE?NEW_TEXT_DOCUMENT
+  +--> ?PR?STOP?NEW_TEXT_DOCUMENT
+
+?PR?AKNOWLEDGE?NEW_TEXT_DOCUMENT
+  +--> ?PR?START?NEW_TEXT_DOCUMENT
+  +--> ?PR?_SEND_BYTE?NEW_TEXT_DOCUMENT
+
+?PR?READ?NEW_TEXT_DOCUMENT
+  +--> ?PR?AKNOWLEDGE?NEW_TEXT_DOCUMENT
+  +--> ?PR?START?NEW_TEXT_DOCUMENT
+  +--> ?PR?_SEND_BYTE?NEW_TEXT_DOCUMENT
+  +--> ?PR?READ_BYTE?NEW_TEXT_DOCUMENT
+  +--> ?PR?STOP?NEW_TEXT_DOCUMENT
+  +--> ?PR?DELAY?NEW_TEXT_DOCUMENT
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\jogarh (NEW_TEXT_DOCUMENT)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        NEW_TEXT_DOCUMENT
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  D:0021H         PUBLIC        table
+  C:0992H         PUBLIC        delay
+  D:0029H         PUBLIC        a1
+  C:09A4H         PUBLIC        main
+  C:0977H         PUBLIC        aknowledge
+  D:002AH         PUBLIC        write
+  B:0020H.0       PUBLIC        ack
+  C:097EH         PUBLIC        save
+  C:09B1H         PUBLIC        start
+  C:08F0H         PUBLIC        read_byte
+  D:0089H         PUBLIC        TMOD
+  D:002BH         PUBLIC        temp
+  B:00A0H.0       PUBLIC        sda
+  D:002DH         PUBLIC        table2
+  C:0922H         PUBLIC        _send_byte
+  B:00A0H.1       PUBLIC        scl
+  C:09BCH         PUBLIC        stop
+  B:0088H.5       PUBLIC        TF0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  D:0037H         PUBLIC        write2
+  D:0038H         PUBLIC        i
+  D:0039H         PUBLIC        j
+  D:003AH         PUBLIC        k
+  D:003BH         PUBLIC        y
+  D:003CH         PUBLIC        Data
+  C:088CH         PUBLIC        Read
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/22/2021  15:01:00  PAGE 3
+
+
+  C:0972H         SYMBOL        L?0033
+  -------         PROC          L?0032
+  -------         ENDPROC       L?0032
+  C:0972H         SYMBOL        L?0033
+  -------         PROC          AKNOWLEDGE
+  C:0977H         LINE#         38
+  C:0977H         LINE#         39
+  C:0977H         LINE#         40
+  C:0979H         LINE#         41
+  C:097AH         LINE#         42
+  C:097BH         LINE#         43
+  C:097DH         LINE#         44
+  -------         ENDPROC       AKNOWLEDGE
+  -------         PROC          START
+  C:09B1H         LINE#         53
+  C:09B1H         LINE#         54
+  C:09B1H         LINE#         55
+  C:09B3H         LINE#         56
+  C:09B5H         LINE#         57
+  C:09B6H         LINE#         58
+  C:09B7H         LINE#         59
+  C:09B9H         LINE#         60
+  C:09BBH         LINE#         61
+  -------         ENDPROC       START
+  -------         PROC          STOP
+  C:09BCH         LINE#         66
+  C:09BCH         LINE#         67
+  C:09BCH         LINE#         68
+  C:09BEH         LINE#         69
+  C:09C0H         LINE#         70
+  C:09C1H         LINE#         71
+  C:09C2H         LINE#         72
+  C:09C4H         LINE#         73
+  C:09C6H         LINE#         74
+  -------         ENDPROC       STOP
+  -------         PROC          _SEND_BYTE
+  D:0007H         SYMBOL        value
+  -------         DO            
+  D:0002H         SYMBOL        i
+  D:0007H         SYMBOL        send
+  -------         ENDDO         
+  C:0922H         LINE#         80
+  C:0922H         LINE#         81
+  C:0922H         LINE#         84
+  C:0922H         LINE#         85
+  C:0924H         LINE#         86
+  C:0927H         LINE#         87
+  C:0927H         LINE#         89
+  C:092BH         LINE#         90
+  C:092DH         LINE#         91
+  C:092EH         LINE#         92
+  C:092FH         LINE#         93
+  C:0933H         LINE#         94
+  C:0935H         LINE#         95
+  C:0940H         LINE#         96
+  C:0944H         LINE#         97
+  C:0946H         LINE#         98
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/22/2021  15:01:00  PAGE 4
+
+
+  -------         ENDPROC       _SEND_BYTE
+  -------         PROC          READ_BYTE
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:08F0H         LINE#         105
+  C:08F0H         LINE#         106
+  C:08F0H         LINE#         108
+  C:08F2H         LINE#         110
+  C:08F5H         LINE#         111
+  C:08F7H         LINE#         112
+  C:08F7H         LINE#         114
+  C:08F9H         LINE#         115
+  C:08FFH         LINE#         116
+  C:0900H         LINE#         117
+  C:0901H         LINE#         120
+  C:090AH         LINE#         121
+  C:0910H         LINE#         122
+  C:0912H         LINE#         123
+  C:091DH         LINE#         124
+  C:091FH         LINE#         125
+  C:0921H         LINE#         126
+  -------         ENDPROC       READ_BYTE
+  -------         PROC          SAVE
+  C:097EH         LINE#         127
+  C:097EH         LINE#         128
+  C:097EH         LINE#         129
+  C:097EH         LINE#         130
+  C:097EH         LINE#         131
+  C:097EH         LINE#         132
+  C:097EH         LINE#         133
+  C:0981H         LINE#         134
+  C:0981H         LINE#         135
+  C:0984H         LINE#         136
+  C:0989H         LINE#         137
+  C:098CH         LINE#         138
+  C:098FH         LINE#         139
+  C:098FH         LINE#         140
+  C:098FH         LINE#         142
+  C:098FH         LINE#         143
+  -------         ENDPROC       SAVE
+  -------         PROC          READ
+  C:088CH         LINE#         145
+  C:088CH         LINE#         146
+  C:088CH         LINE#         147
+  C:088CH         LINE#         148
+  C:088CH         LINE#         149
+  C:088CH         LINE#         150
+  C:088CH         LINE#         151
+  C:088FH         LINE#         152
+  C:0892H         LINE#         153
+  C:0897H         LINE#         154
+  C:089AH         LINE#         155
+  C:089FH         LINE#         156
+  C:08A2H         LINE#         157
+  C:08A7H         LINE#         158
+  C:08AAH         LINE#         159
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/22/2021  15:01:00  PAGE 5
+
+
+  C:08ADH         LINE#         160
+  C:08B3H         LINE#         161
+  C:08B3H         LINE#         162
+  C:08B6H         LINE#         163
+  C:08C3H         LINE#         164
+  C:08CAH         LINE#         165
+  C:08CDH         LINE#         166
+  C:08CDH         LINE#         167
+  C:08D3H         LINE#         168
+  C:08D3H         LINE#         169
+  C:08D6H         LINE#         170
+  C:08E3H         LINE#         171
+  C:08EAH         LINE#         172
+  C:08EDH         LINE#         173
+  C:08EDH         LINE#         174
+  -------         ENDPROC       READ
+  -------         PROC          MAIN
+  C:09A4H         LINE#         178
+  C:09A4H         LINE#         179
+  C:09A4H         LINE#         181
+  C:09A9H         LINE#         182
+  C:09A9H         LINE#         183
+  C:09A9H         LINE#         184
+  C:09ACH         LINE#         185
+  C:09AFH         LINE#         186
+  -------         ENDPROC       MAIN
+  -------         PROC          DELAY
+  C:0992H         LINE#         188
+  C:0992H         LINE#         189
+  C:0992H         LINE#         190
+  C:0995H         LINE#         191
+  C:0998H         LINE#         192
+  C:099AH         LINE#         193
+  C:099CH         LINE#         194
+  C:099FH         LINE#         195
+  C:09A1H         LINE#         196
+  C:09A3H         LINE#         197
+  -------         ENDPROC       DELAY
+  -------         ENDMOD        NEW_TEXT_DOCUMENT
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 013AH BYTE (15%) *
+******************************************************************************
+
+Program Size: data=37.1 xdata=0 code=458
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

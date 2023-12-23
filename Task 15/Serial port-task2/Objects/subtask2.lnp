@@ -1,0 +1,3 @@
+".\Objects\Subtask-2 Transmit data from PC to MC.obj" 
+TO ".\Objects\subtask2" 
+PRINT(".\Listings\subtask2.m51") RAMSIZE(256) 

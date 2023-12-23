@@ -1,0 +1,88 @@
+C51 COMPILER V9.60.0.0   DISPLAY_NUMBERS                                                   09/27/2021 15:39:01 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DISPLAY_NUMBERS
+OBJECT MODULE PLACED IN .\Objects\display numbers.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE display numbers.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Li
+                    -stings\display numbers.lst) TABS(2) OBJECT(.\Objects\display numbers.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include <stdio.h>
+   3          #include "LCD.h"
+*** WARNING C318 IN LINE 3 OF display numbers.c: can't open file 'LCD.h'
+   4          
+   5          #define LED P0
+   6          
+   7          // Selecting Channel 
+   8          sbit A=P2^4;
+   9          sbit b=P2^3;
+  10          sbit C=P2^2;
+  11          
+  12          void timerdelay();
+  13          
+  14          void main(void)
+  15          {
+  16   1          int x;
+  17   1          A=0;  b=0; C=0;
+  18   1          LED = 0x06;  
+  19   1          timerdelay();
+  20   1        
+  21   1          A=0;  b=0; C=1;
+  22   1          LED = 0x5B;  
+  23   1          timerdelay();
+  24   1          
+  25   1          A=0;  b=1; C=0;
+  26   1          LED = 0x4F;  
+  27   1          timerdelay();
+  28   1          
+  29   1          A=0;  b=1; C=1;
+  30   1          LED = 0x66;  
+  31   1          timerdelay();
+  32   1          
+  33   1          A=1;  b=0; C=0;
+  34   1          LED = 0x6D;  
+  35   1          timerdelay();
+  36   1          
+  37   1          A=1;  b=0; C=1;
+  38   1          LED = 0x7D;  
+  39   1          timerdelay();
+  40   1          
+  41   1          A=1;  b=1; C=0;
+  42   1          LED = 0x07;   
+  43   1          timerdelay();
+  44   1        
+  45   1          A=1;  b=1; C=1;
+  46   1          LED = 0x7F;  
+  47   1          timerdelay();
+  48   1      }
+*** WARNING C280 IN LINE 16 OF display numbers.c: 'x': unreferenced local variable
+  49           void timerdelay()
+  50           {
+  51   1          TMOD=0x01;
+  52   1          
+C51 COMPILER V9.60.0.0   DISPLAY_NUMBERS                                                   09/27/2021 15:39:01 PAGE 2   
+
+  53   1          TH0=0x00; //Generating 711 ms delay
+  54   1          TL0=0x00;
+  55   1         
+  56   1          TR0=1;
+  57   1          while (TF0==0);
+  58   1          TR0=0;
+  59   1         TF0=0;
+  60   1        }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    114    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

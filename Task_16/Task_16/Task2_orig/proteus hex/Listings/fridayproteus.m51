@@ -1,0 +1,555 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/07/2021  23:40:36  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\fridayproteus.obj TO .\Objects\fridayproteus PRINT (.\Listings\fridayproteus.m51) 
+>> RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\fridayproteus.obj (FRIDAYPROTEUS)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+
+
+LINK MAP OF MODULE:  .\Objects\fridayproteus (FRIDAYPROTEUS)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0008H     UNIT         ?DT?FRIDAYPROTEUS
+            DATA    0010H     0007H     UNIT         _DATA_GROUP_
+            DATA    0017H     0001H     UNIT         ?DT?_RTCWRITE?FRIDAYPROTEUS
+                    0018H     0008H                  *** GAP ***
+            DATA    0020H     0001H     BIT_ADDR     ?BA?FRIDAYPROTEUS
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     020DH     UNIT         ?PR?_ASCIIDISPLAY?FRIDAYPROTEUS
+            CODE    0A0DH     0039H     UNIT         ?PR?_DELAY?FRIDAYPROTEUS
+            CODE    0A46H     0030H     UNIT         ?PR?DISPLAYTIME?FRIDAYPROTEUS
+            CODE    0A76H     002CH     UNIT         ?PR?_RTCREAD?FRIDAYPROTEUS
+            CODE    0AA2H     002CH     UNIT         ?CO?FRIDAYPROTEUS
+            CODE    0ACEH     0025H     UNIT         ?PR?_STRING?FRIDAYPROTEUS
+            CODE    0AF3H     0025H     UNIT         ?PR?_RTCCOMMAND?FRIDAYPROTEUS
+            CODE    0B18H     0022H     UNIT         ?PR?_RTCCOMMAND1?FRIDAYPROTEUS
+            CODE    0B3AH     001DH     UNIT         ?PR?SYSTEMVIEW?FRIDAYPROTEUS
+            CODE    0B57H     0019H     UNIT         ?PR?ONESECONDDELAY?FRIDAYPROTEUS
+            CODE    0B70H     0019H     UNIT         ?C?LIB_CODE
+            CODE    0B89H     0018H     UNIT         ?PR?_CUSTOMDELAY?FRIDAYPROTEUS
+            CODE    0BA1H     0012H     UNIT         ?PR?INIT?FRIDAYPROTEUS
+            CODE    0BB3H     0011H     UNIT         ?PR?_COMMAND?FRIDAYPROTEUS
+            CODE    0BC4H     000FH     UNIT         ?PR?_DISPLAY?FRIDAYPROTEUS
+            CODE    0BD3H     000FH     UNIT         ?PR?INITIALIZEALL?FRIDAYPROTEUS
+            CODE    0BE2H     000DH     UNIT         ?PR?_RTCWRITE?FRIDAYPROTEUS
+            CODE    0BEFH     000CH     UNIT         ?PR?INITIALIZESERIAL?FRIDAYPROTEUS
+            CODE    0BFBH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0C07H     0008H     UNIT         ?PR?MAIN?FRIDAYPROTEUS
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\fridayproteus (FRIDAYPROTEUS)
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/07/2021  23:40:36  PAGE 2
+
+
+SEGMENT                                      DATA_GROUP 
+  +--> CALLED SEGMENT                      START    LENGTH
+----------------------------------------------------------
+?C_C51STARTUP                              -----    -----
+  +--> ?PR?MAIN?FRIDAYPROTEUS
+
+?PR?MAIN?FRIDAYPROTEUS                     -----    -----
+  +--> ?PR?INITIALIZEALL?FRIDAYPROTEUS
+  +--> ?PR?SYSTEMVIEW?FRIDAYPROTEUS
+
+?PR?INITIALIZEALL?FRIDAYPROTEUS            -----    -----
+  +--> ?PR?INITIALIZESERIAL?FRIDAYPROTEUS
+  +--> ?PR?INIT?FRIDAYPROTEUS
+  +--> ?PR?ONESECONDDELAY?FRIDAYPROTEUS
+
+?PR?INIT?FRIDAYPROTEUS                     -----    -----
+  +--> ?PR?_COMMAND?FRIDAYPROTEUS
+
+?PR?_COMMAND?FRIDAYPROTEUS                 -----    -----
+  +--> ?PR?_DELAY?FRIDAYPROTEUS
+
+?PR?ONESECONDDELAY?FRIDAYPROTEUS           0010H    0001H
+  +--> ?PR?_CUSTOMDELAY?FRIDAYPROTEUS
+
+?PR?SYSTEMVIEW?FRIDAYPROTEUS               -----    -----
+  +--> ?PR?_COMMAND?FRIDAYPROTEUS
+  +--> ?CO?FRIDAYPROTEUS
+  +--> ?PR?_STRING?FRIDAYPROTEUS
+  +--> ?PR?DISPLAYTIME?FRIDAYPROTEUS
+
+?PR?_STRING?FRIDAYPROTEUS                  0014H    0003H
+  +--> ?PR?_DISPLAY?FRIDAYPROTEUS
+
+?PR?_DISPLAY?FRIDAYPROTEUS                 -----    -----
+  +--> ?PR?_COMMAND?FRIDAYPROTEUS
+  +--> ?PR?_DELAY?FRIDAYPROTEUS
+
+?PR?DISPLAYTIME?FRIDAYPROTEUS              -----    -----
+  +--> ?PR?_RTCREAD?FRIDAYPROTEUS
+  +--> ?PR?_ASCIIDISPLAY?FRIDAYPROTEUS
+
+?PR?_RTCREAD?FRIDAYPROTEUS                 0010H    0001H
+  +--> ?PR?_RTCCOMMAND?FRIDAYPROTEUS
+  +--> ?PR?_CUSTOMDELAY?FRIDAYPROTEUS
+
+?PR?_RTCCOMMAND?FRIDAYPROTEUS              0011H    0001H
+  +--> ?PR?_CUSTOMDELAY?FRIDAYPROTEUS
+
+?PR?_ASCIIDISPLAY?FRIDAYPROTEUS            0010H    0004H
+  +--> ?PR?_COMMAND?FRIDAYPROTEUS
+  +--> ?PR?_DISPLAY?FRIDAYPROTEUS
+  +--> ?CO?FRIDAYPROTEUS
+  +--> ?PR?_STRING?FRIDAYPROTEUS
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\fridayproteus (FRIDAYPROTEUS)
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/07/2021  23:40:36  PAGE 3
+
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        FRIDAYPROTEUS
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  B:00A0H.4       PUBLIC        CE
+  C:0A46H         PUBLIC        displayTime
+  C:0AF3H         PUBLIC        _rtcCommand
+  C:0B93H         PUBLIC        _customDelay
+  C:0A15H         PUBLIC        _delay
+  C:0B57H         PUBLIC        oneSecondDelay
+  B:00A0H.6       PUBLIC        IO
+  C:0ACEH         PUBLIC        _string
+  C:0BEFH         PUBLIC        initializeSerial
+  C:0C07H         PUBLIC        main
+  B:00A0H.5       PUBLIC        SCLK
+  B:0080H.7       PUBLIC        time
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  C:0BA1H         PUBLIC        init
+  B:0080H.6       PUBLIC        exit
+  D:0008H         PUBLIC        day
+  C:0B18H         PUBLIC        _rtcCommand1
+  B:0020H.7       PUBLIC        highBit
+  C:0B3AH         PUBLIC        systemView
+  C:0A76H         PUBLIC        _rtcRead
+  B:0088H.5       PUBLIC        TF0
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  D:008AH         PUBLIC        TL0
+  B:00A0H.0       PUBLIC        en
+  C:0BD3H         PUBLIC        initializeAll
+  B:0088H.4       PUBLIC        TR0
+  B:0088H.6       PUBLIC        TR1
+  C:0BE2H         PUBLIC        _rtcWrite
+  D:0009H         PUBLIC        mt
+  D:000AH         PUBLIC        d
+  C:0BBAH         PUBLIC        _command
+  B:00A0H.2       PUBLIC        rs
+  D:000BH         PUBLIC        h
+  C:0800H         PUBLIC        _asciiDisplay
+  B:00A0H.1       PUBLIC        wr
+  D:0020H         PUBLIC        shiftRegister
+  D:000CH         PUBLIC        m
+  D:000DH         PUBLIC        s
+  B:0020H.0       PUBLIC        lowBit
+  D:000EH         PUBLIC        y
+  D:000FH         PUBLIC        z
+  C:0BC9H         PUBLIC        _display
+  -------         PROC          L?0117
+  -------         ENDPROC       L?0117
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        d
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/07/2021  23:40:36  PAGE 4
+
+
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0A15H         LINE#         38
+  C:0A15H         LINE#         39
+  C:0A15H         LINE#         41
+  C:0A20H         LINE#         42
+  C:0A20H         LINE#         43
+  C:0A2FH         LINE#         44
+  C:0A3EH         LINE#         45
+  C:0A45H         LINE#         46
+  -------         ENDPROC       _DELAY
+  -------         PROC          L?0118
+  -------         ENDPROC       L?0118
+  -------         PROC          _COMMAND
+  D:0007H         SYMBOL        c
+  C:0BBAH         LINE#         47
+  C:0BBAH         LINE#         48
+  C:0BBAH         LINE#         49
+  C:0BBCH         LINE#         50
+  C:0BBEH         LINE#         51
+  C:0BBEH         LINE#         52
+  C:0BBEH         LINE#         53
+  C:0BC1H         LINE#         54
+  C:0BC3H         LINE#         55
+  -------         ENDPROC       _COMMAND
+  C:0BC4H         SYMBOL        L?0113
+  -------         PROC          L?0112
+  -------         ENDPROC       L?0112
+  C:0BC4H         SYMBOL        L?0113
+  -------         PROC          _DISPLAY
+  D:0007H         SYMBOL        c
+  C:0BC9H         LINE#         56
+  C:0BC9H         LINE#         57
+  C:0BC9H         LINE#         58
+  C:0BCBH         LINE#         59
+  C:0BCDH         LINE#         60
+  C:0BCDH         LINE#         61
+  C:0BCDH         LINE#         62
+  C:0BD0H         LINE#         63
+  C:0BD2H         LINE#         64
+  -------         ENDPROC       _DISPLAY
+  -------         PROC          _STRING
+  D:0014H         SYMBOL        p
+  C:0ACEH         LINE#         67
+  C:0AD4H         LINE#         68
+  C:0AD4H         LINE#         69
+  C:0ADFH         LINE#         70
+  C:0ADFH         LINE#         71
+  C:0AF0H         LINE#         72
+  C:0AF2H         LINE#         73
+  -------         ENDPROC       _STRING
+  -------         PROC          INIT
+  C:0BA1H         LINE#         74
+  C:0BA1H         LINE#         75
+  C:0BA1H         LINE#         76
+  C:0BA6H         LINE#         77
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/07/2021  23:40:36  PAGE 5
+
+
+  C:0BABH         LINE#         78
+  C:0BABH         LINE#         79
+  C:0BAEH         LINE#         80
+  -------         ENDPROC       INIT
+  -------         PROC          MAIN
+  C:0C07H         LINE#         84
+  C:0C07H         LINE#         85
+  C:0C07H         LINE#         87
+  C:0C0AH         LINE#         88
+  C:0C0AH         LINE#         89
+  C:0C0AH         LINE#         90
+  C:0C0DH         LINE#         91
+  -------         ENDPROC       MAIN
+  -------         PROC          DISPLAYTIME
+  C:0A46H         LINE#         94
+  C:0A46H         LINE#         99
+  C:0A4DH         LINE#         100
+  C:0A54H         LINE#         101
+  C:0A5BH         LINE#         106
+  C:0A64H         LINE#         107
+  C:0A6DH         LINE#         108
+  -------         ENDPROC       DISPLAYTIME
+  -------         PROC          _RTCCOMMAND
+  D:0007H         SYMBOL        c
+  -------         DO            
+  D:0011H         SYMBOL        z
+  -------         ENDDO         
+  C:0AF3H         LINE#         117
+  C:0AF3H         LINE#         119
+  C:0AF5H         LINE#         120
+  C:0AF7H         LINE#         121
+  C:0B05H         LINE#         122
+  C:0B05H         LINE#         123
+  C:0B05H         LINE#         124
+  C:0B08H         LINE#         125
+  C:0B0AH         LINE#         126
+  C:0B0DH         LINE#         127
+  C:0B13H         LINE#         128
+  C:0B17H         LINE#         129
+  -------         ENDPROC       _RTCCOMMAND
+  -------         PROC          _RTCREAD
+  D:0007H         SYMBOL        address
+  -------         DO            
+  D:0010H         SYMBOL        z
+  -------         ENDDO         
+  C:0A76H         LINE#         130
+  C:0A76H         LINE#         131
+  C:0A76H         LINE#         133
+  C:0A79H         LINE#         134
+  C:0A87H         LINE#         135
+  C:0A87H         LINE#         136
+  C:0A8DH         LINE#         137
+  C:0A91H         LINE#         138
+  C:0A91H         LINE#         139
+  C:0A94H         LINE#         140
+  C:0A96H         LINE#         141
+  C:0A99H         LINE#         142
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/07/2021  23:40:36  PAGE 6
+
+
+  C:0A9DH         LINE#         143
+  C:0A9FH         LINE#         144
+  C:0AA1H         LINE#         145
+  -------         ENDPROC       _RTCREAD
+  -------         PROC          INITIALIZEALL
+  C:0BD3H         LINE#         146
+  C:0BD3H         LINE#         147
+  C:0BD6H         LINE#         148
+  C:0BD8H         LINE#         149
+  C:0BDAH         LINE#         150
+  C:0BDDH         LINE#         151
+  C:0BDFH         LINE#         152
+  -------         ENDPROC       INITIALIZEALL
+  -------         PROC          INITIALIZESERIAL
+  C:0BEFH         LINE#         154
+  C:0BEFH         LINE#         155
+  C:0BF2H         LINE#         156
+  C:0BF5H         LINE#         157
+  C:0BF8H         LINE#         158
+  C:0BFAH         LINE#         159
+  -------         ENDPROC       INITIALIZESERIAL
+  -------         PROC          ONESECONDDELAY
+  -------         DO            
+  D:0010H         SYMBOL        z
+  -------         ENDDO         
+  C:0B57H         LINE#         160
+  C:0B57H         LINE#         162
+  C:0B65H         LINE#         163
+  C:0B6BH         LINE#         164
+  C:0B6FH         LINE#         165
+  -------         ENDPROC       ONESECONDDELAY
+  C:0B8DH         SYMBOL        L?0115
+  C:0B8FH         SYMBOL        L?0116
+  -------         PROC          L?0114
+  -------         ENDPROC       L?0114
+  C:0B8DH         SYMBOL        L?0115
+  C:0B8FH         SYMBOL        L?0116
+  -------         PROC          _CUSTOMDELAY
+  D:0007H         SYMBOL        h
+  D:0005H         SYMBOL        l
+  C:0B93H         LINE#         166
+  C:0B93H         LINE#         167
+  C:0B95H         LINE#         168
+  C:0B97H         LINE#         169
+  C:0B99H         LINE#         170
+  C:0B9CH         LINE#         171
+  C:0B9EH         LINE#         172
+  C:0BA0H         LINE#         173
+  -------         ENDPROC       _CUSTOMDELAY
+  -------         PROC          _ASCIIDISPLAY
+  D:0004H         SYMBOL        byte
+  D:0010H         SYMBOL        flag
+  D:0003H         SYMBOL        entity
+  -------         DO            
+  D:0011H         SYMBOL        a
+  D:0012H         SYMBOL        b
+  D:0013H         SYMBOL        c
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/07/2021  23:40:36  PAGE 7
+
+
+  D:0011H         SYMBOL        a
+  D:0012H         SYMBOL        b
+  -------         ENDDO         
+  -------         DO            
+  D:0011H         SYMBOL        a
+  D:0012H         SYMBOL        b
+  -------         ENDDO         
+  C:0800H         LINE#         174
+  C:0804H         LINE#         175
+  C:080CH         LINE#         177
+  C:0813H         LINE#         178
+  C:081AH         LINE#         179
+  C:0821H         LINE#         180
+  C:0828H         LINE#         181
+  C:082AH         LINE#         182
+  C:082DH         LINE#         183
+  C:0830H         LINE#         184
+  C:0833H         LINE#         185
+  C:0839H         LINE#         186
+  C:083EH         LINE#         187
+  C:0844H         LINE#         188
+  C:0849H         LINE#         189
+  C:0855H         LINE#         190
+  C:085AH         LINE#         191
+  C:085AH         LINE#         192
+  C:085CH         LINE#         193
+  C:0862H         LINE#         194
+  C:0867H         LINE#         195
+  C:086CH         LINE#         196
+  C:0871H         LINE#         197
+  C:0876H         LINE#         198
+  C:087CH         LINE#         200
+  C:0881H         LINE#         201
+  C:0883H         LINE#         202
+  C:0886H         LINE#         203
+  C:088CH         LINE#         204
+  C:0891H         LINE#         205
+  C:0897H         LINE#         206
+  C:089CH         LINE#         207
+  C:08A8H         LINE#         208
+  C:08ADH         LINE#         209
+  C:08AFH         LINE#         210
+  C:08B2H         LINE#         211
+  C:08BBH         LINE#         212
+  C:08C0H         LINE#         213
+  C:08C5H         LINE#         214
+  C:08CAH         LINE#         215
+  C:08CFH         LINE#         216
+  C:08D5H         LINE#         218
+  C:08DAH         LINE#         219
+  C:08DFH         LINE#         220
+  C:08E1H         LINE#         221
+  C:08E1H         LINE#         222
+  C:08E4H         LINE#         223
+  C:08E4H         LINE#         225
+  C:08E9H         LINE#         226
+  C:08EEH         LINE#         227
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/07/2021  23:40:36  PAGE 8
+
+
+  C:08F1H         LINE#         228
+  C:08F6H         LINE#         229
+  C:08F9H         LINE#         230
+  C:08FEH         LINE#         231
+  C:0900H         LINE#         232
+  C:0903H         LINE#         233
+  C:0908H         LINE#         234
+  C:090DH         LINE#         235
+  C:0912H         LINE#         236
+  C:0914H         LINE#         237
+  C:0917H         LINE#         238
+  C:091CH         LINE#         239
+  C:091EH         LINE#         240
+  C:0921H         LINE#         241
+  C:0926H         LINE#         242
+  C:092BH         LINE#         243
+  C:0930H         LINE#         244
+  C:0932H         LINE#         245
+  C:0935H         LINE#         246
+  C:093AH         LINE#         247
+  C:093CH         LINE#         248
+  C:093FH         LINE#         249
+  C:0944H         LINE#         250
+  C:0946H         LINE#         251
+  C:0948H         LINE#         252
+  C:094DH         LINE#         253
+  C:094FH         LINE#         254
+  C:0952H         LINE#         255
+  C:0957H         LINE#         256
+  C:095CH         LINE#         257
+  C:0961H         LINE#         258
+  C:0963H         LINE#         259
+  C:0965H         LINE#         260
+  C:096AH         LINE#         261
+  C:096CH         LINE#         262
+  C:096FH         LINE#         263
+  C:0974H         LINE#         264
+  C:0979H         LINE#         265
+  C:097EH         LINE#         266
+  C:0980H         LINE#         267
+  C:0982H         LINE#         268
+  C:0988H         LINE#         269
+  C:098DH         LINE#         270
+  C:0996H         LINE#         271
+  C:0998H         LINE#         272
+  C:099BH         LINE#         273
+  C:09A0H         LINE#         274
+  C:09A5H         LINE#         275
+  C:09A5H         LINE#         276
+  C:09ABH         LINE#         277
+  C:09B0H         LINE#         278
+  C:09B5H         LINE#         279
+  C:09BDH         LINE#         280
+  C:09C2H         LINE#         281
+  C:09CAH         LINE#         282
+  C:09CFH         LINE#         283
+  C:09D7H         LINE#         284
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/07/2021  23:40:36  PAGE 9
+
+
+  C:09DCH         LINE#         285
+  C:09E4H         LINE#         286
+  C:09E9H         LINE#         287
+  C:09F1H         LINE#         288
+  C:09F6H         LINE#         289
+  C:09FEH         LINE#         290
+  C:0A03H         LINE#         291
+  C:0A0CH         LINE#         292
+  C:0A0CH         LINE#         293
+  C:0A0CH         LINE#         294
+  -------         ENDPROC       _ASCIIDISPLAY
+  -------         PROC          SYSTEMVIEW
+  C:0B3AH         LINE#         296
+  C:0B3AH         LINE#         297
+  C:0B3AH         LINE#         298
+  C:0B3FH         LINE#         299
+  C:0B42H         LINE#         300
+  C:0B42H         LINE#         301
+  C:0B45H         LINE#         302
+  C:0B4EH         LINE#         303
+  C:0B51H         LINE#         304
+  C:0B54H         LINE#         311
+  C:0B56H         LINE#         312
+  C:0B56H         LINE#         313
+  -------         ENDPROC       SYSTEMVIEW
+  -------         PROC          _RTCWRITE
+  D:0007H         SYMBOL        address
+  D:0017H         SYMBOL        byte
+  C:0BE2H         LINE#         315
+  C:0BE4H         LINE#         316
+  C:0BE4H         LINE#         317
+  C:0BE7H         LINE#         318
+  C:0BECH         LINE#         319
+  C:0BEEH         LINE#         320
+  -------         ENDPROC       _RTCWRITE
+  -------         PROC          _RTCCOMMAND1
+  D:0007H         SYMBOL        c
+  -------         DO            
+  D:0006H         SYMBOL        z
+  -------         ENDDO         
+  C:0B18H         LINE#         321
+  C:0B18H         LINE#         323
+  C:0B1AH         LINE#         324
+  C:0B1CH         LINE#         325
+  C:0B28H         LINE#         326
+  C:0B28H         LINE#         327
+  C:0B28H         LINE#         328
+  C:0B2BH         LINE#         329
+  C:0B2DH         LINE#         330
+  C:0B30H         LINE#         331
+  C:0B36H         LINE#         332
+  C:0B39H         LINE#         333
+  -------         ENDPROC       _RTCCOMMAND1
+  -------         ENDMOD        FRIDAYPROTEUS
+
+  -------         MODULE        ?C?CLDPTR
+  C:0B70H         PUBLIC        ?C?CLDPTR
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/07/2021  23:40:36  PAGE 10
+
+
+  -------         ENDMOD        ?C?CLDPTR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTCWRITE?FRIDAYPROTEUS
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 03EAH BYTE (48%) *
+******************************************************************************
+
+Program Size: data=26.0 xdata=0 code=1042
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

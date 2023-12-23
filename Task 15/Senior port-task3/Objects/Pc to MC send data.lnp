@@ -1,0 +1,3 @@
+".\Objects\Pc to MC send data.obj" 
+TO ".\Objects\Pc to MC send data" 
+PRINT(".\Listings\Pc to MC send data.m51") RAMSIZE(256) 

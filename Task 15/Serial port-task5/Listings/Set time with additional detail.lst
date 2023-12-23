@@ -1,0 +1,137 @@
+C51 COMPILER V9.60.0.0   SET_TIME_WITH_ADDITIONAL_DETAIL                                   10/04/2021 16:15:31 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE SET_TIME_WITH_ADDITIONAL_DETAIL
+OBJECT MODULE PLACED IN .\Objects\Set time with additional detail.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Set time with additional detail.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTE
+                    -XTEND PRINT(.\Listings\Set time with additional detail.lst) TABS(2) OBJECT(.\Objects\Set time with additional detail.obj
+                    -)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #define lcd P0
+   3          
+   4          sbit rs=P2^6;
+   5          sbit e=P2^7;
+   6          sbit rw=P2^5;
+   7          
+   8          void delay (int);
+   9          void cmd (char);
+  10          void display (char);
+  11          void Write (char *);
+  12          void init (void);
+  13          
+  14          int length;
+  15          int flag;
+  16          int counter=0;
+  17          int j; 
+  18          volatile char RxData[16];
+  19          unsigned char temp;
+  20          int a=0;
+  21          
+  22          void Serial (void) interrupt 4
+  23           {
+  24   1        if (RI==1)
+  25   1        {
+  26   2            temp=SBUF;
+  27   2            RxData[counter] = temp;
+  28   2            length = counter;
+  29   2        //cmd(0x80);
+  30   2            if (temp == 0x0D)  // 0x0D means <CR> in Hercules to terminate , it dont know '\n\r'
+  31   2            flag=1;
+  32   2            a=1;
+  33   2          RI=0;
+  34   2        }
+  35   1            counter+=1;
+  36   1      }
+  37           
+  38          void delay (int d)
+  39          {
+  40   1        unsigned char i;
+  41   1        for(;d>0;d--)
+  42   1        {
+  43   2          for(i=250;i>0;i--);
+  44   2          for(i=248;i>0;i--);
+  45   2        }
+  46   1      }
+  47          
+  48          void cmd (char c)
+  49          {
+  50   1        lcd=c;    // LCD assign to P3
+  51   1        rs=0;     // RS=0, Read Data or Initiaze Data
+  52   1        rw=0;
+  53   1        e=1;      // Enable from 1 to 0, or 0 to 1 to latch Data
+C51 COMPILER V9.60.0.0   SET_TIME_WITH_ADDITIONAL_DETAIL                                   10/04/2021 16:15:31 PAGE 2   
+
+  54   1        delay(5);
+  55   1        e=0;
+  56   1      }
+  57          void display (char c)
+  58          {
+  59   1        lcd=c;
+  60   1        rs=1; // RS=1 , to write data on LCD
+  61   1        rw=0;
+  62   1        e=1;   // Enable from 1 to 0, or 0 to 1 to latch Data
+  63   1        delay(1);
+  64   1        e=0;
+  65   1      }
+  66          
+  67          void Write (char *p)
+  68          {
+  69   1        while(*p)
+  70   1        {
+  71   2          display(*p++);
+  72   2        }
+  73   1      }
+  74          void init (void)
+  75          {
+  76   1        cmd(0x0c);    // Display ON and Cursor OFF
+  77   1        cmd(0x38);    //  Use two Lines
+  78   1        cmd(0x01);    // Clear Screen
+  79   1        cmd(0x80);    // Beginning of First Line
+  80   1      }
+  81          
+  82           
+  83          void main()
+  84          {
+  85   1        IE = 0x90;
+  86   1        init();
+  87   1        TMOD = 0x20;
+  88   1        TH1 = 0xFD;
+  89   1        SCON = 0x50;
+  90   1        TR1 = 1; 
+  91   1        while(1)
+  92   1        {
+  93   2          if (flag==1)
+  94   2          {
+  95   3            for(j=0; j<length; j++)
+  96   3            {
+  97   4              display(RxData[j]);
+  98   4              flag=0;
+  99   4              counter=0;
+ 100   4            }
+ 101   3            if (a==1)
+ 102   3          {
+ 103   4            cmd(0xc0);
+ 104   4          }
+ 105   3          }
+ 106   2          
+ 107   2        }
+ 108   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    294    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.0.0   SET_TIME_WITH_ADDITIONAL_DETAIL                                   10/04/2021 16:15:31 PAGE 3   
+
+   DATA SIZE        =     27       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

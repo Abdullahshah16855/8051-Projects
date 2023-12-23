@@ -1,0 +1,3 @@
+".\Objects\custom char.obj" 
+TO ".\Objects\Custom charr" 
+PRINT(".\Listings\Custom charr.m51") RAMSIZE(256) 

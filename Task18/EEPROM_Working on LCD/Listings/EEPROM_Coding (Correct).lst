@@ -1,0 +1,224 @@
+C51 COMPILER V9.60.0.0   EEPROM_CODING__CORRECT_                                           02/21/2022 12:13:55 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EEPROM_CODING__CORRECT_
+OBJECT MODULE PLACED IN .\Objects\EEPROM_Coding (Correct).obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE EEPROM_Coding (Correct).c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PR
+                    -INT(.\Listings\EEPROM_Coding (Correct).lst) TABS(2) OBJECT(.\Objects\EEPROM_Coding (Correct).obj)
+
+line level    source
+
+   1          //Program to interface Serial EEPROM AT24C02 with 8051 microcontroller (AT89C51) 
+   2          #include<reg51.h>
+   3          #include<intrins.h>   //For using [nop()]
+   4          #define lcd_data_pin P0
+   5          
+   6          sbit sda=P2^0;
+   7          sbit scl=P2^1;
+   8          sbit led=P0^3;
+   9          bit ack;
+  10          sbit led1=P0^1;
+  11          //fr output=0x80;//p0 port
+  12          sbit rs=P2^6;
+  13          sbit rw=P2^5;
+  14          sbit en=P2^7;
+  15          unsigned char reead,write,write2,i,j;
+  16          unsigned int temp;
+  17          void delay(unsigned int count)
+  18          {
+  19   1        int i,j;
+  20   1        for(i=0;i<count;i++)
+  21   1          for(j=0;j<1275;j++);
+  22   1      }
+  23          void lcd_command(unsigned char comm)
+  24          {
+  25   1        lcd_data_pin=comm;
+  26   1        en=1;
+  27   1        rs=0;
+  28   1        rw=0;
+  29   1        delay(1);
+  30   1        en=0;
+  31   1      }
+  32          void lcd_data(unsigned char disp)
+  33          {
+  34   1        lcd_data_pin=disp;
+  35   1        en=1;
+  36   1        rs=1;
+  37   1        rw=0;
+  38   1        delay(1);
+  39   1        en=0;
+  40   1      }
+  41          lcd_dataa(unsigned char *disp)
+  42          {
+  43   1        int x;
+  44   1        for(x=0;disp[x]!=0;x++)
+  45   1        {
+  46   2          lcd_data(disp[x]);
+  47   2        }
+  48   1      }
+  49          void lcd_ini()
+  50          {
+  51   1        lcd_command(0x38);      // for using 8-bit 2 row LCD 
+  52   1        delay(5);
+  53   1        lcd_command(0x0F);        // for display on, cursor blinking
+  54   1        delay(5);
+C51 COMPILER V9.60.0.0   EEPROM_CODING__CORRECT_                                           02/21/2022 12:13:55 PAGE 2   
+
+  55   1        lcd_command(0x80);
+  56   1        delay(5);
+  57   1      }
+  58          void aknowledge()   //acknowledge condition
+  59          {
+  60   1        scl=1;
+  61   1        nop();
+*** WARNING C206 IN LINE 61 OF EEPROM_Coding (Correct).c: 'nop': missing function-prototype
+  62   1        nop();
+  63   1        scl=0;
+  64   1      } 
+  65          void start()    //start condition
+  66          {
+  67   1        sda=1;
+  68   1        scl=1;
+  69   1        nop();         //No operation
+  70   1        nop();
+  71   1        sda=0;
+  72   1        scl=0;
+  73   1      }
+  74          void stop()     //stop condition
+  75          {
+  76   1        sda=0;
+  77   1        scl=1;
+  78   1        nop();
+  79   1        nop(); 
+  80   1        sda=1;
+  81   1        scl=0;
+  82   1      }
+  83          void send_byte(unsigned char value) //send byte serially
+  84          { 
+  85   1        unsigned int i;
+  86   1        unsigned char send;
+  87   1        send=value;
+  88   1        for(i=0;i<8;i++)
+  89   1        {
+  90   2          sda=send/128;     //extracting MSB
+  91   2          send=send<<1;     //shiftng left
+  92   2          scl=1;
+  93   2          nop();
+  94   2          nop();
+  95   2          scl=0;
+  96   2        }
+  97   1         ack=sda;         //reading acknowledge
+  98   1         sda=0;
+  99   1      }
+ 100          unsigned char read_byte()     //reading from EEPROM serially
+ 101          {
+ 102   1        unsigned int i;
+ 103   1        sda=1;
+ 104   1        reead=0;
+ 105   1        for(i=0;i<8;i++)
+ 106   1        {
+ 107   2          reead=reead<<1;
+ 108   2          scl=1;
+ 109   2          nop();
+ 110   2          nop();
+ 111   2          if(sda==1)
+ 112   2            reead++;
+ 113   2          scl=0;
+ 114   2        }
+ 115   1        sda=0;
+C51 COMPILER V9.60.0.0   EEPROM_CODING__CORRECT_                                           02/21/2022 12:13:55 PAGE 3   
+
+ 116   1        return reead;       //Returns 8 bits Data here
+ 117   1      }   
+ 118          void save()         //save in EEPROM
+ 119          {
+ 120   1        start();
+ 121   1        send_byte(0xA0);            //device address
+ 122   1        aknowledge();
+ 123   1        send_byte(0x00);            //word address
+ 124   1        aknowledge();
+ 125   1        send_byte(5);             //send Data
+ 126   1        aknowledge();
+ 127   1        send_byte(65);
+ 128   1        aknowledge();
+ 129   1        stop();                
+ 130   1        if(ack==0)
+ 131   1        {
+ 132   2          led1=1;
+ 133   2          delay(100);
+ 134   2          led1=0;
+ 135   2          delay(100);
+ 136   2          lcd_command(0x86);
+ 137   2          lcd_data('5');
+ 138   2          lcd_command(0x87);
+ 139   2          lcd_data('A');
+ 140   2        }
+ 141   1        else
+ 142   1        led1=1;
+ 143   1        aknowledge();
+ 144   1      }
+ 145          void Read()
+ 146          {
+ 147   1        start();
+ 148   1        send_byte(0xA0);
+ 149   1        aknowledge();
+ 150   1        send_byte(0x00);
+ 151   1        aknowledge();
+ 152   1        start();
+ 153   1        send_byte(0xA1);           //device address
+ 154   1        aknowledge();
+ 155   1        i=read_byte();
+ 156   1        aknowledge();
+ 157   1        j=read_byte();
+ 158   1        aknowledge();
+ 159   1        stop();
+ 160   1        if(i==5)
+ 161   1        {
+ 162   2          led=0;
+ 163   2          delay(100);
+ 164   2          led=1;
+ 165   2          delay(100);
+ 166   2          write=i+48;
+ 167   2          lcd_command(0xC6);
+ 168   2          lcd_data(write);  
+ 169   2        }
+ 170   1        else
+ 171   1         led=1;
+ 172   1        if(j==65)
+ 173   1        {
+ 174   2          lcd_command(0xC7);
+ 175   2          lcd_data(j);
+ 176   2        }
+ 177   1        aknowledge();
+C51 COMPILER V9.60.0.0   EEPROM_CODING__CORRECT_                                           02/21/2022 12:13:55 PAGE 4   
+
+ 178   1      }
+ 179          
+ 180          void main()
+ 181          {
+ 182   1        lcd_ini();
+ 183   1        lcd_dataa("Sent :");
+ 184   1        lcd_command(0xC0);
+ 185   1        lcd_dataa("Read :");
+ 186   1        temp=0;
+ 187   1        while(1)
+ 188   1        {
+ 189   2          save();
+ 190   2          Read();
+ 191   2        }
+ 192   1      }
+*** WARNING C290 IN LINE 48 OF EEPROM_Coding (Correct).c: missing return value
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    520    ----
+   CONSTANT SIZE    =     14    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7      10
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

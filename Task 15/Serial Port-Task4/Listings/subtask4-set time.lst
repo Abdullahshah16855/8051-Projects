@@ -1,0 +1,135 @@
+C51 COMPILER V9.60.0.0   SUBTASK4_SET_TIME                                                 10/04/2021 12:55:19 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE SUBTASK4_SET_TIME
+OBJECT MODULE PLACED IN .\Objects\subtask4-set time.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE subtask4-set time.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\
+                    -Listings\subtask4-set time.lst) TABS(2) OBJECT(.\Objects\subtask4-set time.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #define lcd P0
+   3          
+   4          sbit rs=P2^6;
+   5          sbit e=P2^7;
+   6          sbit rw=P2^5;
+   7          
+   8          void delay (int);
+   9          void cmd (char);
+  10          void display (char);
+  11          void Write (char *);
+  12          void init (void);
+  13          
+  14          int length;
+  15          int flag;
+  16          int counter=0;
+  17          int j; 
+  18          volatile char RxData[16];
+  19          unsigned char Hour_min_sec;
+  20          
+  21          void Serial (void) interrupt 4
+  22           {
+  23   1        if (RI==1)
+  24   1        {
+  25   2            Hour_min_sec=SBUF;
+  26   2            RxData[counter] = Hour_min_sec;
+  27   2            length = counter;
+  28   2            if (Hour_min_sec == 0x0D)  // 0x0D means <CR> in Hercules to terminate , it dont know '\n\r'
+  29   2            flag=1;
+  30   2            RI=0;     
+  31   2        }
+  32   1            counter+=1;
+  33   1        
+  34   1        if (flag==1)
+  35   1      
+  36   1        {
+  37   2        cmd(0x01);
+  38   2        cmd(0x80);
+  39   2        }
+  40   1      }
+  41           
+  42          void delay (int d)
+  43          {
+  44   1        unsigned char i;
+  45   1        for(;d>0;d--)
+  46   1        {
+  47   2          for(i=250;i>0;i--);
+  48   2          for(i=248;i>0;i--);
+  49   2        }
+  50   1      }
+  51          
+  52          void cmd (char c)
+  53          {
+  54   1        lcd=c;    // LCD assign to P3
+C51 COMPILER V9.60.0.0   SUBTASK4_SET_TIME                                                 10/04/2021 12:55:19 PAGE 2   
+
+  55   1        rs=0;     // RS=0, Read Data or Initiaze Data
+  56   1        rw=0;
+  57   1        e=1;      // Enable from 1 to 0, or 0 to 1 to latch Data
+  58   1        delay(5);
+  59   1        e=0;
+  60   1      }
+  61          void display (char c)
+  62          {
+  63   1        lcd=c;
+  64   1        rs=1; // RS=1 , to write data on LCD
+  65   1        rw=0;
+  66   1        e=1;   // Enable from 1 to 0, or 0 to 1 to latch Data
+  67   1        delay(1);
+  68   1        e=0;
+  69   1      }
+  70          
+  71          void Write (char *p)
+  72          {
+  73   1        while(*p)
+  74   1        {
+  75   2          display(*p++);
+  76   2        }
+  77   1      }
+  78          void init (void)
+  79          {
+  80   1        cmd(0x0c);    // Display ON and Cursor OFF
+  81   1        cmd(0x38);    //  Use two Lines
+  82   1        cmd(0x01);    // Clear Screen
+  83   1        cmd(0x80);    // Beginning of First Line
+  84   1      }
+  85          
+  86           
+  87          void main()
+  88          {
+  89   1        IE = 0x90;
+  90   1        init();
+  91   1        TMOD = 0x20;
+  92   1        TH1 = 0xFD;
+  93   1        SCON = 0x50;
+  94   1        TR1 = 1; 
+  95   1        while(1)
+  96   1        {
+  97   2          if (flag==1)
+  98   2          {
+  99   3            for(j=0; j<length; j++)
+ 100   3            {
+ 101   4              display(RxData[j]);
+ 102   4              flag=0;
+ 103   4              counter=0;
+ 104   4            }
+ 105   3          }
+ 106   2        }
+ 107   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    331    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     25       3
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.0.0   SUBTASK4_SET_TIME                                                 10/04/2021 12:55:19 PAGE 3   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\read_write_time.obj" 
+TO ".\Objects\RTC" 
+PRINT(".\Listings\RTC.m51") RAMSIZE(256) 

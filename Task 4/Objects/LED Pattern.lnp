@@ -1,0 +1,3 @@
+".\Objects\LED Pattern.obj" 
+TO ".\Objects\LED Pattern" 
+PRINT(".\Listings\LED Pattern.m51") RAMSIZE(256) 

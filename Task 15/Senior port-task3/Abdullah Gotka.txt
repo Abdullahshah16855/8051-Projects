@@ -1,0 +1,123 @@
+#include < reg51.h>
+#define lcd_data P0
+
+sbit rs=P2^6;
+sbit en=P2^7;
+sbit wr=P2^5;
+
+void delay (unsigned int);
+void command (unsigned char);
+void display (unsigned char);
+void string (unsigned char *);
+void init (void);
+unsigned char chr;
+int len;
+volatile char Data[16];
+int flag;
+int Counter=0;
+
+void serial_int(void) interrupt 4
+{
+if(RI==1)
+{
+	chr=SBUF;
+Data[Counter]=chr;
+len=Counter;
+	if(chr==0x0D)     // 0x0D is for next line and for hercules we have to Add <CR> means "\n\r" Ex: "World<CR>"
+flag=1;
+RI=0;
+}
+Counter+=1;
+}
+
+
+
+
+// lcd initilizations command
+void init (void)
+{
+	command(0x38);      //2 Line, 5x7 Dots matrix for each character display
+	command(0x0E);      // cursor on display on
+	command(0x01);      //Clearing the screen
+	command (0x06);	/* Auto Increment cursor */
+	command(0x80);       // Force cursor to beginning of the first line
+}
+
+// LCD16x2 command funtion 
+void command (unsigned char c)
+{
+	lcd_data=c;
+	rs=0;  
+  wr=0;     	
+	en=1;     
+	delay(1);
+	en=0;
+	delay(5);
+}
+// lcd Data write function
+void display(unsigned char c)
+{
+	lcd_data=c;      
+	rs=1;
+  wr=0;	
+	en=1;
+	delay(50);
+	en=0;
+	delay(20);
+}
+
+
+void main()
+{
+	unsigned int j;
+	init();
+	IE=0x90;
+	TMOD=0x20;
+	TH1=0xFD;
+	SCON=0x50;
+	TR1=1;
+	while(1)
+	{
+		if(flag==1)
+		{
+		for(j=0;j<len;j++)
+			{
+				display( Data[j]);
+				flag=0;
+				Counter=0;
+			}
+		}
+	}
+/*
+	//unsigned char mybyte;
+	unsigned char i,j;
+	unsigned char arr[9];
+	lcd_init();
+	TMOD=0X20;
+	SCON=0x50;
+	TH1=-3;
+	TR1=1;
+	
+	while(1){
+	for(i=0; i<9; i++)
+		{
+			while (RI==0);
+			arr[i]=SBUF;
+			RI=0;
+			
+		}
+			lcd_command(0x01);
+		lcd_command(0x80);
+	for(j=0;j<9; j++)
+		{
+	display_data(arr[j]);
+	}
+	}*/
+}
+
+void delay(unsigned int count)  /* Function to provide delay Approx 1ms */
+{
+	int i,j;
+	for(i=0;i<count;i++)
+	for(j=0;j<112;j++);
+}

@@ -1,0 +1,8 @@
+Write is the function to pass bit by bit value from master to slave because SDA line allows only single bit at a time.
+Read is the function which receive data bit by bit from SDA Line with return type character so i will read data from RTC device and i will give it to main function. So, this read function allows you to read the data from specific memory location of RTC register.
+
+SDA = value & 0x80 because in i2c we send data from MSB to LSB
+
+When SDA initializes it from Low to High transition in STOP Function it is a rule of I2C to terminate the Communication.
+When SDA initializes it from High to Low transition in Start Function it is a rule of I2C Start the Communication.
+  

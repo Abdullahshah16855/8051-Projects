@@ -1,0 +1,541 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/13/2021  22:10:55  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\hercules.obj TO .\Objects\last_task_rtc PRINT (.\Listings\last_task_rtc.m51) RAMSI
+>> ZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\hercules.obj (HERCULES)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+
+
+LINK MAP OF MODULE:  .\Objects\last_task_rtc (HERCULES)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0013H     UNIT         ?DT?HERCULES
+                    001BH     0005H                  *** GAP ***
+            DATA    0020H     0001H     BIT_ADDR     ?BA?HERCULES
+            DATA    0021H     000AH     UNIT         _DATA_GROUP_
+            IDATA   002BH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     0129H     UNIT         ?PR?_ASCIIDISPLAY?HERCULES
+            CODE    0929H     0083H     UNIT         ?PR?WRITE_TIME_USING_HERCULES?HERCULES
+            CODE    09ACH     0062H     UNIT         ?PR?DISPLAYTIME?HERCULES
+            CODE    0A0EH     0039H     UNIT         ?PR?_DELAY?HERCULES
+            CODE    0A47H     002CH     UNIT         ?PR?_RTCREAD?HERCULES
+            CODE    0A73H     002CH     UNIT         ?CO?HERCULES
+            CODE    0A9FH     0029H     UNIT         ?PR?_RTCCOMMAND?HERCULES
+            CODE    0AC8H     0025H     UNIT         ?PR?_STRING?HERCULES
+            CODE    0AEDH     0019H     UNIT         ?PR?ONESECONDDELAY?HERCULES
+            CODE    0B06H     0019H     UNIT         ?C?LIB_CODE
+            CODE    0B1FH     0014H     UNIT         ?PR?_CUSTOMDELAY?HERCULES
+            CODE    0B33H     0012H     UNIT         ?PR?INIT?HERCULES
+            CODE    0B45H     0011H     UNIT         ?PR?_COMMAND?HERCULES
+            CODE    0B56H     0011H     UNIT         ?PR?SYSTEMVIEW?HERCULES
+            CODE    0B67H     000FH     UNIT         ?PR?_DISPLAY?HERCULES
+            CODE    0B76H     000DH     UNIT         ?PR?_RTCWRITE?HERCULES
+            CODE    0B83H     000CH     UNIT         ?PR?INITIALIZEALL?HERCULES
+            CODE    0B8FH     000CH     UNIT         ?PR?INITIALIZESERIAL?HERCULES
+            CODE    0B9BH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0BA7H     000BH     UNIT         ?PR?MAIN?HERCULES
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\last_task_rtc (HERCULES)
+
+
+SEGMENT                                          DATA_GROUP 
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/13/2021  22:10:55  PAGE 2
+
+
+  +--> CALLED SEGMENT                          START    LENGTH
+--------------------------------------------------------------
+?C_C51STARTUP                                  -----    -----
+  +--> ?PR?MAIN?HERCULES
+
+?PR?MAIN?HERCULES                              -----    -----
+  +--> ?PR?INITIALIZEALL?HERCULES
+  +--> ?PR?WRITE_TIME_USING_HERCULES?HERCULES
+  +--> ?PR?SYSTEMVIEW?HERCULES
+
+?PR?INITIALIZEALL?HERCULES                     -----    -----
+  +--> ?PR?INIT?HERCULES
+  +--> ?PR?ONESECONDDELAY?HERCULES
+
+?PR?INIT?HERCULES                              -----    -----
+  +--> ?PR?_COMMAND?HERCULES
+
+?PR?_COMMAND?HERCULES                          -----    -----
+  +--> ?PR?_DELAY?HERCULES
+
+?PR?ONESECONDDELAY?HERCULES                    0021H    0001H
+  +--> ?PR?_CUSTOMDELAY?HERCULES
+
+?PR?WRITE_TIME_USING_HERCULES?HERCULES         0021H    0008H
+  +--> ?PR?_COMMAND?HERCULES
+  +--> ?PR?_RTCWRITE?HERCULES
+
+?PR?_RTCWRITE?HERCULES                         0029H    0001H
+  +--> ?PR?_RTCCOMMAND?HERCULES
+
+?PR?_RTCCOMMAND?HERCULES                       002AH    0001H
+  +--> ?PR?_CUSTOMDELAY?HERCULES
+
+?PR?SYSTEMVIEW?HERCULES                        -----    -----
+  +--> ?PR?_COMMAND?HERCULES
+  +--> ?CO?HERCULES
+  +--> ?PR?_STRING?HERCULES
+  +--> ?PR?DISPLAYTIME?HERCULES
+
+?PR?_STRING?HERCULES                           0024H    0003H
+  +--> ?PR?_DISPLAY?HERCULES
+
+?PR?_DISPLAY?HERCULES                          -----    -----
+  +--> ?PR?_COMMAND?HERCULES
+  +--> ?PR?_DELAY?HERCULES
+
+?PR?DISPLAYTIME?HERCULES                       -----    -----
+  +--> ?PR?_RTCREAD?HERCULES
+  +--> ?PR?_ASCIIDISPLAY?HERCULES
+
+?PR?_RTCREAD?HERCULES                          0021H    0001H
+  +--> ?PR?_RTCCOMMAND?HERCULES
+  +--> ?PR?_CUSTOMDELAY?HERCULES
+
+?PR?_ASCIIDISPLAY?HERCULES                     0021H    0003H
+  +--> ?PR?_DISPLAY?HERCULES
+  +--> ?PR?_COMMAND?HERCULES
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/13/2021  22:10:55  PAGE 3
+
+
+  +--> ?CO?HERCULES
+  +--> ?PR?_STRING?HERCULES
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\last_task_rtc (HERCULES)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        HERCULES
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00B0H.5       PUBLIC        CE
+  C:0929H         PUBLIC        write_time_using_hercules
+  C:09ACH         PUBLIC        displayTime
+  C:0A9FH         PUBLIC        _rtcCommand
+  C:0B25H         PUBLIC        _customDelay
+  C:0A16H         PUBLIC        _delay
+  C:0AEDH         PUBLIC        oneSecondDelay
+  B:00B0H.4       PUBLIC        IO
+  D:0008H         PUBLIC        h1
+  D:0009H         PUBLIC        h2
+  C:0AC8H         PUBLIC        _string
+  B:0098H.0       PUBLIC        RI
+  D:000AH         PUBLIC        m1
+  C:0B8FH         PUBLIC        initializeSerial
+  D:000BH         PUBLIC        m2
+  D:000CH         PUBLIC        s1
+  D:000DH         PUBLIC        s2
+  C:0BA7H         PUBLIC        main
+  D:000EH         PUBLIC        x1
+  D:000FH         PUBLIC        x2
+  D:0010H         PUBLIC        x3
+  B:00B0H.6       PUBLIC        SCLK
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  C:0B33H         PUBLIC        init
+  D:0011H         PUBLIC        day
+  B:0020H.7       PUBLIC        highBit
+  C:0B56H         PUBLIC        systemView
+  C:0A47H         PUBLIC        _rtcRead
+  B:0088H.5       PUBLIC        TF0
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  D:008AH         PUBLIC        TL0
+  B:00A0H.7       PUBLIC        en
+  C:0B83H         PUBLIC        initializeAll
+  B:0088H.4       PUBLIC        TR0
+  B:0088H.6       PUBLIC        TR1
+  C:0B76H         PUBLIC        _rtcWrite
+  D:0012H         PUBLIC        mt
+  D:0013H         PUBLIC        d
+  C:0B4CH         PUBLIC        _command
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/13/2021  22:10:55  PAGE 4
+
+
+  B:00A0H.6       PUBLIC        rs
+  D:0014H         PUBLIC        h
+  C:0800H         PUBLIC        _asciiDisplay
+  D:0015H         PUBLIC        i
+  B:00A0H.5       PUBLIC        wr
+  D:0016H         PUBLIC        j
+  D:0020H         PUBLIC        shiftRegister
+  D:0017H         PUBLIC        m
+  D:0018H         PUBLIC        s
+  B:0020H.0       PUBLIC        lowBit
+  D:0019H         PUBLIC        y
+  D:001AH         PUBLIC        z
+  C:0B6CH         PUBLIC        _display
+  -------         PROC          L?0094
+  -------         ENDPROC       L?0094
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        d
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0A16H         LINE#         45
+  C:0A16H         LINE#         46
+  C:0A16H         LINE#         48
+  C:0A21H         LINE#         49
+  C:0A21H         LINE#         50
+  C:0A30H         LINE#         51
+  C:0A3FH         LINE#         52
+  C:0A46H         LINE#         53
+  -------         ENDPROC       _DELAY
+  C:0B45H         SYMBOL        L?0091
+  -------         PROC          L?0090
+  -------         ENDPROC       L?0090
+  C:0B45H         SYMBOL        L?0091
+  -------         PROC          _COMMAND
+  D:0007H         SYMBOL        c
+  C:0B4CH         LINE#         54
+  C:0B4CH         LINE#         55
+  C:0B4CH         LINE#         56
+  C:0B4EH         LINE#         57
+  C:0B50H         LINE#         58
+  C:0B50H         LINE#         59
+  C:0B50H         LINE#         60
+  C:0B53H         LINE#         61
+  C:0B55H         LINE#         62
+  -------         ENDPROC       _COMMAND
+  C:0B67H         SYMBOL        L?0089
+  -------         PROC          L?0088
+  -------         ENDPROC       L?0088
+  C:0B67H         SYMBOL        L?0089
+  -------         PROC          _DISPLAY
+  D:0007H         SYMBOL        c
+  C:0B6CH         LINE#         63
+  C:0B6CH         LINE#         64
+  C:0B6CH         LINE#         65
+  C:0B6EH         LINE#         66
+  C:0B70H         LINE#         67
+  C:0B70H         LINE#         68
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/13/2021  22:10:55  PAGE 5
+
+
+  C:0B70H         LINE#         69
+  C:0B73H         LINE#         70
+  C:0B75H         LINE#         71
+  -------         ENDPROC       _DISPLAY
+  -------         PROC          _STRING
+  D:0024H         SYMBOL        p
+  C:0AC8H         LINE#         74
+  C:0ACEH         LINE#         75
+  C:0ACEH         LINE#         76
+  C:0AD9H         LINE#         77
+  C:0AD9H         LINE#         78
+  C:0AEAH         LINE#         79
+  C:0AECH         LINE#         80
+  -------         ENDPROC       _STRING
+  -------         PROC          INIT
+  C:0B33H         LINE#         81
+  C:0B33H         LINE#         82
+  C:0B33H         LINE#         83
+  C:0B38H         LINE#         84
+  C:0B3DH         LINE#         85
+  C:0B3DH         LINE#         86
+  C:0B40H         LINE#         87
+  -------         ENDPROC       INIT
+  -------         PROC          WRITE_TIME_USING_HERCULES
+  -------         DO            
+  D:0021H         SYMBOL        arr
+  -------         ENDDO         
+  C:0929H         LINE#         4
+  C:0929H         LINE#         5
+  C:0929H         LINE#         7
+  C:092CH         LINE#         8
+  C:092FH         LINE#         9
+  C:0932H         LINE#         10
+  C:0934H         LINE#         12
+  C:0942H         LINE#         13
+  C:0942H         LINE#         14
+  C:0945H         LINE#         15
+  C:094CH         LINE#         16
+  C:094EH         LINE#         18
+  C:0952H         LINE#         19
+  C:0952H         LINE#         20
+  C:0955H         LINE#         22
+  C:0958H         LINE#         23
+  C:095BH         LINE#         24
+  C:095EH         LINE#         25
+  C:0965H         LINE#         26
+  C:0968H         LINE#         27
+  C:096CH         LINE#         28
+  C:0972H         LINE#         32
+  C:0975H         LINE#         33
+  C:0978H         LINE#         34
+  C:097BH         LINE#         35
+  C:0982H         LINE#         36
+  C:0985H         LINE#         37
+  C:0989H         LINE#         38
+  C:098FH         LINE#         40
+  C:0992H         LINE#         41
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/13/2021  22:10:55  PAGE 6
+
+
+  C:0995H         LINE#         42
+  C:0998H         LINE#         43
+  C:099FH         LINE#         44
+  C:09A2H         LINE#         45
+  C:09A6H         LINE#         46
+  -------         ENDPROC       WRITE_TIME_USING_HERCULES
+  -------         PROC          MAIN
+  C:0BA7H         LINE#         48
+  C:0BA7H         LINE#         49
+  C:0BA7H         LINE#         51
+  C:0BAAH         LINE#         53
+  C:0BADH         LINE#         54
+  C:0BADH         LINE#         55
+  C:0BADH         LINE#         57
+  C:0BB0H         LINE#         58
+  -------         ENDPROC       MAIN
+  -------         PROC          DISPLAYTIME
+  C:09ACH         LINE#         61
+  C:09ACH         LINE#         65
+  C:09B3H         LINE#         66
+  C:09BAH         LINE#         67
+  C:09C1H         LINE#         68
+  C:09C8H         LINE#         69
+  C:09CFH         LINE#         70
+  C:09D6H         LINE#         71
+  C:09DDH         LINE#         72
+  C:09E4H         LINE#         73
+  C:09EBH         LINE#         74
+  C:09F2H         LINE#         75
+  C:09F9H         LINE#         76
+  C:0A00H         LINE#         77
+  C:0A07H         LINE#         78
+  -------         ENDPROC       DISPLAYTIME
+  -------         PROC          _RTCCOMMAND
+  D:0007H         SYMBOL        c
+  -------         DO            
+  D:002AH         SYMBOL        z
+  -------         ENDDO         
+  C:0A9FH         LINE#         84
+  C:0A9FH         LINE#         86
+  C:0AA1H         LINE#         87
+  C:0AA3H         LINE#         88
+  C:0AB1H         LINE#         89
+  C:0AB5H         LINE#         90
+  C:0AB5H         LINE#         91
+  C:0AB8H         LINE#         92
+  C:0ABAH         LINE#         93
+  C:0ABDH         LINE#         94
+  C:0AC3H         LINE#         95
+  C:0AC7H         LINE#         96
+  -------         ENDPROC       _RTCCOMMAND
+  -------         PROC          _RTCREAD
+  D:0007H         SYMBOL        address
+  -------         DO            
+  D:0021H         SYMBOL        z
+  -------         ENDDO         
+  C:0A47H         LINE#         97
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/13/2021  22:10:55  PAGE 7
+
+
+  C:0A47H         LINE#         98
+  C:0A47H         LINE#         100
+  C:0A4AH         LINE#         101
+  C:0A58H         LINE#         102
+  C:0A58H         LINE#         103
+  C:0A5EH         LINE#         104
+  C:0A62H         LINE#         105
+  C:0A62H         LINE#         106
+  C:0A65H         LINE#         107
+  C:0A67H         LINE#         108
+  C:0A6AH         LINE#         109
+  C:0A6EH         LINE#         110
+  C:0A70H         LINE#         111
+  C:0A72H         LINE#         112
+  -------         ENDPROC       _RTCREAD
+  -------         PROC          INITIALIZEALL
+  C:0B83H         LINE#         113
+  C:0B83H         LINE#         115
+  C:0B86H         LINE#         116
+  C:0B88H         LINE#         117
+  C:0B8AH         LINE#         118
+  C:0B8CH         LINE#         122
+  -------         ENDPROC       INITIALIZEALL
+  -------         PROC          INITIALIZESERIAL
+  C:0B8FH         LINE#         124
+  C:0B8FH         LINE#         126
+  C:0B92H         LINE#         127
+  C:0B95H         LINE#         128
+  C:0B98H         LINE#         129
+  C:0B9AH         LINE#         130
+  -------         ENDPROC       INITIALIZESERIAL
+  -------         PROC          ONESECONDDELAY
+  -------         DO            
+  D:0021H         SYMBOL        z
+  -------         ENDDO         
+  C:0AEDH         LINE#         132
+  C:0AEDH         LINE#         134
+  C:0AFBH         LINE#         135
+  C:0B01H         LINE#         136
+  C:0B05H         LINE#         137
+  -------         ENDPROC       ONESECONDDELAY
+  C:0B21H         SYMBOL        L?0093
+  -------         PROC          L?0092
+  -------         ENDPROC       L?0092
+  C:0B21H         SYMBOL        L?0093
+  -------         PROC          _CUSTOMDELAY
+  D:0007H         SYMBOL        h
+  D:0005H         SYMBOL        l
+  C:0B25H         LINE#         139
+  C:0B25H         LINE#         140
+  C:0B27H         LINE#         141
+  C:0B29H         LINE#         142
+  C:0B2BH         LINE#         143
+  C:0B2EH         LINE#         144
+  C:0B30H         LINE#         145
+  C:0B32H         LINE#         146
+  -------         ENDPROC       _CUSTOMDELAY
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/13/2021  22:10:55  PAGE 8
+
+
+  -------         PROC          _ASCIIDISPLAY
+  D:0004H         SYMBOL        byte
+  D:0021H         SYMBOL        flag
+  -------         DO            
+  D:0022H         SYMBOL        a
+  D:0023H         SYMBOL        b
+  -------         ENDDO         
+  C:0800H         LINE#         148
+  C:0804H         LINE#         151
+  C:0809H         LINE#         152
+  C:080EH         LINE#         153
+  C:0812H         LINE#         154
+  C:0817H         LINE#         155
+  C:081BH         LINE#         157
+  C:0820H         LINE#         158
+  C:0822H         LINE#         159
+  C:0825H         LINE#         160
+  C:082AH         LINE#         161
+  C:082FH         LINE#         162
+  C:0831H         LINE#         163
+  C:0831H         LINE#         164
+  C:0833H         LINE#         165
+  C:0838H         LINE#         166
+  C:083AH         LINE#         167
+  C:083DH         LINE#         168
+  C:0842H         LINE#         169
+  C:0847H         LINE#         170
+  C:084CH         LINE#         171
+  C:084EH         LINE#         172
+  C:0851H         LINE#         173
+  C:0856H         LINE#         174
+  C:0858H         LINE#         175
+  C:085BH         LINE#         176
+  C:0860H         LINE#         177
+  C:0862H         LINE#         178
+  C:0864H         LINE#         179
+  C:0869H         LINE#         180
+  C:086BH         LINE#         181
+  C:086EH         LINE#         182
+  C:0873H         LINE#         183
+  C:0878H         LINE#         184
+  C:087DH         LINE#         185
+  C:087FH         LINE#         186
+  C:0881H         LINE#         187
+  C:0886H         LINE#         188
+  C:0888H         LINE#         189
+  C:088BH         LINE#         190
+  C:0890H         LINE#         191
+  C:0895H         LINE#         192
+  C:089AH         LINE#         193
+  C:089CH         LINE#         194
+  C:089EH         LINE#         195
+  C:08A4H         LINE#         196
+  C:08A9H         LINE#         197
+  C:08B2H         LINE#         198
+  C:08B4H         LINE#         199
+  C:08B7H         LINE#         200
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/13/2021  22:10:55  PAGE 9
+
+
+  C:08BCH         LINE#         201
+  C:08C1H         LINE#         202
+  C:08C1H         LINE#         203
+  C:08C7H         LINE#         204
+  C:08CCH         LINE#         205
+  C:08D1H         LINE#         206
+  C:08D9H         LINE#         207
+  C:08DEH         LINE#         208
+  C:08E6H         LINE#         209
+  C:08EBH         LINE#         210
+  C:08F3H         LINE#         211
+  C:08F8H         LINE#         212
+  C:0900H         LINE#         213
+  C:0905H         LINE#         214
+  C:090DH         LINE#         215
+  C:0912H         LINE#         216
+  C:091AH         LINE#         217
+  C:091FH         LINE#         218
+  C:0928H         LINE#         219
+  C:0928H         LINE#         220
+  -------         ENDPROC       _ASCIIDISPLAY
+  -------         PROC          SYSTEMVIEW
+  C:0B56H         LINE#         222
+  C:0B56H         LINE#         223
+  C:0B56H         LINE#         225
+  C:0B56H         LINE#         226
+  C:0B59H         LINE#         229
+  C:0B62H         LINE#         230
+  C:0B62H         LINE#         231
+  C:0B62H         LINE#         232
+  C:0B65H         LINE#         233
+  -------         ENDPROC       SYSTEMVIEW
+  -------         PROC          _RTCWRITE
+  D:0007H         SYMBOL        address
+  D:0029H         SYMBOL        byte
+  C:0B76H         LINE#         237
+  C:0B78H         LINE#         238
+  C:0B78H         LINE#         239
+  C:0B7BH         LINE#         240
+  C:0B80H         LINE#         241
+  C:0B82H         LINE#         242
+  -------         ENDPROC       _RTCWRITE
+  -------         ENDMOD        HERCULES
+
+  -------         MODULE        ?C?CLDPTR
+  C:0B06H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITIALIZESERIAL?HERCULES
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 038DH BYTE (44%) *
+******************************************************************************
+
+Program Size: data=39.0 xdata=0 code=949
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

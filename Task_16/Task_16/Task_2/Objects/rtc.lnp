@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\RTC.obj" 
+TO ".\Objects\rtc" 
+PRINT(".\Listings\rtc.m51") RAMSIZE(256) 

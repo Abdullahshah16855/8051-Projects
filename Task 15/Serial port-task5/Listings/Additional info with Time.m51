@@ -1,0 +1,228 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/04/2021  16:15:31  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Set time with additional detail.obj TO .\Objects\Additional info with Time PRINT (
+>> .\Listings\Additional info with Time.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Set time with additional detail.obj (SET_TIME_WITH_ADDITIONAL_DETAIL)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\Additional info with Time (SET_TIME_WITH_ADDITIONAL_DETAIL)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     001BH     UNIT         ?DT?SET_TIME_WITH_ADDITIONAL_DETAIL
+            DATA    0023H     0003H     UNIT         ?DT?_WRITE?SET_TIME_WITH_ADDITIONAL_DETAIL
+            IDATA   0026H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0020H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+                    0026H     07DAH                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     005AH     UNIT         ?PR?MAIN?SET_TIME_WITH_ADDITIONAL_DETAIL
+            CODE    08E6H     003EH     UNIT         ?PR?SERIAL?SET_TIME_WITH_ADDITIONAL_DETAIL
+            CODE    0924H     0031H     UNIT         ?PR?_DELAY?SET_TIME_WITH_ADDITIONAL_DETAIL
+            CODE    0955H     0025H     UNIT         ?PR?_WRITE?SET_TIME_WITH_ADDITIONAL_DETAIL
+            CODE    097AH     0019H     UNIT         ?C?LIB_CODE
+            CODE    0993H     0014H     UNIT         ?PR?INIT?SET_TIME_WITH_ADDITIONAL_DETAIL
+            CODE    09A7H     0012H     UNIT         ?PR?_CMD?SET_TIME_WITH_ADDITIONAL_DETAIL
+            CODE    09B9H     0012H     UNIT         ?PR?_DISPLAY?SET_TIME_WITH_ADDITIONAL_DETAIL
+            CODE    09CBH     0009H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\Additional info with Time (SET_TIME_WITH_ADDITIONAL_DETAIL)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?SET_TIME_WITH_ADDITIONAL_DETAIL
+  +--> ?C_INITSEG
+
+?PR?MAIN?SET_TIME_WITH_ADDITIONAL_DETAIL
+  +--> ?PR?INIT?SET_TIME_WITH_ADDITIONAL_DETAIL
+  +--> ?PR?_DISPLAY?SET_TIME_WITH_ADDITIONAL...
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/04/2021  16:15:31  PAGE 2
+
+
+  +--> ?PR?_CMD?SET_TIME_WITH_ADDITIONAL_DETAIL
+
+?PR?INIT?SET_TIME_WITH_ADDITIONAL_DETAIL
+  +--> ?PR?_CMD?SET_TIME_WITH_ADDITIONAL_DETAIL
+
+?PR?_CMD?SET_TIME_WITH_ADDITIONAL_DETAIL
+  +--> ?PR?_DELAY?SET_TIME_WITH_ADDITIONAL_D...
+
+?PR?_DISPLAY?SET_TIME_WITH_ADDITIONAL...
+  +--> ?PR?_DELAY?SET_TIME_WITH_ADDITIONAL_D...
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Additional info with Time (SET_TIME_WITH_ADDITIONAL_DETAIL)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        SET_TIME_WITH_ADDITIONAL_DETAIL
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  D:0008H         PUBLIC        counter
+  D:000AH         PUBLIC        length
+  C:0955H         PUBLIC        _Write
+  D:00A8H         PUBLIC        IE
+  C:0924H         PUBLIC        _delay
+  B:0098H.0       PUBLIC        RI
+  D:000CH         PUBLIC        flag
+  C:088CH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  C:09A7H         PUBLIC        _cmd
+  D:0089H         PUBLIC        TMOD
+  C:0993H         PUBLIC        init
+  D:000EH         PUBLIC        temp
+  D:000FH         PUBLIC        RxData
+  D:008DH         PUBLIC        TH1
+  B:0088H.6       PUBLIC        TR1
+  D:001FH         PUBLIC        a
+  C:08E6H         PUBLIC        Serial
+  B:00A0H.7       PUBLIC        e
+  B:00A0H.6       PUBLIC        rs
+  D:0021H         PUBLIC        j
+  B:00A0H.5       PUBLIC        rw
+  C:09B9H         PUBLIC        _display
+  -------         PROC          SERIAL
+  C:08E6H         LINE#         22
+  C:08EFH         LINE#         24
+  C:08F2H         LINE#         25
+  C:08F2H         LINE#         26
+  C:08F5H         LINE#         27
+  C:08FCH         LINE#         28
+  C:0902H         LINE#         30
+  C:0908H         LINE#         31
+  C:090DH         LINE#         32
+  C:0913H         LINE#         33
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/04/2021  16:15:31  PAGE 3
+
+
+  C:0915H         LINE#         34
+  C:0915H         LINE#         35
+  C:091DH         LINE#         36
+  -------         ENDPROC       SERIAL
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        d
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0924H         LINE#         38
+  C:0924H         LINE#         39
+  C:0924H         LINE#         41
+  C:092FH         LINE#         42
+  C:092FH         LINE#         43
+  C:093EH         LINE#         44
+  C:094DH         LINE#         45
+  C:0954H         LINE#         46
+  -------         ENDPROC       _DELAY
+  -------         PROC          _CMD
+  D:0007H         SYMBOL        c
+  C:09A7H         LINE#         48
+  C:09A7H         LINE#         49
+  C:09A7H         LINE#         50
+  C:09A9H         LINE#         51
+  C:09ABH         LINE#         52
+  C:09ADH         LINE#         53
+  C:09AFH         LINE#         54
+  C:09B6H         LINE#         55
+  C:09B8H         LINE#         56
+  -------         ENDPROC       _CMD
+  -------         PROC          _DISPLAY
+  D:0007H         SYMBOL        c
+  C:09B9H         LINE#         57
+  C:09B9H         LINE#         58
+  C:09B9H         LINE#         59
+  C:09BBH         LINE#         60
+  C:09BDH         LINE#         61
+  C:09BFH         LINE#         62
+  C:09C1H         LINE#         63
+  C:09C8H         LINE#         64
+  C:09CAH         LINE#         65
+  -------         ENDPROC       _DISPLAY
+  -------         PROC          _WRITE
+  D:0023H         SYMBOL        p
+  C:0955H         LINE#         67
+  C:095BH         LINE#         68
+  C:095BH         LINE#         69
+  C:0966H         LINE#         70
+  C:0966H         LINE#         71
+  C:0977H         LINE#         72
+  C:0979H         LINE#         73
+  -------         ENDPROC       _WRITE
+  -------         PROC          INIT
+  C:0993H         LINE#         74
+  C:0993H         LINE#         75
+  C:0993H         LINE#         76
+  C:0998H         LINE#         77
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/04/2021  16:15:31  PAGE 4
+
+
+  C:099DH         LINE#         78
+  C:09A2H         LINE#         79
+  -------         ENDPROC       INIT
+  -------         PROC          MAIN
+  C:088CH         LINE#         83
+  C:088CH         LINE#         84
+  C:088CH         LINE#         85
+  C:088FH         LINE#         86
+  C:0892H         LINE#         87
+  C:0895H         LINE#         88
+  C:0898H         LINE#         89
+  C:089BH         LINE#         90
+  C:089DH         LINE#         91
+  C:089DH         LINE#         92
+  C:089DH         LINE#         93
+  C:08A5H         LINE#         94
+  C:08A5H         LINE#         95
+  C:08BAH         LINE#         96
+  C:08BAH         LINE#         97
+  C:08C4H         LINE#         98
+  C:08C9H         LINE#         99
+  C:08CDH         LINE#         100
+  C:08D7H         LINE#         101
+  C:08DFH         LINE#         102
+  C:08DFH         LINE#         103
+  C:08E4H         LINE#         104
+  C:08E4H         LINE#         105
+  C:08E4H         LINE#         107
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        SET_TIME_WITH_ADDITIONAL_DETAIL
+
+  -------         MODULE        ?C?CLDPTR
+  C:097AH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITE?SET_TIME_WITH_ADDITIONAL_DETAIL
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0131H BYTE (14%) *
+******************************************************************************
+
+Program Size: data=39.0 xdata=0 code=474
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

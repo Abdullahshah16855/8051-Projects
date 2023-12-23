@@ -1,0 +1,4 @@
+".\Objects\display.obj",
+".\Objects\LCD.obj" 
+TO ".\Objects\task4 decrease time delay" 
+PRINT(".\Listings\task4 decrease time delay.m51") RAMSIZE(256) 

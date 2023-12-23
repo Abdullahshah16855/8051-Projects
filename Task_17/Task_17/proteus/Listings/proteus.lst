@@ -1,0 +1,176 @@
+C51 COMPILER V9.60.0.0   PROTEUS                                                           10/14/2021 22:04:31 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE PROTEUS
+OBJECT MODULE PLACED IN .\Objects\proteus.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE proteus.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\p
+                    -roteus.lst) TABS(2) OBJECT(.\Objects\proteus.obj)
+
+line level    source
+
+   1          #include < reg51.h >
+   2          #define lcd_data P3
+   3          
+   4          sbit rs = P2^0;
+   5          sbit wr=P2^1;
+   6          sbit en=P2^2;
+   7          sbit DQ =P0^0;
+   8          sbit Beep=P1^7;
+   9          sbit LED=P1^5;
+  10          
+  11          void command (char c);
+  12          unsigned char temp;
+  13          void delay_us(unsigned int t);
+  14          unsigned char temp; 
+  15          
+  16          void display (char c)
+  17          {
+  18   1        lcd_data=c;      
+  19   1        rs=1;           // displaying a character or Data
+  20   1        en=1;
+  21   1        wr=0;
+  22   1        delay_us(5);
+  23   1        en=0;
+  24   1      }
+  25          
+  26          
+  27          void string (char *p)
+  28          {
+  29   1        while(*p)
+  30   1        {
+  31   2          display(*p++);
+  32   2        }
+  33   1      }
+  34           void delay_us(unsigned int t){
+  35   1              unsigned int i;
+  36   1              for(i=0;i<t;i++);
+  37   1      }
+  38          void delay_ms(unsigned int t){
+  39   1              unsigned int i,j;
+  40   1              for(i=0;i<t;i++)
+  41   1              for(j=0;j<125;j++);
+  42   1      }
+  43          void delay_18B20(unsigned int ti){
+  44   1          while(ti--);
+  45   1      }
+  46          void Init_18B20(void){
+  47   1          DQ = 1;   
+  48   1          delay_18B20(8);
+  49   1          DQ = 0;   
+  50   1          delay_18B20(65);
+  51   1          DQ = 1;   
+  52   1          delay_18B20(20);    
+  53   1      }
+  54          unsigned char ReadOneChar(void){
+C51 COMPILER V9.60.0.0   PROTEUS                                                           10/14/2021 22:04:31 PAGE 2   
+
+  55   1          unsigned char i=0;
+  56   1          unsigned char dat = 0;
+  57   1          for (i=8;i>0;i--){
+  58   2                DQ = 0;
+  59   2                dat>>=1;
+  60   2                DQ = 1;
+  61   2                if(DQ)
+  62   2                dat |= 0x80;
+  63   2                delay_18B20(4);
+  64   2          }
+  65   1          return(dat);
+  66   1      }
+  67          void WriteOneChar(unsigned char dat){
+  68   1          unsigned char i=0;
+  69   1          for (i=8; i>0; i--){
+  70   2              DQ = 0;
+  71   2              DQ = dat&0x01;
+  72   2              delay_18B20(5);
+  73   2              DQ = 1;
+  74   2              dat>>=1;
+  75   2          }
+  76   1      }
+  77          void ReadTemperature(void){ 
+  78   1          unsigned char a=0;
+  79   1          unsigned char b=0;
+  80   1          Init_18B20();
+  81   1          WriteOneChar(0xCC);    // skip rom   
+  82   1          WriteOneChar(0x44);    //This command initiates a single temperature conversion. 
+  83   1          delay_18B20(10); 
+  84   1          Init_18B20();
+  85   1          WriteOneChar(0xCC);
+  86   1          WriteOneChar(0xBE);    //This command allows the master to read the contents of  the scratchpad. T
+  87   1          delay_18B20(10);
+  88   1          a=ReadOneChar();        //Read temp low value
+  89   1          b=ReadOneChar();          //Read temp high value
+  90   1          temp=((b*256+a)>>4);    
+  91   1      }//End code DS18B20
+  92          
+  93          
+  94          void init (void)
+  95          {
+  96   1        command(0x38);      //Use two lines and 5x7 matrix
+  97   1        command(0x0c);         // display on
+  98   1        command(0x01);      //Clearing the screen
+  99   1        command(0x80);       // Force cursor to beginning of the first line
+ 100   1        command(0xc0);       // 2nd line
+ 101   1      }
+ 102          
+ 103          
+ 104          void TempShow(unsigned char z){ 
+ 105   1        unsigned char U,T,H;
+ 106   1        command(0xc0);
+ 107   1          /*display((z/100)+48);//unit
+ 108   1           display((z%100/10)+48);//tenth
+ 109   1          display((z%10)+48);//hundred 
+ 110   1           string("'C");*/
+ 111   1        
+ 112   1        H=(z/100)+0x30;//hundred
+ 113   1        U=(z%100/10)+0x30;//unit
+ 114   1        T=(z%10)+0x30;//tenth
+ 115   1        display(H);
+ 116   1        display(U);
+C51 COMPILER V9.60.0.0   PROTEUS                                                           10/14/2021 22:04:31 PAGE 3   
+
+ 117   1        display(T);
+ 118   1        string("'C");
+ 119   1        if(U>=0x32 & T>=0x36)
+ 120   1        {LED=1;
+ 121   2        Beep=0;}
+ 122   1      }
+ 123          void command (char c)
+ 124          {
+ 125   1        lcd_data=c;
+ 126   1        rs=0;            // To send a command to the LCD
+ 127   1        en=1;
+ 128   1         wr=0;       // for write mode wr=0 and for read mode wr=1
+ 129   1        delay_us(5);
+ 130   1        en=0;
+ 131   1      }
+ 132          void main(){
+ 133   1        LED=0;
+ 134   1        init();
+ 135   1        while(1){
+ 136   2          command(0x80);
+ 137   2          string("temperature");
+ 138   2            ReadTemperature();  
+ 139   2            TempShow(temp); 
+ 140   2            delay_ms(500);
+ 141   2        }
+ 142   1      }//THE END
+ 143          
+ 144          
+ 145          
+ 146          
+ 147          
+ 148          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    466    ----
+   CONSTANT SIZE    =     15    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

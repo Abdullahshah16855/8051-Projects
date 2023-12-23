@@ -1,0 +1,339 @@
+#include<reg51.h>
+#include<intrins.h>
+#include<stdio.h>
+#define LCD P1
+
+// Serial Data lines of RTC
+sbit scl = P2^0;
+sbit sda = P2^1;
+
+// Control Lines of LCD
+sbit rs=P2^2;
+sbit e=P2^4;
+sbit rw=P2^3;
+
+// Functions Using for RTC device
+void start();
+void check();
+void start();
+void write(unsigned char);
+unsigned char read();
+void enter();
+void stop();
+void display();
+void lcd_ascii();
+void serial_initial();
+void conversion(unsigned char);
+void delay3();
+
+// Different Data Types for RTC
+unsigned char sec, min, hr, day, date, mon, yr, Char;
+bit c=0;
+
+// Functions Using for LCD 16x2
+void delay ();
+void lcd_cmd (char);
+void lcd_data (char);
+void lcd_display (char *);
+void lcd_initial (void);
+
+/*void delay (int d)
+{
+	unsigned char i;
+	for(;d>0;d--)
+	{
+		for(i=250;i>0;i--);
+		for(i=248;i>0;i--);
+	}
+}*/
+void lcd_cmd (char c)
+{
+	LCD=c;	  // LCD assign to P3
+	rs=0;     // RS=0, Read Data or Initiaze Data
+	rw=0;
+	e=1;      // Enable from 1 to 0, or 0 to 1 to latch Data
+	delay();
+	e=0;
+}
+void lcd_data (char c)
+{
+	LCD=c;
+	rs=1;	// RS=1 , to write data on LCD
+	rw=0;
+	e=1;	 // Enable from 1 to 0, or 0 to 1 to latch Data
+	delay();
+	e=0;
+}
+void lcd_display (char *p)
+{
+	while(*p)
+	{
+		lcd_data(*p++);
+	}
+}
+
+void main()
+{
+	serial_int();
+	start();
+	write(0xd0);
+	write(0x00);
+	write(0x40);
+	write(0x28);
+	write(0x14);
+	write(0x06);
+	write(0x02);
+	write(0x03);
+	write(0x18);
+	stop();
+	
+	while(1)
+	{
+		serial_int();
+		start();
+		write(0xd0);
+		write(0x00);
+		start();
+		write(0xd1);
+		read();
+		sec=Char;
+		sec=sec&0x7f;
+		stop();
+		
+		start();
+		write(0xd0);
+		write(0x01);
+		start();
+		write(0xd1);
+		read();
+		min=Char;
+		min=min&0x7f;
+		stop();
+		
+		start();
+		write(0xd0);
+		write(0x02);
+		start();
+		write(0xd1);
+		read();
+		hr=Char;
+		hr=hr&0x3f;
+		stop();
+		
+		start();
+		write(0xd0);
+		write(0x03);
+		start();
+		write(0xd1);
+		read();
+		day=Char;
+		day=day&0x7f;
+		stop();
+		
+		start();
+		write(0xd0);
+		write(0x04);
+		start();
+		write(0xd1);
+		read();
+		date=Char;
+		date=date&0x0f;
+		stop();
+		
+		start();
+		write(0xd0);
+		write(0x05);
+		start();
+		write(0xd1);
+		read();
+		mon=Char;
+		mon=mon&0x0f;
+		stop();
+		
+		start();
+		write(0xd0);
+		write(0x06);
+		start();
+		write(0xd1);
+		read();
+		yr=Char;
+		yr=yr&0x3f;
+		stop();
+		
+		display();
+		lcd_ascii();
+	}
+}
+
+void display()
+{
+	conversion(hr);
+	conversion(min);
+	conversion(sec);
+	enter(); // Next Line
+	
+	conversion(date);
+	conversion(mon);
+	conversion(yr);
+	enter(); // Next Line
+}
+void conversion(unsigned char res)
+{
+	unsigned char v4,v5;
+	v4=res&0x0f;
+	v5=res&0xf0;
+	v5=v5>>4;
+	v4=v4|0x30;
+	v5=v5|0x30;
+	
+	SBUF= v5; while(TI==0); TI=0;
+	SBUF= v4; while(TI==0); TI=0;
+	SBUF= ':'; while(TI==0); TI=0;
+}
+void lcd_ascii()
+{
+	unsigned char v9,v10;
+	lcd_initial();
+	lcd_display("TIME:");
+	lcd_cmd(0xc0);
+	lcd_display("DATE:");
+	v9= hr&0x0f;
+
+ v10=(hr&0xf0)>>4;
+ lcd_cmd(0x86);
+ lcd_data(v10|0x30);
+ lcd_data(v9|0x30);
+ lcd_data(':');
+ v9=min&0x0f;
+ v10=(min&0xf0)>>4;
+ lcd_data(v10|0x30);
+ lcd_data(v9|0x30);  
+ v9=sec&0x0f;
+  v10=(sec&0xf0)>>4;
+ lcd_data(v10|0x30);
+ lcd_data(v9|0x30);
+lcd_cmd(0xc6);
+
+v9=date&0x0f;
+ v10=(hr&0xf0)>>4;
+ lcd_data(v10|0x30);
+ lcd_data(v9|0x30);
+ lcd_data(':');
+ v9=mon&0x0f;
+  v10=(mon&0xf0)>>4;
+ lcd_data(v10|0x30);
+ lcd_data(v9|0x30);  
+ lcd_data(':');
+ v9=yr&0x0f;
+  v10=(yr&0xf0)>>4;
+ lcd_data(v10|0x30);
+ lcd_data(v9|0x30);
+ delay3();
+}
+
+void delay3()
+{
+   unsigned int v11;
+for(v11=0;v11<32000;v11++);
+}
+
+void lcd_initial()
+{
+   lcd_cmd(0x38);
+   lcd_cmd(0x01);
+   lcd_cmd(0x10);
+   lcd_cmd(0x0c);
+   lcd_cmd(0x80);
+}
+
+void enter()
+{
+   SBUF=0x0D;
+   while(TI==0);
+   TI=0;   
+}
+
+void write(unsigned char val)
+{
+ unsigned char v2=0x80,v3,v5;
+ v5=val;
+ for(v3=0;v3<8;v3++)
+{
+ sda=v5&v2;
+ scl=1;
+ delay();
+ scl=0;
+ v5=v5<<1;  
+ }
+c=sda;
+scl=1;
+delay();
+scl=0;
+if(c==1)
+{
+  stop();
+  while(1);
+ } 
+ }
+
+ void stop()
+ {
+ scl=1;
+sda=0;
+delay();
+sda=1;
+scl=0;
+delay();
+ }
+
+void delay()
+{
+	_nop_();
+	_nop_();
+}
+
+unsigned char read()
+{
+ unsigned char v16;
+ bit m=0;
+ for(v16=0;v16<=7;v16++)
+ {
+  scl=1;
+  delay();
+  m=sda;
+  scl=0;
+  if(m==1)
+  {
+   Char|=0x01;
+  }
+if(v16<=6)
+ Char=Char<<1;
+delay();
+}
+return Char;
+}
+
+void start()
+{
+scl=1;
+sda=1;
+delay();
+sda=0;
+delay();
+scl=0;   
+}
+
+void serial_init()
+{
+ SCON=0x50;
+ TMOD=0x20;
+ TH1=-3;
+ TR1=1;
+}
+
+ 
+ void dealy2()
+ {
+    unsigned int v1;
+    for(v1=0;v1<2000;v1++);
+  }

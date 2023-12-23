@@ -1,0 +1,3 @@
+".\Objects\EEPROMasCounter.obj" 
+TO ".\Objects\EEPROMASCOUNTER" 
+PRINT(".\Listings\EEPROMASCOUNTER.m51") RAMSIZE(256) 

@@ -1,0 +1,3 @@
+".\Objects\Set time with additional detail.obj" 
+TO ".\Objects\Additional info with Time" 
+PRINT(".\Listings\Additional info with Time.m51") RAMSIZE(256) 

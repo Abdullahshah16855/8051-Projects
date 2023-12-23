@@ -1,0 +1,3 @@
+".\Objects\EEPROM_Coding (Correct).obj" 
+TO ".\Objects\EEPROM_Send&Receive_Data" 
+PRINT(".\Listings\EEPROM_Send&Receive_Data.m51") RAMSIZE(256) 

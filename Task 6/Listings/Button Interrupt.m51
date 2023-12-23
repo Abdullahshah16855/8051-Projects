@@ -1,0 +1,102 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/22/2021  16:55:22  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\button interfacing interrupt.obj TO .\Objects\Button Interrupt PRINT (.\Listings\B
+>> utton Interrupt.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\button interfacing interrupt.obj (BUTTON_INTERFACING_INTERRUPT)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\Button Interrupt (BUTTON_INTERFACING_INTERRUPT)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0010H                  *** GAP ***
+            CODE    0013H     0003H     ABSOLUTE     
+                    0016H     07EAH                  *** GAP ***
+            CODE    0800H     0041H     UNIT         ?PR?INTR1?BUTTON_INTERFACING_INTERRUPT
+            CODE    0841H     0026H     UNIT         ?PR?_DELAY?BUTTON_INTERFACING_INTERRUPT
+            CODE    0867H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0873H     0004H     UNIT         ?PR?MAIN?BUTTON_INTERFACING_INTERRUPT
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\Button Interrupt (BUTTON_INTERFACING_INTERRUPT)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?INTR1?BUTTON_INTERFACING_INTERRUPT
+  +--> ?PR?_DELAY?BUTTON_INTERFACING_INTERRUPT
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?BUTTON_INTERFACING_INTERRUPT
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Button Interrupt (BUTTON_INTERFACING_INTERRUPT)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        BUTTON_INTERFACING_INTERRUPT
+  C:0000H         SYMBOL        _ICE_DUMMY_
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/22/2021  16:55:22  PAGE 2
+
+
+  D:00A0H         PUBLIC        P2
+  D:00A8H         PUBLIC        IE
+  C:0841H         PUBLIC        _delay
+  C:0873H         PUBLIC        main
+  B:00A0H.0       PUBLIC        LED
+  C:0800H         PUBLIC        INTR1
+  -------         PROC          INTR1
+  C:0800H         LINE#         15
+  C:081DH         LINE#         17
+  C:081FH         LINE#         18
+  C:0826H         LINE#         19
+  -------         ENDPROC       INTR1
+  -------         PROC          MAIN
+  C:0873H         LINE#         21
+  C:0873H         LINE#         22
+  C:0873H         LINE#         24
+  C:0876H         LINE#         25
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0002H         SYMBOL        j
+  -------         ENDDO         
+  C:0841H         LINE#         27
+  C:0841H         LINE#         28
+  C:0841H         LINE#         30
+  C:0851H         LINE#         31
+  C:0866H         LINE#         32
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        BUTTON_INTERFACING_INTERRUPT
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 006EH BYTE ( 5%) *
+******************************************************************************
+
+Program Size: data=9.0 xdata=0 code=125
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

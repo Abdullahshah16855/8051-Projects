@@ -1,0 +1,3 @@
+".\Objects\fridayproteus.obj" 
+TO ".\Objects\fridayproteus" 
+PRINT(".\Listings\fridayproteus.m51") RAMSIZE(256) 

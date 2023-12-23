@@ -1,0 +1,3 @@
+".\Objects\timer-interrupt.obj" 
+TO ".\Objects\task 5 timer interrupt" 
+PRINT(".\Listings\task 5 timer interrupt.m51") RAMSIZE(256) 

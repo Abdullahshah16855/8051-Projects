@@ -1,0 +1,123 @@
+C51 COMPILER V9.60.0.0   4BIT                                                              02/18/2022 22:48:40 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE 4BIT
+OBJECT MODULE PLACED IN .\Objects\4bit.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE 4bit.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\4bit
+                    -.lst) TABS(2) OBJECT(.\Objects\4bit.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #define lcd P2
+   3          
+   4          sbit rs=P2^0;
+   5          sbit e=P2^2;
+   6          sbit rw=P2^1;
+   7          
+   8          void delay (int);
+   9          void lcdcmd (char);
+  10          void lcddata (char);
+  11          void lcd_str (char *);
+  12          void lcd_init (void);
+  13          void lcdcmd1(char c);
+  14          void lcddata1(char c);
+  15          
+  16          void delay (int d)
+  17          {
+  18   1        unsigned char i;
+  19   1        for(;d>0;d--)
+  20   1        {
+  21   2          for(i=250;i>0;i--);
+  22   2          for(i=248;i>0;i--);
+  23   2        }
+  24   1      }
+  25          void lcdcmd(char c)
+  26          {
+  27   1        unsigned char x;
+  28   1        x= c& 0xf0;
+  29   1        lcdcmd1(x);
+  30   1        
+  31   1        x= (c<<4)&0xf0;
+  32   1        lcdcmd1(x);
+  33   1      }
+  34          
+  35          void lcdcmd1 (char c)
+  36          {
+  37   1        lcd=c;    // LCD assign to P3
+  38   1        rs=0;     // RS=0, Read Data or Initiaze Data
+  39   1        rw=0;
+  40   1        e=1;      // Enable from 1 to 0, or 0 to 1 to latch ata
+  41   1        delay(5);
+  42   1        e=0;
+  43   1      }
+  44          void lcddata(char c)
+  45          {
+  46   1        unsigned char x;
+  47   1        x= c& 0xf0;
+  48   1        lcddata1(x);
+  49   1        
+  50   1        x= (c<<4)&0xf0;
+  51   1        lcddata1(x);
+  52   1      }
+  53          
+  54          void lcddata1 (char c)
+C51 COMPILER V9.60.0.0   4BIT                                                              02/18/2022 22:48:40 PAGE 2   
+
+  55          {
+  56   1        lcd=c;
+  57   1        rs=1; // RS=1 , to write Data on LCD
+  58   1        rw=0;
+  59   1        e=1;   // Enable from 1 to 0, or 0 to 1 to latch Data
+  60   1        delay(1);
+  61   1        e=0;
+  62   1      }
+  63          
+  64          void lcd_str (char *p)
+  65          {
+  66   1        while(*p)
+  67   1        {
+  68   2          lcddata(*p++);
+  69   2        }
+  70   1      }
+  71          
+  72          void lcd_init (void)
+  73          {
+  74   1        lcdcmd(0x28);   // 4bit Mode
+  75   1        lcdcmd(0x0c);   // Display ON and Cursor OFF
+  76   1        //lcdcmd(0x38);    //  Use two Lines
+  77   1        lcdcmd(0x01);    // Clear Screen
+  78   1      //  lcdcmd(0x80);    // Beginning of First Line
+  79   1        lcdcmd(0x83);    // 
+  80   1        lcdcmd(0x06);
+  81   1      }
+  82          void main()
+  83          {
+  84   1        lcd_init();
+  85   1        
+  86   1        lcd_str("ABBAS ALI ");
+  87   1        delay(250);
+  88   1        lcdcmd(0x80);    // Beginning of First Line
+  89   1        lcdcmd(0xc0);    // Beginning of Second Line
+  90   1        lcd_str("FROM PESHAWAR");
+  91   1        delay(800);
+  92   1        lcdcmd(0x01);
+  93   1        
+  94   1        // OR by word by word using lcddata command
+  95   1        lcddata('A');   lcddata('B');   lcddata('B');   lcddata('A');   lcddata('S');
+  96   1        
+  97   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    260    ----
+   CONSTANT SIZE    =     25    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

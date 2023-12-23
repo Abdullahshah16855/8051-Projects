@@ -1,0 +1,3 @@
+".\Objects\LCD.obj" 
+TO ".\Objects\Hex file creation" 
+PRINT(".\Listings\Hex file creation.m51") RAMSIZE(256) 

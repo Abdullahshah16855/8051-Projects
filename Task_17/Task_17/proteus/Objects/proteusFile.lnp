@@ -1,0 +1,3 @@
+".\Objects\proteus.obj" 
+TO ".\Objects\proteusFile" 
+PRINT(".\Listings\proteusFile.m51") RAMSIZE(256) 

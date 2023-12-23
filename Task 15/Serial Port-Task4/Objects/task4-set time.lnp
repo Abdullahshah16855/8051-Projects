@@ -1,0 +1,3 @@
+".\Objects\subtask4-set time.obj" 
+TO ".\Objects\task4-set time" 
+PRINT(".\Listings\task4-set time.m51") RAMSIZE(256) 

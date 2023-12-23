@@ -1,0 +1,168 @@
+#include<reg51.h>
+sfr LCD =
+sbit RS
+sbit RW
+sbit EN
+
+sbit SDA
+sbit SCL
+
+void LCD_CMD(unsigned char x);
+void LCD_DATA(char w);
+void LCD_INI(void);
+void Send_Data(unsigned char *Str);
+void msDelay(unsigned char Time);
+void Delay(unsigned char Time);
+void EPROM_Start();
+void EPROM_Stop();
+void EPROM_Ack();
+void EPROM_Send(unsigned char Data);
+unsigned char EPROM_Read();
+void EPROM_WriteByte(unsigned char Data, unsigned char Address, unsigned char Page);
+unsigned char EPROM_ReadByte(unsigned char Address, unsigned char Page);
+unsigned int i;
+
+void main()
+{
+char Data[]="STAR TECHNOLOGY";
+msDelay(10);
+LCD_INI();
+
+for (i=0; i<15; i++)
+{
+EPROM_WriteByte(Data[i], i, 0);
+}
+for (i=0; i<15; i++)
+{
+LCD_DATA(EPROM_ReadByte(i, 0));
+}
+while(1);
+}
+
+void LCD_DATA(char w)
+{
+LCD=w;
+RS=1;
+RW=0;
+EN=1;
+msDelay(1);
+EN=0;
+return;
+}
+
+void LCD_CMD(unsigned char x)
+{
+LCD=x;
+RS=0;
+RW=0;
+EN=1;
+msDelay(1);
+EN=0;
+return;
+}
+
+void msDelay(unsigned int Time)
+{
+unsigned int y,z;
+for (y=0; y<Time; y++)
+for (z=0; z<500; z++);
+}
+
+
+void Delay(unsigned char Time)
+{
+unsigned int y;
+for (y=0; y<Time; y++);
+}
+
+void EPROM_Start()
+{
+SCL=0;
+SDA=1;
+Delay(30);
+SCL=1;
+Delay(30);
+SDA=0;
+Delay(30);
+SCL=0;
+}
+
+
+void EPROM_Stop()
+{
+SCL=0;
+Delay(30);
+SDA=0;
+Delay(30);
+SCL=1;
+Delay(30);
+SDA=1;
+}
+
+
+void EPROM_Ack()
+{
+SDA=0;
+Delay(30);
+SCL=1;
+Delay(30);
+SCL=0;
+SDA=0;
+}
+
+void EPROM_Send(unsigned char Data)
+{
+unsigned char i;
+for (i=0; i<8; i++)
+{
+SDA=Data & 0x80;
+SCL=1;
+SCL=0;
+Data <<=1;
+}
+EPROM_Ack();
+}
+
+
+unsigned char EPROM_Read()
+{
+unsigned char i, Data=0;
+for (i =0; i<8; i++)
+{
+Delay(20);
+SCL=1 ;
+Data|= SDA;
+if (i<7);
+Data<<=1;
+SCL=0;
+}
+return Data;
+}
+
+void EPROM_WriteByte(unsigned char Data, unsigned char Address, unsigned char Page)
+{
+EPROM_Start();
+EPROM_Send(0xA0| (Page<<1));
+EPROM_Send(Address);
+EPROM_Send(Data);
+EPROM_Stop();
+Delay(10);
+}
+
+
+unsigned char EPROM_ReadByte(unsigned char Address, unsigned char Page)
+{
+unsigned char Data;
+
+EPROM_Start();
+EPROM_Send(0xA0| (Page<<1));
+EPROM_Send(Address);
+EPROM_Start();
+EPROM_Send(0xA1| (Page<<1));
+Data = EPROM_Read();
+EPROM_Stop();
+Delay(5);
+return Data;
+}
+
+

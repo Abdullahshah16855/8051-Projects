@@ -1,0 +1,277 @@
+C51 COMPILER V9.60.0.0   HERCULES                                                          10/13/2021 22:10:50 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE HERCULES
+OBJECT MODULE PLACED IN .\Objects\hercules.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE hercules.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\
+                    -hercules.lst) TABS(2) OBJECT(.\Objects\hercules.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include "LCD.h"
+*** WARNING C323 IN LINE 1 OF LCD.h: newline expected, extra characters found
+   3          
+   4          void write_time_using_hercules(void)
+   5          {
+   6   1        unsigned char arr[8];
+   7   1        TMOD=0X20;
+   8   1        SCON=0x50;
+   9   1        TH1=-3;
+  10   1        TR1=1;
+  11   1        
+  12   1        for(i=0; i<8; i++)
+  13   1          {
+  14   2            while (RI==0);
+  15   2            arr[i]=SBUF;
+  16   2            RI=0;
+  17   2            
+  18   2          }
+  19   1            command(0x01);
+  20   1           command(0x80);
+  21   1          
+  22   1                h1=arr[0];
+  23   1                h2=arr[1];
+  24   1                h1 = h1 & 0x0f;
+  25   1                h1 =h1 << 4;    
+  26   1                h2= h2 & 0x0f;
+  27   1                x1 = h1|h2;     
+  28   1              rtcWrite(0x84,x1); 
+  29   1          
+  30   1          
+  31   1          
+  32   1                m1=arr[3];
+  33   1                m2=arr[4];
+  34   1                m1 = m1 & 0x0f;
+  35   1                m1 =m1 << 4;    
+  36   1                m2= m2 & 0x0f;
+  37   1                x2 = m1 | m2;
+  38   1             rtcWrite(0x82,x2);
+  39   1          
+  40   1                s1=arr[6];
+  41   1                s2=arr[7];
+  42   1                s1 = s1 & 0x0F;
+  43   1                s1 =s1 << 4;    
+  44   1                s2= s2 & 0x0F;
+  45   1                x3 = s1 | s2;
+  46   1          rtcWrite(0x80,x3);     // second
+  47   1      }
+  48          void main(void)
+  49          {
+  50   1        
+  51   1        initializeAll();
+  52   1        
+  53   1        write_time_using_hercules();
+C51 COMPILER V9.60.0.0   HERCULES                                                          10/13/2021 22:10:50 PAGE 2   
+
+  54   1        while(1)
+  55   1      {
+  56   2          
+  57   2          systemView();
+  58   2      } 
+  59   1      }
+  60          
+  61          void displayTime(){
+  62   1      
+  63   1        //rtcWrite(0x84,0x10);
+  64   1        //rtcWrite(0x82,0x10);
+  65   1        h = rtcRead(0x85);
+  66   1        m = rtcRead(0x83);
+  67   1        s = rtcRead(0x81);
+  68   1        y = rtcRead(0x8D);
+  69   1        mt = rtcRead(0x89);
+  70   1        d = rtcRead(0x87);
+  71   1        day = rtcRead(0x8B);
+  72   1        asciiDisplay(h,'h');
+  73   1        asciiDisplay(m,'m');
+  74   1        asciiDisplay(s,'s');
+  75   1        asciiDisplay(day,'b');
+  76   1        asciiDisplay(y,'y');
+  77   1        asciiDisplay(mt,'c');
+  78   1        asciiDisplay(d,'d');
+  79   1         //rtcWrite(0x80,0x02);
+  80   1      }
+  81          
+  82          
+  83          
+  84          void rtcCommand(unsigned char c){
+  85   1        unsigned char z;
+  86   1        shiftRegister = c;
+  87   1        CE = 1;
+  88   1        for(z=0; z<8; z++){
+  89   2          IO = lowBit;
+  90   2          SCLK = 1;
+  91   2          customDelay(0xFF,0x00);
+  92   2          SCLK = 0;
+  93   2          customDelay(0xFF,0x00);
+  94   2          shiftRegister = shiftRegister >> 1;
+  95   2        }
+  96   1      }
+  97          unsigned char rtcRead(unsigned char address)
+  98            {
+  99   1        unsigned char z;
+ 100   1        rtcCommand(address);
+ 101   1        for(z = 0; z<8; z++)
+ 102   1          {
+ 103   2          shiftRegister = shiftRegister >> 1;
+ 104   2          highBit = IO;
+ 105   2          SCLK = 1;
+ 106   2          customDelay(0xFF,0x00);
+ 107   2          SCLK = 0;
+ 108   2          customDelay(0xFF,0x00);
+ 109   2        }
+ 110   1        CE = 0;
+ 111   1        return shiftRegister;
+ 112   1      }
+ 113          void initializeAll(){
+ 114   1        //initializeSerial();
+ 115   1        init();
+C51 COMPILER V9.60.0.0   HERCULES                                                          10/13/2021 22:10:50 PAGE 3   
+
+ 116   1        CE = 0;
+ 117   1        SCLK = 0;
+ 118   1        IO=1;
+ 119   1      
+ 120   1      
+ 121   1        
+ 122   1        oneSecondDelay();
+ 123   1      }
+ 124          void initializeSerial(){
+ 125   1        
+ 126   1        TMOD = 0x21;
+ 127   1        TH1 = 0xFD;
+ 128   1        SCON = 0x50;
+ 129   1        TR1 = 1;
+ 130   1      }
+ 131          
+ 132          void oneSecondDelay(){
+ 133   1        unsigned char z;
+ 134   1        for(z = 0; z<0x0E; z++){
+ 135   2          customDelay(0x00,0x00);
+ 136   2        }
+ 137   1      }
+ 138          
+ 139          void customDelay(unsigned char h, unsigned char l){
+ 140   1        TH0 = h;
+ 141   1        TL0 = l;
+ 142   1        TR0 = 1;
+ 143   1        while(TF0 == 0);
+ 144   1        TR0 = 0;
+ 145   1        TF0 = 0;
+ 146   1      }
+ 147          
+ 148          void asciiDisplay(unsigned char byte, unsigned char flag){
+ 149   1        
+ 150   1          unsigned char a,b;
+ 151   1          a = byte & 0xF0;
+ 152   1          a = a >> 4;
+ 153   1          a = a + 0x30;
+ 154   1          b = byte & 0x0F;
+ 155   1          b = b + 0x30;
+ 156   1          
+ 157   1          if(flag == 'h'){
+ 158   2            command(0x85);
+ 159   2            display(a);
+ 160   2            command(0x86);
+ 161   2            display(b);
+ 162   2            command(0x87);
+ 163   2            display(':');
+ 164   2          }
+ 165   1          else if(flag == 'm'){
+ 166   2            command(0x88);
+ 167   2            display(a);
+ 168   2            command(0x89);
+ 169   2            display(b);
+ 170   2            command(0x8A);
+ 171   2            display(':');
+ 172   2          }
+ 173   1          else if(flag == 's'){
+ 174   2            command(0x8B);
+ 175   2            display(a);
+ 176   2            command(0x8C);
+ 177   2            display(b);
+C51 COMPILER V9.60.0.0   HERCULES                                                          10/13/2021 22:10:50 PAGE 4   
+
+ 178   2          }
+ 179   1          else if(flag == 'd'){
+ 180   2            command(0xC5);
+ 181   2            display(a);
+ 182   2            command(0xC6);
+ 183   2            display(b);
+ 184   2            command(0xC7);
+ 185   2            display('-');
+ 186   2          }
+ 187   1          else if(flag =='c'){
+ 188   2            command(0xC8);
+ 189   2            display(a);
+ 190   2            command(0xC9);
+ 191   2            display(b);
+ 192   2            command(0xCA);
+ 193   2            display('-');
+ 194   2          }
+ 195   1          else if(flag == 'y'){
+ 196   2            command(0xCB);
+ 197   2            string("20");
+ 198   2            command(0xCD);
+ 199   2            display(a);
+ 200   2            command(0xCE);
+ 201   2            display(b);
+ 202   2          }
+ 203   1          else if(flag == 'b'){
+ 204   2            command(0xC0);
+ 205   2            if(byte == 0x01)
+ 206   2              string("SUN,");
+ 207   2            else if(byte == 0x02)
+ 208   2              string("MON,");
+ 209   2            else if(byte == 0x03)
+ 210   2              string("TUE,");
+ 211   2            else if(byte == 0x04)
+ 212   2              string("WED,");
+ 213   2            else if(byte == 0x05)
+ 214   2              string("THU,");
+ 215   2            else if(byte == 0x06)
+ 216   2              string("FRI,");
+ 217   2            else if(byte == 0x07)
+ 218   2              string("SAT,");
+ 219   2          }
+ 220   1        }
+ 221          
+ 222          void systemView()
+ 223          {
+ 224   1        
+ 225   1      command(0x01); 
+ 226   1      command(0x80);
+ 227   1           
+ 228   1          //rtcWrite(0x82,0x29);
+ 229   1          string("Time ");
+ 230   1          while(1)
+ 231   1            {
+ 232   2            displayTime();
+ 233   2               }
+ 234   1      }
+ 235            
+ 236          
+ 237            void rtcWrite(unsigned char address, unsigned char byte)
+ 238          {
+ 239   1        rtcCommand(address);
+C51 COMPILER V9.60.0.0   HERCULES                                                          10/13/2021 22:10:50 PAGE 5   
+
+ 240   1        rtcCommand(byte);
+ 241   1        CE=0;
+ 242   1      }
+ 243          
+ 244          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    865    ----
+   CONSTANT SIZE    =     44    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     20      18
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

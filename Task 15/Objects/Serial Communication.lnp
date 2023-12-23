@@ -1,0 +1,3 @@
+".\Objects\Serial Communication.obj" 
+TO ".\Objects\Serial Communication" 
+PRINT(".\Listings\Serial Communication.m51") RAMSIZE(256) 

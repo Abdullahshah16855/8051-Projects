@@ -1,0 +1,3 @@
+".\Objects\3timerdelay.obj" 
+TO ".\Objects\Generate 3 timer delays" 
+PRINT(".\Listings\Generate 3 timer delays.m51") RAMSIZE(256) 

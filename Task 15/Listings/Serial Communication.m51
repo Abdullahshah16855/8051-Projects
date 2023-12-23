@@ -1,0 +1,221 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    09/30/2021  16:46:25  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Serial Communication.obj TO .\Objects\Serial Communication PRINT (.\Listings\Seria
+>> l Communication.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Serial Communication.obj (SERIAL_COMMUNICATION)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\Serial Communication (SERIAL_COMMUNICATION)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0019H     UNIT         ?DT?SERIAL_COMMUNICATION
+            DATA    0021H     0003H     UNIT         ?DT?_WRITE?SERIAL_COMMUNICATION
+            IDATA   0024H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0020H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+                    0026H     07DAH                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     004CH     UNIT         ?PR?MAIN?SERIAL_COMMUNICATION
+            CODE    08D8H     0038H     UNIT         ?PR?SERIAL?SERIAL_COMMUNICATION
+            CODE    0910H     0031H     UNIT         ?PR?_DELAY?SERIAL_COMMUNICATION
+            CODE    0941H     0025H     UNIT         ?PR?_WRITE?SERIAL_COMMUNICATION
+            CODE    0966H     0019H     UNIT         ?C?LIB_CODE
+            CODE    097FH     0014H     UNIT         ?PR?INIT?SERIAL_COMMUNICATION
+            CODE    0993H     0012H     UNIT         ?PR?_CMD?SERIAL_COMMUNICATION
+            CODE    09A5H     0012H     UNIT         ?PR?_DISPLAY?SERIAL_COMMUNICATION
+            CODE    09B7H     0005H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\Serial Communication (SERIAL_COMMUNICATION)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?SERIAL_COMMUNICATION
+  +--> ?C_INITSEG
+
+?PR?MAIN?SERIAL_COMMUNICATION
+  +--> ?PR?INIT?SERIAL_COMMUNICATION
+  +--> ?PR?_DISPLAY?SERIAL_COMMUNICATION
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  09/30/2021  16:46:25  PAGE 2
+
+
+
+?PR?INIT?SERIAL_COMMUNICATION
+  +--> ?PR?_CMD?SERIAL_COMMUNICATION
+
+?PR?_CMD?SERIAL_COMMUNICATION
+  +--> ?PR?_DELAY?SERIAL_COMMUNICATION
+
+?PR?_DISPLAY?SERIAL_COMMUNICATION
+  +--> ?PR?_DELAY?SERIAL_COMMUNICATION
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Serial Communication (SERIAL_COMMUNICATION)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        SERIAL_COMMUNICATION
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:0008H         PUBLIC        counter
+  D:000AH         PUBLIC        length
+  B:00A8H.7       PUBLIC        EA
+  C:0941H         PUBLIC        _Write
+  C:0910H         PUBLIC        _delay
+  B:00A8H.4       PUBLIC        ES
+  B:0098H.0       PUBLIC        RI
+  D:000CH         PUBLIC        flag
+  C:088CH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  C:0993H         PUBLIC        _cmd
+  D:0089H         PUBLIC        TMOD
+  C:097FH         PUBLIC        init
+  D:000EH         PUBLIC        temp
+  D:000FH         PUBLIC        RxData
+  D:008DH         PUBLIC        TH1
+  B:0088H.6       PUBLIC        TR1
+  C:08D8H         PUBLIC        Serial
+  B:00A0H.1       PUBLIC        e
+  B:00A0H.0       PUBLIC        rs
+  D:001FH         PUBLIC        j
+  B:00A0H.5       PUBLIC        rw
+  C:09A5H         PUBLIC        _display
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        d
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0910H         LINE#         19
+  C:0910H         LINE#         20
+  C:0910H         LINE#         22
+  C:091BH         LINE#         23
+  C:091BH         LINE#         24
+  C:092AH         LINE#         25
+  C:0939H         LINE#         26
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  09/30/2021  16:46:25  PAGE 3
+
+
+  C:0940H         LINE#         27
+  -------         ENDPROC       _DELAY
+  -------         PROC          _CMD
+  D:0007H         SYMBOL        c
+  C:0993H         LINE#         29
+  C:0993H         LINE#         30
+  C:0993H         LINE#         31
+  C:0995H         LINE#         32
+  C:0997H         LINE#         33
+  C:0999H         LINE#         34
+  C:099BH         LINE#         35
+  C:09A2H         LINE#         36
+  C:09A4H         LINE#         37
+  -------         ENDPROC       _CMD
+  -------         PROC          _DISPLAY
+  D:0007H         SYMBOL        c
+  C:09A5H         LINE#         38
+  C:09A5H         LINE#         39
+  C:09A5H         LINE#         40
+  C:09A7H         LINE#         41
+  C:09A9H         LINE#         42
+  C:09ABH         LINE#         43
+  C:09ADH         LINE#         44
+  C:09B4H         LINE#         45
+  C:09B6H         LINE#         46
+  -------         ENDPROC       _DISPLAY
+  -------         PROC          _WRITE
+  D:0021H         SYMBOL        p
+  C:0941H         LINE#         48
+  C:0947H         LINE#         49
+  C:0947H         LINE#         50
+  C:0952H         LINE#         51
+  C:0952H         LINE#         52
+  C:0963H         LINE#         53
+  C:0965H         LINE#         54
+  -------         ENDPROC       _WRITE
+  -------         PROC          INIT
+  C:097FH         LINE#         55
+  C:097FH         LINE#         56
+  C:097FH         LINE#         57
+  C:0984H         LINE#         58
+  C:0989H         LINE#         59
+  C:098EH         LINE#         60
+  -------         ENDPROC       INIT
+  -------         PROC          SERIAL
+  C:08D8H         LINE#         63
+  C:08E1H         LINE#         65
+  C:08E4H         LINE#         66
+  C:08E4H         LINE#         67
+  C:08E7H         LINE#         68
+  C:08EEH         LINE#         69
+  C:08F4H         LINE#         70
+  C:08F9H         LINE#         71
+  C:08FFH         LINE#         72
+  C:0901H         LINE#         73
+  C:0901H         LINE#         74
+  C:0909H         LINE#         75
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  09/30/2021  16:46:25  PAGE 4
+
+
+  -------         ENDPROC       SERIAL
+  -------         PROC          MAIN
+  C:088CH         LINE#         76
+  C:088CH         LINE#         77
+  C:088CH         LINE#         78
+  C:088EH         LINE#         79
+  C:0890H         LINE#         81
+  C:0893H         LINE#         82
+  C:0896H         LINE#         83
+  C:0899H         LINE#         84
+  C:089BH         LINE#         85
+  C:089EH         LINE#         87
+  C:089EH         LINE#         88
+  C:089EH         LINE#         89
+  C:08A6H         LINE#         90
+  C:08A6H         LINE#         91
+  C:08BBH         LINE#         92
+  C:08BBH         LINE#         93
+  C:08C5H         LINE#         94
+  C:08CAH         LINE#         95
+  C:08CEH         LINE#         96
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        SERIAL_COMMUNICATION
+
+  -------         MODULE        ?C?CLDPTR
+  C:0966H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITE?SERIAL_COMMUNICATION
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0119H BYTE (13%) *
+******************************************************************************
+
+Program Size: data=37.0 xdata=0 code=450
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

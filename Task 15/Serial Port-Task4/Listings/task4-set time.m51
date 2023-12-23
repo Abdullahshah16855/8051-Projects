@@ -1,0 +1,229 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/04/2021  12:55:20  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\subtask4-set time.obj TO .\Objects\task4-set time PRINT (.\Listings\task4-set time
+>> .m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\subtask4-set time.obj (SUBTASK4_SET_TIME)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\task4-set time (SUBTASK4_SET_TIME)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0019H     UNIT         ?DT?SUBTASK4_SET_TIME
+            DATA    0021H     0003H     UNIT         ?DT?_WRITE?SUBTASK4_SET_TIME
+            IDATA   0024H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0020H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+                    0026H     07DAH                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     0072H     UNIT         ?PR?SERIAL?SUBTASK4_SET_TIME
+            CODE    08FEH     004BH     UNIT         ?PR?MAIN?SUBTASK4_SET_TIME
+            CODE    0949H     0031H     UNIT         ?PR?_DELAY?SUBTASK4_SET_TIME
+            CODE    097AH     0025H     UNIT         ?PR?_WRITE?SUBTASK4_SET_TIME
+            CODE    099FH     0019H     UNIT         ?C?LIB_CODE
+            CODE    09B8H     0014H     UNIT         ?PR?INIT?SUBTASK4_SET_TIME
+            CODE    09CCH     0012H     UNIT         ?PR?_CMD?SUBTASK4_SET_TIME
+            CODE    09DEH     0012H     UNIT         ?PR?_DISPLAY?SUBTASK4_SET_TIME
+            CODE    09F0H     0005H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\task4-set time (SUBTASK4_SET_TIME)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?SERIAL?SUBTASK4_SET_TIME
+  +--> ?PR?_CMD?SUBTASK4_SET_TIME
+
+?PR?_CMD?SUBTASK4_SET_TIME
+  +--> ?PR?_DELAY?SUBTASK4_SET_TIME
+
+*** NEW ROOT ***************************************************
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/04/2021  12:55:20  PAGE 2
+
+
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?SUBTASK4_SET_TIME
+  +--> ?C_INITSEG
+
+?PR?MAIN?SUBTASK4_SET_TIME
+  +--> ?PR?INIT?SUBTASK4_SET_TIME
+  +--> ?PR?_DISPLAY?SUBTASK4_SET_TIME
+
+?PR?INIT?SUBTASK4_SET_TIME
+  +--> ?PR?_CMD?SUBTASK4_SET_TIME
+
+?PR?_DISPLAY?SUBTASK4_SET_TIME
+  +--> ?PR?_DELAY?SUBTASK4_SET_TIME
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\task4-set time (SUBTASK4_SET_TIME)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        SUBTASK4_SET_TIME
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  D:0008H         PUBLIC        counter
+  D:000AH         PUBLIC        length
+  C:097AH         PUBLIC        _Write
+  D:00A8H         PUBLIC        IE
+  C:0949H         PUBLIC        _delay
+  B:0098H.0       PUBLIC        RI
+  D:000CH         PUBLIC        flag
+  C:08FEH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  C:09CCH         PUBLIC        _cmd
+  D:0089H         PUBLIC        TMOD
+  C:09B8H         PUBLIC        init
+  D:000EH         PUBLIC        RxData
+  D:008DH         PUBLIC        TH1
+  B:0088H.6       PUBLIC        TR1
+  C:088CH         PUBLIC        Serial
+  D:001EH         PUBLIC        Hour_min_sec
+  B:00A0H.7       PUBLIC        e
+  B:00A0H.6       PUBLIC        rs
+  D:001FH         PUBLIC        j
+  B:00A0H.5       PUBLIC        rw
+  C:09DEH         PUBLIC        _display
+  -------         PROC          SERIAL
+  C:088CH         LINE#         21
+  C:08A9H         LINE#         23
+  C:08ACH         LINE#         24
+  C:08ACH         LINE#         25
+  C:08AFH         LINE#         26
+  C:08B6H         LINE#         27
+  C:08BCH         LINE#         28
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/04/2021  12:55:20  PAGE 3
+
+
+  C:08C2H         LINE#         29
+  C:08C7H         LINE#         30
+  C:08C9H         LINE#         31
+  C:08C9H         LINE#         32
+  C:08D1H         LINE#         34
+  C:08D9H         LINE#         36
+  C:08D9H         LINE#         37
+  C:08DEH         LINE#         38
+  C:08E3H         LINE#         39
+  C:08E3H         LINE#         40
+  -------         ENDPROC       SERIAL
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        d
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0949H         LINE#         42
+  C:0949H         LINE#         43
+  C:0949H         LINE#         45
+  C:0954H         LINE#         46
+  C:0954H         LINE#         47
+  C:0963H         LINE#         48
+  C:0972H         LINE#         49
+  C:0979H         LINE#         50
+  -------         ENDPROC       _DELAY
+  -------         PROC          _CMD
+  D:0007H         SYMBOL        c
+  C:09CCH         LINE#         52
+  C:09CCH         LINE#         53
+  C:09CCH         LINE#         54
+  C:09CEH         LINE#         55
+  C:09D0H         LINE#         56
+  C:09D2H         LINE#         57
+  C:09D4H         LINE#         58
+  C:09DBH         LINE#         59
+  C:09DDH         LINE#         60
+  -------         ENDPROC       _CMD
+  -------         PROC          _DISPLAY
+  D:0007H         SYMBOL        c
+  C:09DEH         LINE#         61
+  C:09DEH         LINE#         62
+  C:09DEH         LINE#         63
+  C:09E0H         LINE#         64
+  C:09E2H         LINE#         65
+  C:09E4H         LINE#         66
+  C:09E6H         LINE#         67
+  C:09EDH         LINE#         68
+  C:09EFH         LINE#         69
+  -------         ENDPROC       _DISPLAY
+  -------         PROC          _WRITE
+  D:0021H         SYMBOL        p
+  C:097AH         LINE#         71
+  C:0980H         LINE#         72
+  C:0980H         LINE#         73
+  C:098BH         LINE#         74
+  C:098BH         LINE#         75
+  C:099CH         LINE#         76
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/04/2021  12:55:20  PAGE 4
+
+
+  C:099EH         LINE#         77
+  -------         ENDPROC       _WRITE
+  -------         PROC          INIT
+  C:09B8H         LINE#         78
+  C:09B8H         LINE#         79
+  C:09B8H         LINE#         80
+  C:09BDH         LINE#         81
+  C:09C2H         LINE#         82
+  C:09C7H         LINE#         83
+  -------         ENDPROC       INIT
+  -------         PROC          MAIN
+  C:08FEH         LINE#         87
+  C:08FEH         LINE#         88
+  C:08FEH         LINE#         89
+  C:0901H         LINE#         90
+  C:0904H         LINE#         91
+  C:0907H         LINE#         92
+  C:090AH         LINE#         93
+  C:090DH         LINE#         94
+  C:090FH         LINE#         95
+  C:090FH         LINE#         96
+  C:090FH         LINE#         97
+  C:0917H         LINE#         98
+  C:0917H         LINE#         99
+  C:092CH         LINE#         100
+  C:092CH         LINE#         101
+  C:0936H         LINE#         102
+  C:093BH         LINE#         103
+  C:093FH         LINE#         104
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        SUBTASK4_SET_TIME
+
+  -------         MODULE        ?C?CLDPTR
+  C:099FH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITE?SUBTASK4_SET_TIME
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0152H BYTE (16%) *
+******************************************************************************
+
+Program Size: data=37.0 xdata=0 code=507
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

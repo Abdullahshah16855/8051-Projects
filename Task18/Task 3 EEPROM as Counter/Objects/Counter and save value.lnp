@@ -1,0 +1,3 @@
+".\Objects\EEPROM as counter.obj" 
+TO ".\Objects\Counter and save value" 
+PRINT(".\Listings\Counter and save value.m51") RAMSIZE(256) 

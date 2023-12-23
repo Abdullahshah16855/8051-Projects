@@ -1,0 +1,233 @@
+C51 COMPILER V9.60.0.0   NEW_TEXT_DOCUMENT                                                 10/22/2021 15:01:00 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE NEW_TEXT_DOCUMENT
+OBJECT MODULE PLACED IN .\Objects\New Text Document.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE New Text Document.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\
+                    -Listings\New Text Document.lst) TABS(2) OBJECT(.\Objects\New Text Document.obj)
+
+line level    source
+
+   1          /*Write Mode
+   2          1.Send the START command from the Master.
+   3          2.Send Device (EEPROM) Address with write mode.
+   4          3.Send Register address in Device (EEPROM), Where we have to access.
+   5          4.Send the Data to the Device (EEPROM).
+   6          5.If you want to send more than one byte, keep sending that byte.
+   7          6.Finally, Send the STOP command.
+   8          
+   9          Read Mode
+  10          1.Send the START command from the Master.
+  11          2.Send Device (EEPROM) Address with write mode.
+  12          3.Send Register address in Device (EEPROM), Where we have to access.
+  13          4.Send again START command or Repeated START command.
+  14          5.Send Device address with Reading mode.
+  15          6.Read the data from Device (EEPROM).
+  16          7.Finally, Send the STOP command.
+  17          */
+  18          //Program to interface Serial EEPROM AT24C02 with 8051 microcontroller (AT89C51) 
+  19          #include<reg51.h>
+  20          #include<intrins.h>   //For using [_nop_()]
+  21          # define Led P0
+  22          sbit sda=P2^0;
+  23          sbit scl=P2^1;
+  24          bit ack;
+  25          unsigned char  table[]={0x1C,0x18,0x14,0x10,0x0C,0x08,0x04,0x00};   // P2 channel
+  26          unsigned char  table2[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x67};   // P0 is for displaying num
+             -ber
+  27          unsigned char Data,write,write2,i,j,a1=0,k=0,y=0;
+  28          unsigned int temp;
+  29          void delay();
+  30          
+  31          /*By sending or receiving eight bits, a complete word is sent to or received by the EEPROM.
+  32          When sending a word, the acknowledgement from the EEPROM must be checked.
+  33          There should a clock (high to low transition from an initial low) between two words.
+  34          When a word is sent to the EEPROM, it sends back a zero (0) to tell the controller that the word has been 
+             -received successfully by it. 
+  35          The controller reads this acknowledgement bit by sending a high to low transition at SCL. 
+  36          Acknowledgement bit must be checked every time a word is sent to the EEPROM*/
+  37          
+  38          void aknowledge()   //acknowledge condition
+  39          {
+  40   1        scl=1;
+  41   1        _nop_();  /*  The _nop_ routine inserts a NOP instruction into the program. This routine can be used to pa
+             -use for 1 CPU cycle. This routine is implemented as an intrinsic function. The NOP instruction is included inline.*/
+  42   1        _nop_();
+  43   1        scl=0;
+  44   1      } 
+  45          
+  46          /*Start condition:
+  47          Any read or write operation in EEPROM is initiated by Start condition.
+  48           This occurs when there is a high to low transition of SDA while SCL is high. 
+  49          (Refer the following diagram) This tells the EEPROM that words from the controller are ready for it. 
+  50          SCL is set low at the end of start condition. This is because any read or write operation first involves t
+             -ransfer of some words to EEPROM. 
+C51 COMPILER V9.60.0.0   NEW_TEXT_DOCUMENT                                                 10/22/2021 15:01:00 PAGE 2   
+
+  51          That requires a low to high transition of clock corresponding to each bit of the word.*/
+  52          
+  53          void start()    //start condition
+  54          {
+  55   1        sda=1;
+  56   1        scl=1;
+  57   1        _nop_();         //No operation
+  58   1        _nop_();
+  59   1        sda=0;
+  60   1        scl=0;
+  61   1      }
+  62          
+  63          /*A stop condition is provided to terminate a read or write operation. 
+  64          A low to high transition of SDA when SCL is high sets the stop condition.*/
+  65          
+  66          void stop()     //stop condition
+  67          {
+  68   1        sda=0;
+  69   1        scl=1;
+  70   1        _nop_();
+  71   1        _nop_(); 
+  72   1        sda=1;
+  73   1        scl=0;
+  74   1      }
+  75          
+  76          /*A low to high transition at SCL transfers a bit to the EEPROM, 
+  77          i.e., at a low to high transition of SCL, SDA pin of EEPROM behaves as input for bits of word(s).
+  78           If the data changes when the SCL is high, it will be misinterpreted as start or stop condition.*/
+  79          
+  80          void send_byte(unsigned char value) //send byte serially
+  81          { 
+  82   1        unsigned int i;
+  83   1        unsigned char send;
+  84   1        send=value;
+  85   1        sda=1;
+  86   1        for(i=0;i<8;i++)
+  87   1        {
+  88   2        //  sda=send/128;     //extracting MSB
+  89   2          sda=send & 0x80;
+  90   2          scl=1;
+  91   2          _nop_();
+  92   2          _nop_();
+  93   2          send=send<<1;     //shiftng left
+  94   2          scl=0;
+  95   2        }
+  96   1         ack=sda;         //reading acknowledge
+  97   1         sda=0;
+  98   1      }
+  99          
+ 100          /*At high to low transition of SCL a bit is transferred from the EEPROM
+ 101           i.e. the SDA pin behaves as output for bits of word(s) or acknowledgement at high to low transition of th
+             -e SCL.
+ 102          When SCL is low again the data change is valid, i.e.,
+ 103          when bits of a word are to be read or write, they are differentiated by the low of the SCL.*/
+ 104          
+ 105          unsigned char read_byte()     //reading from EEPROM serially
+ 106          {
+ 107   1        unsigned int i;
+ 108   1        sda=1;    // sda is set to default high initially
+ 109   1        //reead=0;
+ 110   1        Data=0;
+ 111   1        for(i=0;i<8;i++)
+C51 COMPILER V9.60.0.0   NEW_TEXT_DOCUMENT                                                 10/22/2021 15:01:00 PAGE 3   
+
+ 112   1        {
+ 113   2        //  reead=reead<<1;
+ 114   2          scl=1;     // a high to loe transition of scl transfer Bit from EEPROM
+ 115   2          Data|=sda;
+ 116   2          _nop_();
+ 117   2          _nop_();
+ 118   2        /*  if(sda==1)
+ 119   2            reead++;*/
+ 120   2          if(i<7)
+ 121   2            Data<<=1;
+ 122   2          scl=0;
+ 123   2        }
+ 124   1        sda=0;           //SDA is again set low after transfer of LSB
+ 125   1        return Data;        //Returns 8 Bit Data here
+ 126   1      }   
+ 127          void save()         //save in EEPROM
+ 128          {
+ 129   1        start();
+ 130   1        send_byte(0xA0);            //device address or control byte
+ 131   1        aknowledge();
+ 132   1        send_byte(0x05);            //word address
+ 133   1        aknowledge();
+ 134   1        send_byte(5);             //send Data
+ 135   1        aknowledge();
+ 136   1        send_byte(6);             //send Data
+ 137   1        aknowledge();
+ 138   1        stop();                
+ 139   1        if(ack==0)
+ 140   1        {
+ 141   2      //led=0;
+ 142   2        }
+ 143   1        aknowledge();
+ 144   1      }
+ 145          void Read()
+ 146          {
+ 147   1        start();
+ 148   1        send_byte(0xA0);
+ 149   1        aknowledge();
+ 150   1        send_byte(0x05);
+ 151   1        aknowledge();
+ 152   1        start();
+ 153   1        send_byte(0xA1);           //device address
+ 154   1        aknowledge();
+ 155   1        i=read_byte();
+ 156   1        aknowledge();
+ 157   1        j=read_byte();
+ 158   1        aknowledge();
+ 159   1        stop();
+ 160   1        if(i==5)
+ 161   1        {
+ 162   2            P2=0x18;
+ 163   2            for(k=0;k<15;k++)
+ 164   2            {delay();}
+ 165   2            Led=table2[0];
+ 166   2          }
+ 167   1      if(j==6)
+ 168   1        {
+ 169   2            P2=0x18;
+ 170   2            for(k=0;k<15;k++)
+ 171   2            {delay();}
+ 172   2            Led=table2[1];
+ 173   2          }
+C51 COMPILER V9.60.0.0   NEW_TEXT_DOCUMENT                                                 10/22/2021 15:01:00 PAGE 4   
+
+ 174   1        aknowledge();
+ 175   1        }
+ 176          /*there is 32 pages in EEPROM and each pages is having 8 bytes 
+ 177          so when we send 0x00(00000)(page)(000)(word) its mean that we are accessing page 0 and on page 0 we access
+             - position 0.*/
+ 178          void main()
+ 179          {
+ 180   1      
+ 181   1        temp=0;
+ 182   1        while(1)
+ 183   1        {
+ 184   2          save();
+ 185   2          Read();
+ 186   2        }
+ 187   1      }
+ 188           void delay()
+ 189           {
+ 190   1       TMOD=0x01;
+ 191   1         TH0=0x00;
+ 192   1          TL0=0x00;
+ 193   1          TR0=1;
+ 194   1         while(TF0==0);
+ 195   1         TR0=0;
+ 196   1         TF0=0;
+ 197   1       }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    283    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     28    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

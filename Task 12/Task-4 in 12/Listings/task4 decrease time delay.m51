@@ -1,0 +1,155 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    11/13/2021  16:36:58  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\display.obj, .\Objects\LCD.obj TO .\Objects\task4 decrease time delay PRINT (.\Lis
+>> tings\task4 decrease time delay.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\display.obj (DISPLAY)
+  .\Objects\LCD.obj (LCD)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\task4 decrease time delay (DISPLAY)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         _DATA_GROUP_
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     0048H     UNIT         ?PR?MAIN?DISPLAY
+            CODE    0848H     001AH     UNIT         ?PR?TIMERDELAY?DISPLAY
+            CODE    0862H     000CH     UNIT         ?C_C51STARTUP
+            CODE    086EH     0001H     UNIT         ?PR?LCD_INIT?LCD
+            CODE    086FH     0001H     UNIT         ?PR?LCD_SET_CURSOR?LCD
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\task4 decrease time delay (DISPLAY)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?DISPLAY
+
+?PR?MAIN?DISPLAY               0008H    0002H
+  +--> ?PR?TIMERDELAY?DISPLAY
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\task4 decrease time delay (DISPLAY)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DISPLAY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/13/2021  16:36:58  PAGE 2
+
+
+  D:00A0H         PUBLIC        P2
+  C:0800H         PUBLIC        main
+  D:0089H         PUBLIC        TMOD
+  C:084FH         PUBLIC        timerdelay
+  B:00A0H.4       PUBLIC        A
+  B:00A0H.2       PUBLIC        C
+  B:0088H.5       PUBLIC        TF0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  B:00A0H.3       PUBLIC        b
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        x
+  -------         ENDDO         
+  C:0800H         LINE#         14
+  C:0800H         LINE#         15
+  C:0800H         LINE#         17
+  C:0802H         LINE#         18
+  C:0802H         LINE#         19
+  C:0805H         LINE#         21
+  C:080BH         LINE#         22
+  C:080EH         LINE#         23
+  C:0811H         LINE#         25
+  C:0815H         LINE#         26
+  C:0815H         LINE#         27
+  C:0818H         LINE#         29
+  C:081EH         LINE#         30
+  C:0821H         LINE#         31
+  C:0824H         LINE#         33
+  C:0826H         LINE#         34
+  C:0826H         LINE#         35
+  C:0829H         LINE#         37
+  C:082FH         LINE#         38
+  C:0832H         LINE#         39
+  C:0835H         LINE#         41
+  C:0839H         LINE#         42
+  C:0839H         LINE#         43
+  C:083CH         LINE#         45
+  C:0842H         LINE#         46
+  C:0845H         LINE#         47
+  -------         ENDPROC       MAIN
+  C:084AH         SYMBOL        L?0006
+  -------         PROC          L?0005
+  -------         ENDPROC       L?0005
+  C:084AH         SYMBOL        L?0006
+  -------         PROC          TIMERDELAY
+  C:084FH         LINE#         49
+  C:084FH         LINE#         50
+  C:084FH         LINE#         51
+  C:0852H         LINE#         53
+  C:0855H         LINE#         54
+  C:0858H         LINE#         56
+  C:085AH         LINE#         57
+  C:085DH         LINE#         58
+  C:085FH         LINE#         59
+  C:0861H         LINE#         60
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/13/2021  16:36:58  PAGE 3
+
+
+  -------         ENDPROC       TIMERDELAY
+  -------         ENDMOD        DISPLAY
+
+  -------         MODULE        LCD
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:086EH         PUBLIC        lcd_init
+  C:086FH         PUBLIC        lcd_set_cursor
+  -------         PROC          LCD_INIT
+  C:086EH         LINE#         1
+  C:086EH         LINE#         2
+  C:086EH         LINE#         5
+  -------         ENDPROC       LCD_INIT
+  -------         PROC          LCD_SET_CURSOR
+  C:086FH         LINE#         8
+  C:086FH         LINE#         9
+  C:086FH         LINE#         16
+  -------         ENDPROC       LCD_SET_CURSOR
+  -------         ENDMOD        LCD
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_INIT?LCD
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_SET_CURSOR?LCD
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0064H BYTE ( 4%) *
+******************************************************************************
+
+Program Size: data=11.0 xdata=0 code=115
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

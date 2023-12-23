@@ -1,0 +1,333 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/14/2021  22:04:31  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\proteus.obj TO .\Objects\proteusFile PRINT (.\Listings\proteusFile.m51) RAMSIZE (2
+>> 56)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\proteus.obj (PROTEUS)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+
+
+LINK MAP OF MODULE:  .\Objects\proteusFile (PROTEUS)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0006H     UNIT         _DATA_GROUP_
+            DATA    000EH     0001H     UNIT         ?DT?PROTEUS
+            IDATA   000FH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     006DH     UNIT         ?PR?_TEMPSHOW?PROTEUS
+            CODE    086DH     003BH     UNIT         ?PR?READTEMPERATURE?PROTEUS
+            CODE    08A8H     0028H     UNIT         ?PR?READONECHAR?PROTEUS
+            CODE    08D0H     0025H     UNIT         ?PR?_STRING?PROTEUS
+            CODE    08F5H     0025H     UNIT         ?PR?_WRITEONECHAR?PROTEUS
+            CODE    091AH     0024H     UNIT         ?PR?MAIN?PROTEUS
+            CODE    093EH     0020H     UNIT         ?PR?_DELAY_MS?PROTEUS
+            CODE    095EH     001BH     UNIT         ?PR?INIT_18B20?PROTEUS
+            CODE    0979H     001AH     UNIT         ?PR?_DELAY_US?PROTEUS
+            CODE    0993H     0019H     UNIT         ?PR?INIT?PROTEUS
+            CODE    09ACH     0019H     UNIT         ?C?LIB_CODE
+            CODE    09C5H     0012H     UNIT         ?PR?_DELAY_18B20?PROTEUS
+            CODE    09D7H     000FH     UNIT         ?CO?PROTEUS
+            CODE    09E6H     000CH     UNIT         ?C_C51STARTUP
+            CODE    09F2H     000AH     UNIT         ?PR?_DISPLAY?PROTEUS
+            CODE    09FCH     000AH     UNIT         ?PR?_COMMAND?PROTEUS
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\proteusFile (PROTEUS)
+
+
+SEGMENT                               DATA_GROUP 
+  +--> CALLED SEGMENT               START    LENGTH
+---------------------------------------------------
+?C_C51STARTUP                       -----    -----
+  +--> ?PR?MAIN?PROTEUS
+
+?PR?MAIN?PROTEUS                    -----    -----
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/14/2021  22:04:31  PAGE 2
+
+
+  +--> ?PR?INIT?PROTEUS
+  +--> ?PR?_COMMAND?PROTEUS
+  +--> ?CO?PROTEUS
+  +--> ?PR?_STRING?PROTEUS
+  +--> ?PR?READTEMPERATURE?PROTEUS
+  +--> ?PR?_TEMPSHOW?PROTEUS
+  +--> ?PR?_DELAY_MS?PROTEUS
+
+?PR?INIT?PROTEUS                    -----    -----
+  +--> ?PR?_COMMAND?PROTEUS
+
+?PR?_COMMAND?PROTEUS                -----    -----
+  +--> ?PR?_DELAY_US?PROTEUS
+
+?PR?_STRING?PROTEUS                 000BH    0003H
+  +--> ?PR?_DISPLAY?PROTEUS
+
+?PR?_DISPLAY?PROTEUS                -----    -----
+  +--> ?PR?_DELAY_US?PROTEUS
+
+?PR?READTEMPERATURE?PROTEUS         -----    -----
+  +--> ?PR?INIT_18B20?PROTEUS
+  +--> ?PR?_WRITEONECHAR?PROTEUS
+  +--> ?PR?_DELAY_18B20?PROTEUS
+  +--> ?PR?READONECHAR?PROTEUS
+
+?PR?INIT_18B20?PROTEUS              -----    -----
+  +--> ?PR?_DELAY_18B20?PROTEUS
+
+?PR?_DELAY_18B20?PROTEUS            -----    -----
+  +--> ?PR?_WRITEONECHAR?PROTEUS
+
+?PR?READONECHAR?PROTEUS             -----    -----
+  +--> ?PR?_DELAY_18B20?PROTEUS
+
+?PR?_TEMPSHOW?PROTEUS               0008H    0003H
+  +--> ?PR?_COMMAND?PROTEUS
+  +--> ?PR?_DISPLAY?PROTEUS
+  +--> ?CO?PROTEUS
+  +--> ?PR?_STRING?PROTEUS
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\proteusFile (PROTEUS)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PROTEUS
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  C:09CCH         PUBLIC        _delay_18B20
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  C:095EH         PUBLIC        Init_18B20
+  C:086DH         PUBLIC        ReadTemperature
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/14/2021  22:04:31  PAGE 3
+
+
+  B:0080H.0       PUBLIC        DQ
+  C:08D0H         PUBLIC        _string
+  C:08A8H         PUBLIC        ReadOneChar
+  C:091AH         PUBLIC        main
+  C:08F5H         PUBLIC        _WriteOneChar
+  C:0993H         PUBLIC        init
+  D:000EH         PUBLIC        temp
+  C:0800H         PUBLIC        _TempShow
+  C:093EH         PUBLIC        _delay_ms
+  B:00A0H.2       PUBLIC        en
+  B:0090H.5       PUBLIC        LED
+  C:0981H         PUBLIC        _delay_us
+  C:09FCH         PUBLIC        _command
+  B:00A0H.0       PUBLIC        rs
+  B:00A0H.1       PUBLIC        wr
+  C:09F2H         PUBLIC        _display
+  B:0090H.7       PUBLIC        Beep
+  -------         PROC          _DISPLAY
+  D:0007H         SYMBOL        c
+  C:09F2H         LINE#         16
+  C:09F2H         LINE#         17
+  C:09F2H         LINE#         18
+  C:09F4H         LINE#         19
+  C:09F6H         LINE#         20
+  C:09F6H         LINE#         21
+  C:09F6H         LINE#         22
+  C:09F9H         LINE#         23
+  C:09FBH         LINE#         24
+  -------         ENDPROC       _DISPLAY
+  -------         PROC          _STRING
+  D:000BH         SYMBOL        p
+  C:08D0H         LINE#         27
+  C:08D6H         LINE#         28
+  C:08D6H         LINE#         29
+  C:08E1H         LINE#         30
+  C:08E1H         LINE#         31
+  C:08F2H         LINE#         32
+  C:08F4H         LINE#         33
+  -------         ENDPROC       _STRING
+  -------         PROC          L?0046
+  -------         ENDPROC       L?0046
+  -------         PROC          _DELAY_US
+  D:0006H         SYMBOL        t
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:0981H         LINE#         34
+  C:0981H         LINE#         36
+  C:0992H         LINE#         37
+  -------         ENDPROC       _DELAY_US
+  -------         PROC          _DELAY_MS
+  D:0006H         SYMBOL        t
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0002H         SYMBOL        j
+  -------         ENDDO         
+  C:093EH         LINE#         38
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/14/2021  22:04:31  PAGE 4
+
+
+  C:093EH         LINE#         40
+  C:0948H         LINE#         41
+  C:095DH         LINE#         42
+  -------         ENDPROC       _DELAY_MS
+  -------         PROC          L?0047
+  -------         ENDPROC       L?0047
+  -------         PROC          _DELAY_18B20
+  D:0006H         SYMBOL        ti
+  C:09CCH         LINE#         43
+  C:09CCH         LINE#         44
+  C:09D6H         LINE#         45
+  -------         ENDPROC       _DELAY_18B20
+  -------         PROC          INIT_18B20
+  C:095EH         LINE#         46
+  C:095EH         LINE#         47
+  C:0960H         LINE#         48
+  C:0967H         LINE#         49
+  C:0969H         LINE#         50
+  C:0970H         LINE#         51
+  C:0972H         LINE#         52
+  -------         ENDPROC       INIT_18B20
+  -------         PROC          READONECHAR
+  -------         DO            
+  D:0005H         SYMBOL        i
+  D:0003H         SYMBOL        dat
+  -------         ENDDO         
+  C:08A8H         LINE#         54
+  C:08A8H         LINE#         55
+  C:08A9H         LINE#         56
+  C:08AAH         LINE#         57
+  C:08B6H         LINE#         58
+  C:08B8H         LINE#         59
+  C:08BBH         LINE#         60
+  C:08BDH         LINE#         61
+  C:08C0H         LINE#         62
+  C:08C3H         LINE#         63
+  C:08CAH         LINE#         64
+  C:08CDH         LINE#         65
+  C:08CFH         LINE#         66
+  -------         ENDPROC       READONECHAR
+  -------         PROC          _WRITEONECHAR
+  D:0005H         SYMBOL        dat
+  -------         DO            
+  D:0003H         SYMBOL        i
+  -------         ENDDO         
+  C:08F5H         LINE#         67
+  C:08F7H         LINE#         68
+  C:08F7H         LINE#         69
+  C:0903H         LINE#         70
+  C:0905H         LINE#         71
+  C:0909H         LINE#         72
+  C:0910H         LINE#         73
+  C:0912H         LINE#         74
+  C:0916H         LINE#         75
+  C:0919H         LINE#         76
+  -------         ENDPROC       _WRITEONECHAR
+  -------         PROC          READTEMPERATURE
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/14/2021  22:04:31  PAGE 5
+
+
+  -------         DO            
+  D:0002H         SYMBOL        a
+  D:0007H         SYMBOL        b
+  -------         ENDDO         
+  C:086DH         LINE#         77
+  C:086DH         LINE#         78
+  C:086FH         LINE#         79
+  C:0870H         LINE#         80
+  C:0873H         LINE#         81
+  C:0878H         LINE#         82
+  C:087AH         LINE#         83
+  C:087DH         LINE#         84
+  C:0880H         LINE#         85
+  C:0885H         LINE#         86
+  C:0887H         LINE#         87
+  C:088AH         LINE#         88
+  C:088FH         LINE#         89
+  C:0892H         LINE#         90
+  C:08A7H         LINE#         91
+  -------         ENDPROC       READTEMPERATURE
+  -------         PROC          INIT
+  C:0993H         LINE#         94
+  C:0993H         LINE#         95
+  C:0993H         LINE#         96
+  C:0998H         LINE#         97
+  C:099DH         LINE#         98
+  C:09A2H         LINE#         99
+  C:09A7H         LINE#         100
+  -------         ENDPROC       INIT
+  -------         PROC          _TEMPSHOW
+  D:0008H         SYMBOL        z
+  -------         DO            
+  D:0009H         SYMBOL        U
+  D:000AH         SYMBOL        T
+  D:0007H         SYMBOL        H
+  -------         ENDDO         
+  C:0800H         LINE#         104
+  C:0802H         LINE#         106
+  C:0807H         LINE#         112
+  C:0810H         LINE#         113
+  C:0820H         LINE#         114
+  C:082CH         LINE#         115
+  C:082FH         LINE#         116
+  C:0834H         LINE#         117
+  C:0839H         LINE#         118
+  C:0842H         LINE#         119
+  C:0868H         LINE#         120
+  C:086AH         LINE#         121
+  C:086CH         LINE#         122
+  -------         ENDPROC       _TEMPSHOW
+  -------         PROC          _COMMAND
+  D:0007H         SYMBOL        c
+  C:09FCH         LINE#         123
+  C:09FCH         LINE#         124
+  C:09FCH         LINE#         125
+  C:09FEH         LINE#         126
+  C:0A00H         LINE#         127
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/14/2021  22:04:31  PAGE 6
+
+
+  C:0A00H         LINE#         128
+  C:0A00H         LINE#         129
+  C:0A03H         LINE#         130
+  C:0A05H         LINE#         131
+  -------         ENDPROC       _COMMAND
+  -------         PROC          MAIN
+  C:091AH         LINE#         132
+  C:091AH         LINE#         133
+  C:091CH         LINE#         134
+  C:091FH         LINE#         135
+  C:091FH         LINE#         136
+  C:0924H         LINE#         137
+  C:092DH         LINE#         138
+  C:0930H         LINE#         139
+  C:0935H         LINE#         140
+  C:093CH         LINE#         141
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        PROTEUS
+
+  -------         MODULE        ?C?CLDPTR
+  C:09ACH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 01E1H BYTE (23%) *
+******************************************************************************
+
+Program Size: data=16.0 xdata=0 code=521
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

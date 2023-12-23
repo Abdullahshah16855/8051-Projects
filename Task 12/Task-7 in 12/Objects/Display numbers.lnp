@@ -1,0 +1,3 @@
+".\Objects\display numbers.obj" 
+TO ".\Objects\Display numbers" 
+PRINT(".\Listings\Display numbers.m51") RAMSIZE(256) 

@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\led button polling.obj" 
+TO ".\Objects\All buttons Polling" 
+PRINT(".\Listings\All buttons Polling.m51") RAMSIZE(256) 

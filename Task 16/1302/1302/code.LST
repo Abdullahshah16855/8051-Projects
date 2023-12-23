@@ -1,0 +1,559 @@
+C51 COMPILER V9.60.0.0   CODE                                                              10/06/2021 15:37:34 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE CODE
+OBJECT MODULE PLACED IN code.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE code.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          //applicance part
+   3          sbit app1 = P3^2;
+   4          sbit app2 = P3^3;
+   5          sbit app3 = P3^4;
+   6          sbit app4 = P3^5;
+   7          sbit app5 = P3^6;
+   8          
+   9          //lcd Part
+  10          sfr LCD_DATA = 0x90;
+  11          sbit En = P2^0;
+  12          sbit RW = P2^1;
+  13          sbit RS = P2^2;
+  14          sbit busy = P1^7;
+  15          
+  16          //DHT11 part
+  17          sbit sensorPin = P2^3;
+  18          
+  19          //DS1302 Part
+  20          sbit rtcRST = P2^4;
+  21          sbit rtcSCLK = P2^5;
+  22          sbit rtcIO = P2^6;
+  23          
+  24          //Keys part
+  25          sbit temp = P0^7;
+  26          sbit time = P0^6;
+  27          sbit exit = P0^5;
+  28          sbit min = P0^4;
+  29          sbit hour = P0^3;
+  30          sbit date = P0^2;
+  31          sbit month = P0^1;
+  32          sbit year = P0^0;
+  33          sbit day = P2^7;
+  34          sbit configure = P3^7;
+  35          
+  36          //some functional register
+  37          unsigned char bdata shiftRegister;
+  38          
+  39          //some register bits
+  40          sbit lowBit = shiftRegister^0;
+  41          sbit highBit = shiftRegister^7;
+  42          
+  43          unsigned char lcdCmds[4] = {0x38,0x01,0x0E};
+  44          
+  45          void customDelay(unsigned char, unsigned char);
+  46          void initializeSerial();
+  47          void lcdCmd(unsigned char);
+  48          void lcdData(unsigned char);
+  49          void lcdReady();
+  50          void customDelay(unsigned char,unsigned char );
+  51          void lcdMessage(unsigned char *);
+  52          void oneSecondDelay();
+  53          void asciiDisplay(unsigned char, unsigned char, unsigned char);
+  54          void rtcCommand(unsigned char );
+  55          unsigned char rtcRead(unsigned char);
+C51 COMPILER V9.60.0.0   CODE                                                              10/06/2021 15:37:34 PAGE 2   
+
+  56          void rtcWrite(unsigned char, unsigned char);
+  57          void displayTime();
+  58          void setTime(unsigned char);
+  59          void setDate(unsigned char);
+  60          void initializeAll();
+  61          void systemView();
+  62          void writeBurst();
+  63          void initialize_serial();
+  64          
+  65          sbit mybit = P1^0;
+  66          
+  67          void main(void){
+  68   1        initializeAll();
+  69   1        while(1){
+  70   2          systemView();
+  71   2        }
+  72   1          
+  73   1      }
+  74          void writeBurst(){
+  75   1        unsigned char i;
+  76   1        unsigned char z[] = {0x00,0x12,0x12,0x25,0x06,0x07,0x16,0X00};//yy,dd,mm,hh,mm,ss
+  77   1        rtcCommand(0xBE);
+  78   1        for(i=0; i<0x08; i++){
+  79   2          rtcCommand(z[i]);
+  80   2          customDelay(0xFF,0xF0);
+  81   2        }
+  82   1        rtcRST = 0;
+  83   1      }
+  84          
+  85          void systemView(){
+  86   1        lcdCmd(0x01);
+  87   1        if(time == 0){
+  88   2          lcdCmd(0x01); 
+  89   2          lcdCmd(0x80);
+  90   2          lcdMessage("Time ");
+  91   2          while(exit == 1){
+  92   3            displayTime();
+  93   3            if(configure == 0){
+  94   4              lcdCmd(0x01);
+  95   4              lcdMessage("Burst Mode Write");
+  96   4              oneSecondDelay();
+  97   4              writeBurst();
+  98   4              lcdCmd(0x01);
+  99   4            }
+ 100   3          }
+ 101   2        }
+ 102   1        else if(hour == 0)
+ 103   1          setTime('h');
+ 104   1        else if(min == 0)
+ 105   1          setTime('m');
+ 106   1        else if(date == 0)
+ 107   1          setDate('d');
+ 108   1        else if (month == 0)
+ 109   1          setDate('m');
+ 110   1        else if (year == 0)
+ 111   1          setDate('y');
+ 112   1        else if (day == 0)
+ 113   1          setDate('a');
+ 114   1      }
+ 115          void initializeAll(){
+ 116   1        unsigned char z;
+ 117   1        initializeSerial();
+C51 COMPILER V9.60.0.0   CODE                                                              10/06/2021 15:37:34 PAGE 3   
+
+ 118   1        app1 = 1;
+ 119   1        app2 = 1;
+ 120   1        app3 = 1;
+ 121   1        app4 = 1;
+ 122   1        rtcRST = 0;
+ 123   1        rtcSCLK = 0;
+ 124   1        rtcIO = 1;  
+ 125   1        for(z=0; z<4; z++){
+ 126   2          lcdCmd(lcdCmds[z]);
+ 127   2        }
+ 128   1        oneSecondDelay();
+ 129   1      }
+ 130          void setDate(unsigned char entity){
+ 131   1        unsigned char tmp,z;
+ 132   1        while(exit == 1){
+ 133   2          switch (entity){
+ 134   3            case 'd':
+ 135   3              tmp = rtcRead(0x87);
+ 136   3              break;
+ 137   3            case 'm':
+ 138   3              tmp = rtcRead(0x89);
+ 139   3              break;
+ 140   3            case 'y':
+ 141   3              tmp = rtcRead(0x8D);
+ 142   3              break;
+ 143   3            case 'a':
+ 144   3              tmp = rtcRead(0x8B);
+ 145   3              break;
+ 146   3            default : 
+ 147   3              break;
+ 148   3          }
+ 149   2          while(exit == 1){
+ 150   3            if(entity == 'y')
+ 151   3              asciiDisplay(tmp,'y','t');
+ 152   3            else if(entity == 'm')
+ 153   3              asciiDisplay(tmp,'c','t');
+ 154   3            else if(entity == 'd')
+ 155   3              asciiDisplay(tmp,'d','t');
+ 156   3            else if(entity == 'a')
+ 157   3              asciiDisplay(tmp,'b','t');
+ 158   3            if(temp == 0){
+ 159   4              if(tmp == 0x31 && entity == 'd')
+ 160   4                tmp = 0x00;
+ 161   4              else if(tmp == 0x99 && entity == 'y')
+ 162   4                tmp = 0x00;
+ 163   4              else if(tmp == 0x12 && entity == 'm')
+ 164   4                tmp = 0x00;
+ 165   4              else if(tmp == 0x07 && entity == 'a')
+ 166   4                tmp = 0x00;
+ 167   4              else if(tmp == 0x09)
+ 168   4                tmp = 0x10;
+ 169   4              else if (tmp == 0x19)
+ 170   4                tmp = 0x20;
+ 171   4              else if(tmp == 0x29)
+ 172   4                tmp = 0x30;
+ 173   4              else if(tmp == 0x39)
+ 174   4                tmp = 0x40;
+ 175   4              else if (tmp == 0x49)
+ 176   4                tmp = 0x50;
+ 177   4              else if (tmp == 0x59)
+ 178   4                tmp = 0x60;
+ 179   4              else if (tmp == 0x69)
+C51 COMPILER V9.60.0.0   CODE                                                              10/06/2021 15:37:34 PAGE 4   
+
+ 180   4                tmp = 0x70;
+ 181   4              else if (tmp == 0x79)
+ 182   4                tmp = 0x80;
+ 183   4              else if (tmp == 0x89)
+ 184   4                tmp = 0x90;
+ 185   4              else 
+ 186   4                tmp ++;
+ 187   4              for(z=0;z<3;z++){
+ 188   5                customDelay(0x18,0x18);
+ 189   5              }
+ 190   4            }
+ 191   3            if(time == 0){
+ 192   4              if(tmp == 0x00 && entity == 'd')
+ 193   4                tmp = 0x31;
+ 194   4              else if(tmp == 0x00 && entity == 'y')
+ 195   4                tmp = 0x99;
+ 196   4              else if(tmp == 0x00 && entity == 'm')
+ 197   4                tmp = 0x12;
+ 198   4              else if(tmp == 0x00 && entity == 'a')
+ 199   4                tmp = 0x07;
+ 200   4              else if(tmp == 0x010)
+ 201   4                tmp = 0x09;
+ 202   4              else if (tmp == 0x20)
+ 203   4                tmp = 0x19;
+ 204   4              else if(tmp == 0x30)
+ 205   4                tmp = 0x29;
+ 206   4              else if(tmp == 0x40)
+ 207   4                tmp = 0x39;
+ 208   4              else if (tmp == 0x50)
+ 209   4                tmp = 0x49;
+ 210   4              else if (tmp == 0x60)
+ 211   4                tmp = 0x59;
+ 212   4              else if (tmp == 0x70)
+ 213   4                tmp = 0x69;
+ 214   4              else if (tmp == 0x80)
+ 215   4                tmp = 0x79;
+ 216   4              else if (tmp == 0x90)
+ 217   4                tmp = 0x89;
+ 218   4              else 
+ 219   4                tmp --;
+ 220   4              for(z=0;z<3;z++){
+ 221   5                customDelay(0x18,0x18);
+ 222   5              }
+ 223   4            }
+ 224   3          }
+ 225   2          if(entity == 'y')
+ 226   2              rtcWrite(0x8C,tmp);
+ 227   2          else if(entity == 'm')
+ 228   2            rtcWrite(0x88,tmp);
+ 229   2          else if(entity == 'd')
+ 230   2            rtcWrite(0x86,tmp);
+ 231   2          else if(entity == 'a')
+ 232   2            rtcWrite(0x8A,tmp);
+ 233   2        } 
+ 234   1      }
+ 235          void setTime(unsigned char entity){
+ 236   1        unsigned char z,tmp;
+ 237   1        while(exit == 1){
+ 238   2          if(entity == 'h')
+ 239   2            tmp = rtcRead(0x85);
+ 240   2          else if(entity == 'm')
+ 241   2            tmp = rtcRead(0x83);
+C51 COMPILER V9.60.0.0   CODE                                                              10/06/2021 15:37:34 PAGE 5   
+
+ 242   2          while(exit == 1){
+ 243   3            if(entity == 'h')
+ 244   3              asciiDisplay(tmp,'h','t');
+ 245   3            else
+ 246   3              asciiDisplay(tmp,'m','t');
+ 247   3            if(temp == 0){
+ 248   4                if(tmp == 0x09)
+ 249   4                tmp = 0x10;
+ 250   4              else if(tmp == 0x19)
+ 251   4                tmp  = 0x20;
+ 252   4              else if(tmp == 0x23 && entity == 'h')
+ 253   4                tmp = 0x00;
+ 254   4              else if(tmp == 0x29)
+ 255   4                tmp = 0x30;
+ 256   4              else if(tmp == 0x39)
+ 257   4                tmp = 0x40;
+ 258   4              else if(tmp == 0x49)
+ 259   4                tmp = 0x50;
+ 260   4              else if(tmp == 0x59)
+ 261   4                tmp = 0x00;
+ 262   4              else{
+ 263   5                tmp ++;
+ 264   5              }
+ 265   4              for(z=0;z<3;z++){
+ 266   5                customDelay(0x18,0x18);
+ 267   5              }
+ 268   4            }
+ 269   3            else if(time == 0){
+ 270   4              if(tmp == 0x10)
+ 271   4                tmp = 0x09;
+ 272   4              else if(tmp == 0x00 && entity == 'h')
+ 273   4                tmp = 0x23;
+ 274   4              else if(tmp == 0x00 && entity == 'm')
+ 275   4                tmp = 0x59;
+ 276   4              else if(tmp == 0x20)
+ 277   4                tmp = 0x19;
+ 278   4              else if (tmp == 0x30)
+ 279   4                tmp = 0x29;
+ 280   4              else if(tmp == 0x40)
+ 281   4                tmp = 0x39;
+ 282   4              else if(tmp == 0x50)
+ 283   4                tmp = 0x49;
+ 284   4              else 
+ 285   4                tmp--;
+ 286   4              for(z=0;z<3;z++){
+ 287   5                customDelay(0x18,0x18);
+ 288   5              }
+ 289   4            }
+ 290   3          }
+ 291   2          if(entity == 'h')
+ 292   2            rtcWrite(0x84,tmp);
+ 293   2          else
+ 294   2            rtcWrite(0x82,tmp);
+ 295   2        }
+ 296   1      }
+ 297          void displayTime(){
+ 298   1        unsigned char h,m,s,y,mt,d,day;
+ 299   1        h = rtcRead(0x85);
+ 300   1        m = rtcRead(0x83);
+ 301   1        s = rtcRead(0x81);
+ 302   1        y = rtcRead(0x8D);
+ 303   1        mt = rtcRead(0x89);
+C51 COMPILER V9.60.0.0   CODE                                                              10/06/2021 15:37:34 PAGE 6   
+
+ 304   1        d = rtcRead(0x87);
+ 305   1        day = rtcRead(0x8B);
+ 306   1        asciiDisplay(h,'h','t');
+ 307   1        asciiDisplay(m,'m','t');
+ 308   1        asciiDisplay(s,'s','t');
+ 309   1        asciiDisplay(day,'b','t');
+ 310   1        asciiDisplay(y,'y','t');
+ 311   1        asciiDisplay(mt,'c','t');
+ 312   1        asciiDisplay(d,'d','t');
+ 313   1      }
+ 314          void rtcCommand(unsigned char c){
+ 315   1        unsigned char z;
+ 316   1        shiftRegister = c;
+ 317   1        rtcRST = 1;
+ 318   1        for(z=0; z<8; z++){
+ 319   2          rtcIO = lowBit;
+ 320   2          rtcSCLK = 1;
+ 321   2          customDelay(0xFF,0x00);
+ 322   2          rtcSCLK = 0;
+ 323   2          customDelay(0xFF,0x00);
+ 324   2          shiftRegister = shiftRegister >> 1;
+ 325   2        }
+ 326   1      }
+ 327          unsigned char rtcRead(unsigned char address){
+ 328   1        unsigned char z;
+ 329   1        rtcCommand(address);
+ 330   1        for(z = 0; z<8; z++){
+ 331   2          shiftRegister = shiftRegister >> 1;
+ 332   2          highBit = rtcIO;
+ 333   2          rtcSCLK = 1;
+ 334   2          customDelay(0xFF,0x00);
+ 335   2          rtcSCLK = 0;
+ 336   2          customDelay(0xFF,0x00);
+ 337   2        }
+ 338   1        rtcRST = 0;
+ 339   1        return shiftRegister;
+ 340   1      }
+ 341          void rtcWrite(unsigned char address, unsigned char byte){
+ 342   1        rtcCommand(address);
+ 343   1        rtcCommand(byte);
+ 344   1        rtcRST = 0;
+ 345   1      }
+ 346          void initializeSerial(){
+ 347   1        TMOD = 0x21;
+ 348   1        TH1 = 0xFD;
+ 349   1        SCON = 0x50;
+ 350   1        TR1 = 1;
+ 351   1      }
+ 352          
+ 353          void customDelay(unsigned char h, unsigned char l){
+ 354   1        TH0 = h;
+ 355   1        TL0 = l;
+ 356   1        TR0 = 1;
+ 357   1        while(TF0 == 0);
+ 358   1        TR0 = 0;
+ 359   1        TF0 = 0;
+ 360   1      }
+ 361          void oneSecondDelay(){
+ 362   1        unsigned char z;
+ 363   1        for(z = 0; z<0x0E; z++){
+ 364   2          customDelay(0x00,0x00);
+ 365   2        }
+C51 COMPILER V9.60.0.0   CODE                                                              10/06/2021 15:37:34 PAGE 7   
+
+ 366   1      }
+ 367          void asciiDisplay(unsigned char byte, unsigned char flag, unsigned char entity){
+ 368   1        if(entity == 'h'){
+ 369   2          unsigned char a,b,c;
+ 370   2          a = byte / 100;
+ 371   2          byte = byte %100;
+ 372   2          b = byte / 10;
+ 373   2          byte = byte % 10;
+ 374   2          c =  byte;
+ 375   2          a = a | 0x30;
+ 376   2          b = b | 0x30;
+ 377   2          c = c | 0x30;
+ 378   2          if(flag == 'a'){
+ 379   3            lcdCmd(0xC9);
+ 380   3            if(a == 0x30);
+ 381   3            else{ lcdData(a); }
+ 382   3            if (a == 0x30 && b == 0x30);
+ 383   3            else{lcdData(b);}
+ 384   3            lcdData(c);
+ 385   3          }
+ 386   2          else if(flag == 'b'){
+ 387   3            lcdCmd(0xCB);
+ 388   3            lcdData('.');
+ 389   3            lcdData(a);
+ 390   3            lcdData(b);
+ 391   3            if(c == 0x30);
+ 392   3            else
+ 393   3              lcdData(c);
+ 394   3            lcdData('%');
+ 395   3          }
+ 396   2          else if(flag == 'c'){
+ 397   3            lcdCmd(0x85);
+ 398   3            if(a == 0x30);
+ 399   3            else{ lcdData(a); }
+ 400   3            if (a == 0x30 && b == 0x30);
+ 401   3            else{lcdData(b);}
+ 402   3            lcdData(c);
+ 403   3          }
+ 404   2          else if(flag == 'd'){
+ 405   3            lcdCmd(0x87);
+ 406   3            lcdData('.');
+ 407   3            lcdData(a);
+ 408   3            lcdData(b);
+ 409   3            if(c == 0x30);
+ 410   3            else
+ 411   3              lcdData(c);
+ 412   3            lcdData(0xDF);
+ 413   3            lcdData('C');
+ 414   3          }
+ 415   2        }
+ 416   1        else{
+ 417   2          unsigned char a,b;
+ 418   2          a = byte & 0xF0;
+ 419   2          a = a >> 4;
+ 420   2          a = a | 0x30;
+ 421   2          b = byte & 0x0F;
+ 422   2          b = b | 0x30;
+ 423   2          if(flag == 'h'){
+ 424   3            lcdCmd(0x85);
+ 425   3            lcdData(a);
+ 426   3            lcdCmd(0x86);
+ 427   3            lcdData(b);
+C51 COMPILER V9.60.0.0   CODE                                                              10/06/2021 15:37:34 PAGE 8   
+
+ 428   3            lcdCmd(0x87);
+ 429   3            lcdData(':');
+ 430   3          }
+ 431   2          else if(flag == 'm'){
+ 432   3            lcdCmd(0x88);
+ 433   3            lcdData(a);
+ 434   3            lcdCmd(0x89);
+ 435   3            lcdData(b);
+ 436   3            lcdCmd(0x8A);
+ 437   3            lcdData(':');
+ 438   3          }
+ 439   2          else if(flag == 's'){
+ 440   3            lcdCmd(0x8B);
+ 441   3            lcdData(a);
+ 442   3            lcdCmd(0x8C);
+ 443   3            lcdData(b);
+ 444   3          }
+ 445   2          else if(flag == 'd'){
+ 446   3            lcdCmd(0xC5);
+ 447   3            lcdData(a);
+ 448   3            lcdCmd(0xC6);
+ 449   3            lcdData(b);
+ 450   3            lcdCmd(0xC7);
+ 451   3            lcdData('-');
+ 452   3          }
+ 453   2          else if(flag =='c'){
+ 454   3            lcdCmd(0xC8);
+ 455   3            lcdData(a);
+ 456   3            lcdCmd(0xC9);
+ 457   3            lcdData(b);
+ 458   3            lcdCmd(0xCA);
+ 459   3            lcdData('-');
+ 460   3          }
+ 461   2          else if(flag == 'y'){
+ 462   3            lcdCmd(0xCB);
+ 463   3            lcdMessage("20");
+ 464   3            lcdCmd(0xCD);
+ 465   3            lcdData(a);
+ 466   3            lcdCmd(0xCE);
+ 467   3            lcdData(b);
+ 468   3          }
+ 469   2          else if(flag == 'b'){
+ 470   3            lcdCmd(0xC0);
+ 471   3            if(byte == 0x01)
+ 472   3              lcdMessage("SUN,");
+ 473   3            else if(byte == 0x02)
+ 474   3              lcdMessage("MON,");
+ 475   3            else if(byte == 0x03)
+ 476   3              lcdMessage("TUE,");
+ 477   3            else if(byte == 0x04)
+ 478   3              lcdMessage("WED,");
+ 479   3            else if(byte == 0x05)
+ 480   3              lcdMessage("THU,");
+ 481   3            else if(byte == 0x06)
+ 482   3              lcdMessage("FRI,");
+ 483   3            else if(byte == 0x07)
+ 484   3              lcdMessage("SAT,");
+ 485   3          }
+ 486   2        }
+ 487   1      }
+ 488          void lcdMessage(unsigned char *c){
+ 489   1        while(*c !=0){
+C51 COMPILER V9.60.0.0   CODE                                                              10/06/2021 15:37:34 PAGE 9   
+
+ 490   2          lcdData(*c++);
+ 491   2        }
+ 492   1      }
+ 493          void lcdReady(){
+ 494   1        RS = 0;
+ 495   1        RW = 1;
+ 496   1        while(busy == 1){
+ 497   2          En = 0;
+ 498   2          customDelay(0xF9,0xFF);
+ 499   2          En = 1;
+ 500   2        }
+ 501   1      }
+ 502          void lcdData(unsigned char dta){
+ 503   1        lcdReady();
+ 504   1        LCD_DATA = dta;
+ 505   1        RS = 1;
+ 506   1        RW = 0;
+ 507   1        En = 1;
+ 508   1        customDelay(0xF9,0xFF);//0x00,0x10
+ 509   1        En = 0;
+ 510   1      }
+ 511          
+ 512          void lcdCmd(unsigned char dta){
+ 513   1        lcdReady();
+ 514   1        LCD_DATA = dta;
+ 515   1        RS = 0;
+ 516   1        RW = 0;
+ 517   1        En = 1;
+ 518   1        customDelay(0xF9,0xFF);
+ 519   1        En = 0;
+ 520   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   2011    ----
+   CONSTANT SIZE    =     69    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5      34
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,231 @@
+C51 COMPILER V9.60.0.0   RTC                                                               10/12/2021 05:08:18 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE RTC
+OBJECT MODULE PLACED IN .\Objects\RTC.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE RTC.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\RTC.l
+                    -st) TABS(2) OBJECT(.\Objects\RTC.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include "LCD.h"
+*** WARNING C323 IN LINE 1 OF LCD.h: newline expected, extra characters found
+   3          
+   4          void main(void)
+   5          {
+   6   1        
+   7   1        initializeAll();
+   8   1        rtcWrite(0x80,0x00);  // sec
+   9   1        rtcWrite(0x82,0x40);    //min
+  10   1        rtcWrite(0x84,0x01);    //hour
+  11   1        rtcWrite(0x8C,0x21);    //year
+  12   1        rtcWrite(0x88,0x10);     //month
+  13   1        rtcWrite(0x86,0x08);      //date
+  14   1        rtcWrite(0x8A,0x06);    //day
+  15   1        while(1)
+  16   1      {
+  17   2          systemView();
+  18   2      } 
+  19   1      }
+  20          
+  21          void displayTime(){
+  22   1      
+  23   1        //rtcWrite(0x84,0x10);
+  24   1        //rtcWrite(0x82,0x10);
+  25   1      h = rtcRead(0x85);
+  26   1        m = rtcRead(0x83);
+  27   1        s = rtcRead(0x81);
+  28   1        y = rtcRead(0x8D);
+  29   1        mt = rtcRead(0x89);
+  30   1        d = rtcRead(0x87);
+  31   1        day = rtcRead(0x8B);
+  32   1        asciiDisplay(h,'h');
+  33   1        asciiDisplay(m,'m');
+  34   1        asciiDisplay(s,'s');
+  35   1        asciiDisplay(day,'b');
+  36   1        asciiDisplay(y,'y');
+  37   1        asciiDisplay(mt,'c');
+  38   1        asciiDisplay(d,'d');
+  39   1         //rtcWrite(0x80,0x02);
+  40   1      }
+  41          
+  42          
+  43          
+  44          void rtcCommand(unsigned char c){
+  45   1        unsigned char z;
+  46   1        shiftRegister = c;
+  47   1        CE = 1;
+  48   1        for(z=0; z<8; z++){
+  49   2          IO = lowBit;
+  50   2          SCLK = 1;
+  51   2          customDelay(0xFF,0x00);
+  52   2          SCLK = 0;
+  53   2          customDelay(0xFF,0x00);
+C51 COMPILER V9.60.0.0   RTC                                                               10/12/2021 05:08:18 PAGE 2   
+
+  54   2          shiftRegister = shiftRegister >> 1;
+  55   2        }
+  56   1      }
+  57          unsigned char rtcRead(unsigned char address)
+  58            {
+  59   1        unsigned char z;
+  60   1        rtcCommand(address);
+  61   1        for(z = 0; z<8; z++)
+  62   1          {
+  63   2          shiftRegister = shiftRegister >> 1;
+  64   2          highBit = IO;
+  65   2          SCLK = 1;
+  66   2          customDelay(0xFF,0x00);
+  67   2          SCLK = 0;
+  68   2          customDelay(0xFF,0x00);
+  69   2        }
+  70   1        CE = 0;
+  71   1        return shiftRegister;
+  72   1      }
+  73          void initializeAll(){
+  74   1        initializeSerial();
+  75   1        init();
+  76   1        CE = 0;
+  77   1        SCLK = 0;
+  78   1        IO = 1; 
+  79   1        oneSecondDelay();
+  80   1      }
+  81          void initializeSerial(){
+  82   1        TMOD = 0x21;
+  83   1        TH1 = 0xFD;
+  84   1        SCON = 0x50;
+  85   1        TR1 = 1;
+  86   1      }
+  87          void oneSecondDelay(){
+  88   1        unsigned char z;
+  89   1        for(z = 0; z<0x0E; z++){
+  90   2          customDelay(0x00,0x00);
+  91   2        }
+  92   1      }
+  93          void customDelay(unsigned char h, unsigned char l){
+  94   1        TH0 = h;
+  95   1        TL0 = l;
+  96   1        TR0 = 1;
+  97   1        while(TF0 == 0);
+  98   1        TR0 = 0;
+  99   1        TF0 = 0;
+ 100   1      }
+ 101          void asciiDisplay(unsigned char byte, unsigned char flag){
+ 102   1        
+ 103   1          unsigned char a,b;
+ 104   1          a = byte & 0xF0;
+ 105   1          a = a >> 4;
+ 106   1          a = a | 0x30;
+ 107   1          b = byte & 0x0F;
+ 108   1          b = b | 0x30;
+ 109   1          if(flag == 'h'){
+ 110   2            command(0x85);
+ 111   2            display(a);
+ 112   2            command(0x86);
+ 113   2            display(b);
+ 114   2            command(0x87);
+ 115   2            display(':');
+C51 COMPILER V9.60.0.0   RTC                                                               10/12/2021 05:08:18 PAGE 3   
+
+ 116   2          }
+ 117   1          else if(flag == 'm'){
+ 118   2            command(0x88);
+ 119   2            display(a);
+ 120   2            command(0x89);
+ 121   2            display(b);
+ 122   2            command(0x8A);
+ 123   2            display(':');
+ 124   2          }
+ 125   1          else if(flag == 's'){
+ 126   2            command(0x8B);
+ 127   2            display(a);
+ 128   2            command(0x8C);
+ 129   2            display(b);
+ 130   2          }
+ 131   1          else if(flag == 'd'){
+ 132   2            command(0xC5);
+ 133   2            display(a);
+ 134   2            command(0xC6);
+ 135   2            display(b);
+ 136   2            command(0xC7);
+ 137   2            display('-');
+ 138   2          }
+ 139   1          else if(flag =='c'){
+ 140   2            command(0xC8);
+ 141   2            display(a);
+ 142   2            command(0xC9);
+ 143   2            display(b);
+ 144   2            command(0xCA);
+ 145   2            display('-');
+ 146   2          }
+ 147   1          else if(flag == 'y'){
+ 148   2            command(0xCB);
+ 149   2            string("20");
+ 150   2            command(0xCD);
+ 151   2            display(a);
+ 152   2            command(0xCE);
+ 153   2            display(b);
+ 154   2          }
+ 155   1          else if(flag == 'b'){
+ 156   2            command(0xC0);
+ 157   2            if(byte == 0x01)
+ 158   2              string("SUN,");
+ 159   2            else if(byte == 0x02)
+ 160   2              string("MON,");
+ 161   2            else if(byte == 0x03)
+ 162   2              string("TUE,");
+ 163   2            else if(byte == 0x04)
+ 164   2              string("WED,");
+ 165   2            else if(byte == 0x05)
+ 166   2              string("THU,");
+ 167   2            else if(byte == 0x06)
+ 168   2              string("FRI,");
+ 169   2            else if(byte == 0x07)
+ 170   2              string("SAT,");
+ 171   2          }
+ 172   1        }
+ 173          
+ 174          void systemView()
+ 175          {
+ 176   1        command(0x01);
+ 177   1        if(time == 0){
+C51 COMPILER V9.60.0.0   RTC                                                               10/12/2021 05:08:18 PAGE 4   
+
+ 178   2      command(0x01); 
+ 179   2      command(0x80);
+ 180   2           
+ 181   2          //rtcWrite(0x82,0x29);
+ 182   2          string("Time ");
+ 183   2          while(exit == 1){
+ 184   3            displayTime();
+ 185   3          /*  if(configure == 0){
+ 186   3          command(0x01);
+ 187   3              string("Burst Mode Write");
+ 188   3              oneSecondDelay();
+ 189   3              writeBurst();
+ 190   3          command(0x01);*/
+ 191   3            }
+ 192   2          }
+ 193   1        }
+ 194          
+ 195            void rtcWrite(unsigned char address, unsigned char byte)
+ 196          {
+ 197   1        rtcCommand(address);
+ 198   1        rtcCommand(byte);
+ 199   1        CE=0;
+ 200   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    799    ----
+   CONSTANT SIZE    =     44    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9      10
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

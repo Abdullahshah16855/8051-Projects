@@ -1,0 +1,335 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    02/20/2022  13:12:13  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\task_18_part 3_8bit_counter.obj TO .\Objects\EEPROM_WORKING PRINT (.\Listings\EEPR
+>> OM_WORKING.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\task_18_part 3_8bit_counter.obj (TASK_18_PART_3_8BIT_COUNTER)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\EEPROM_WORKING (TASK_18_PART_3_8BIT_COUNTER)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     002EH     UNIT         ?DT?TASK_18_PART_3_8BIT_COUNTER
+            DATA    0036H     0003H     UNIT         _DATA_GROUP_
+            IDATA   0039H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+                    000EH     07F2H                  *** GAP ***
+            CODE    0800H     0102H     UNIT         ?PR?TIMER0_INTRUPT?TASK_18_PART_3_8BIT_COUNTER
+            CODE    0902H     008CH     UNIT         ?C_C51STARTUP
+            CODE    098EH     003FH     UNIT         ?PR?READ_EEPROM?TASK_18_PART_3_8BIT_COUNTER
+            CODE    09CDH     0035H     UNIT         ?C_INITSEG
+            CODE    0A02H     002FH     UNIT         ?PR?_READ_DATA?TASK_18_PART_3_8BIT_COUNTER
+            CODE    0A31H     0026H     UNIT         ?PR?_DELAY?TASK_18_PART_3_8BIT_COUNTER
+            CODE    0A57H     0026H     UNIT         ?PR?_SAVE_DATA?TASK_18_PART_3_8BIT_COUNTER
+            CODE    0A7DH     001DH     UNIT         ?PR?_WRITE_LCD_EEPROM?TASK_18_PART_3_8BIT_COUNTER
+            CODE    0A9AH     0012H     UNIT         ?PR?START_OPRATION?TASK_18_PART_3_8BIT_COUNTER
+            CODE    0AACH     0010H     UNIT         ?PR?STOP_OPRATION?TASK_18_PART_3_8BIT_COUNTER
+            CODE    0ABCH     0010H     UNIT         ?PR?MAIN?TASK_18_PART_3_8BIT_COUNTER
+            CODE    0ACCH     000FH     UNIT         ?PR?AKNOWLEDGE?TASK_18_PART_3_8BIT_COUNTER
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\EEPROM_WORKING (TASK_18_PART_3_8BIT_COUNTER)
+
+
+SEGMENT                                            DATA_GROUP 
+  +--> CALLED SEGMENT                            START    LENGTH
+----------------------------------------------------------------
+?PR?TIMER0_INTRUPT?TASK_18_PART_3_8BI...         -----    -----
+  +--> ?PR?_SAVE_DATA?TASK_18_PART_3_8BIT_CO...
+  +--> ?PR?_READ_DATA?TASK_18_PART_3_8BIT_CO...
+
+?PR?_SAVE_DATA?TASK_18_PART_3_8BIT_CO...         0036H    0002H
+  +--> ?PR?START_OPRATION?TASK_18_PART_3_8BI...
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  02/20/2022  13:12:13  PAGE 2
+
+
+  +--> ?PR?_WRITE_LCD_EEPROM?TASK_18_PART_3_...
+  +--> ?PR?STOP_OPRATION?TASK_18_PART_3_8BIT...
+  +--> ?PR?_DELAY?TASK_18_PART_3_8BIT_COUNTER
+
+?PR?START_OPRATION?TASK_18_PART_3_8BI...         -----    -----
+  +--> ?PR?_DELAY?TASK_18_PART_3_8BIT_COUNTER
+
+?PR?_WRITE_LCD_EEPROM?TASK_18_PART_3_...         -----    -----
+  +--> ?PR?AKNOWLEDGE?TASK_18_PART_3_8BIT_CO...
+
+?PR?AKNOWLEDGE?TASK_18_PART_3_8BIT_CO...         -----    -----
+  +--> ?PR?_DELAY?TASK_18_PART_3_8BIT_COUNTER
+
+?PR?STOP_OPRATION?TASK_18_PART_3_8BIT...         -----    -----
+  +--> ?PR?_DELAY?TASK_18_PART_3_8BIT_COUNTER
+
+?PR?_READ_DATA?TASK_18_PART_3_8BIT_CO...         0036H    0001H
+  +--> ?PR?START_OPRATION?TASK_18_PART_3_8BI...
+  +--> ?PR?_WRITE_LCD_EEPROM?TASK_18_PART_3_...
+  +--> ?PR?READ_EEPROM?TASK_18_PART_3_8BIT_C...
+  +--> ?PR?STOP_OPRATION?TASK_18_PART_3_8BIT...
+  +--> ?PR?_DELAY?TASK_18_PART_3_8BIT_COUNTER
+
+?PR?READ_EEPROM?TASK_18_PART_3_8BIT_C...         0037H    0002H
+  +--> ?PR?_DELAY?TASK_18_PART_3_8BIT_COUNTER
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                                    -----    -----
+  +--> ?PR?MAIN?TASK_18_PART_3_8BIT_COUNTER
+  +--> ?C_INITSEG
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\EEPROM_WORKING (TASK_18_PART_3_8BIT_COUNTER)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TASK_18_PART_3_8BIT_COUNTER
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  C:0A9AH         PUBLIC        start_opration
+  D:0008H         PUBLIC        select
+  D:0018H         PUBLIC        read_catch
+  C:098EH         PUBLIC        read_eeprom
+  D:00A8H         PUBLIC        IE
+  C:0A37H         PUBLIC        _delay
+  C:0AACH         PUBLIC        stop_opration
+  D:0019H         PUBLIC        index
+  D:001BH         PUBLIC        value
+  C:0ABCH         PUBLIC        main
+  C:0ACCH         PUBLIC        aknowledge
+  C:0A57H         PUBLIC        _save_data
+  C:0A7DH         PUBLIC        _write_lcd_eeprom
+  D:0089H         PUBLIC        TMOD
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  02/20/2022  13:12:13  PAGE 3
+
+
+  B:00A0H.0       PUBLIC        sda
+  B:00A0H.1       PUBLIC        scl
+  D:008CH         PUBLIC        TH0
+  C:0800H         PUBLIC        timer0_intrupt
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  D:001DH         PUBLIC        i
+  D:001FH         PUBLIC        message
+  D:0033H         PUBLIC        newvalue
+  D:0035H         PUBLIC        z
+  C:0A02H         PUBLIC        _Read_data
+  C:0A33H         SYMBOL        L?0049
+  -------         PROC          L?0048
+  -------         ENDPROC       L?0048
+  C:0A33H         SYMBOL        L?0049
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        count
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0002H         SYMBOL        j
+  -------         ENDDO         
+  C:0A37H         LINE#         12
+  C:0A37H         LINE#         13
+  C:0A37H         LINE#         15
+  C:0A41H         LINE#         16
+  C:0A56H         LINE#         17
+  -------         ENDPROC       _DELAY
+  -------         PROC          AKNOWLEDGE
+  C:0ACCH         LINE#         20
+  C:0ACCH         LINE#         21
+  C:0ACCH         LINE#         22
+  C:0ACEH         LINE#         23
+  C:0AD1H         LINE#         24
+  C:0AD3H         LINE#         25
+  C:0AD6H         LINE#         26
+  C:0AD8H         LINE#         27
+  C:0ADAH         LINE#         28
+  -------         ENDPROC       AKNOWLEDGE
+  -------         PROC          START_OPRATION
+  C:0A9AH         LINE#         29
+  C:0A9AH         LINE#         30
+  C:0A9AH         LINE#         31
+  C:0A9CH         LINE#         32
+  C:0A9CH         LINE#         33
+  C:0A9FH         LINE#         34
+  C:0AA1H         LINE#         35
+  C:0AA4H         LINE#         36
+  C:0AA6H         LINE#         37
+  C:0AA9H         LINE#         38
+  C:0AABH         LINE#         40
+  -------         ENDPROC       START_OPRATION
+  -------         PROC          STOP_OPRATION
+  C:0AACH         LINE#         41
+  C:0AACH         LINE#         42
+  C:0AACH         LINE#         43
+  C:0AACH         LINE#         44
+  C:0AAFH         LINE#         45
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  02/20/2022  13:12:13  PAGE 4
+
+
+  C:0AB1H         LINE#         46
+  C:0AB4H         LINE#         47
+  C:0AB6H         LINE#         48
+  C:0AB9H         LINE#         49
+  C:0ABBH         LINE#         52
+  -------         ENDPROC       STOP_OPRATION
+  -------         PROC          _WRITE_LCD_EEPROM
+  D:0007H         SYMBOL        value
+  -------         DO            
+  D:0002H         SYMBOL        i
+  -------         ENDDO         
+  C:0A7DH         LINE#         53
+  C:0A7DH         LINE#         54
+  C:0A7DH         LINE#         55
+  C:0A80H         LINE#         57
+  C:0A80H         LINE#         58
+  C:0A80H         LINE#         59
+  C:0A84H         LINE#         61
+  C:0A86H         LINE#         62
+  C:0A88H         LINE#         63
+  C:0A8CH         LINE#         64
+  C:0A97H         LINE#         65
+  -------         ENDPROC       _WRITE_LCD_EEPROM
+  -------         PROC          READ_EEPROM
+  -------         DO            
+  D:0037H         SYMBOL        i
+  -------         ENDDO         
+  C:098EH         LINE#         68
+  C:098EH         LINE#         69
+  C:098EH         LINE#         70
+  C:0993H         LINE#         71
+  C:0995H         LINE#         72
+  C:0997H         LINE#         73
+  C:099BH         LINE#         74
+  C:099EH         LINE#         75
+  C:09A0H         LINE#         76
+  C:09A6H         LINE#         77
+  C:09B1H         LINE#         78
+  C:09B7H         LINE#         79
+  C:09B9H         LINE#         80
+  C:09CAH         LINE#         82
+  C:09CCH         LINE#         83
+  -------         ENDPROC       READ_EEPROM
+  -------         PROC          _SAVE_DATA
+  D:0036H         SYMBOL        Data
+  D:0037H         SYMBOL        address
+  D:0001H         SYMBOL        page_addr
+  C:0A57H         LINE#         85
+  C:0A5DH         LINE#         86
+  C:0A5DH         LINE#         87
+  C:0A60H         LINE#         88
+  C:0A69H         LINE#         89
+  C:0A6EH         LINE#         90
+  C:0A73H         LINE#         91
+  C:0A76H         LINE#         92
+  -------         ENDPROC       _SAVE_DATA
+  -------         PROC          _READ_DATA
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  02/20/2022  13:12:13  PAGE 5
+
+
+  D:0036H         SYMBOL        address
+  D:0001H         SYMBOL        page_addr
+  -------         DO            
+  D:0001H         SYMBOL        DATA
+  -------         ENDDO         
+  C:0A02H         LINE#         96
+  C:0A06H         LINE#         97
+  C:0A06H         LINE#         99
+  C:0A09H         LINE#         100
+  C:0A12H         LINE#         101
+  C:0A17H         LINE#         102
+  C:0A1AH         LINE#         103
+  C:0A23H         LINE#         104
+  C:0A28H         LINE#         105
+  C:0A2BH         LINE#         106
+  C:0A2EH         LINE#         108
+  C:0A30H         LINE#         110
+  -------         ENDPROC       _READ_DATA
+  -------         PROC          MAIN
+  C:0ABCH         LINE#         112
+  C:0ABCH         LINE#         113
+  C:0ABCH         LINE#         115
+  C:0ABFH         LINE#         116
+  C:0AC2H         LINE#         117
+  C:0AC5H         LINE#         118
+  C:0AC8H         LINE#         119
+  C:0ACAH         LINE#         120
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0_INTRUPT
+  C:0800H         LINE#         124
+  C:081BH         LINE#         127
+  C:0823H         LINE#         129
+  C:082CH         LINE#         130
+  C:082CH         LINE#         132
+  C:083BH         LINE#         133
+  C:0849H         LINE#         135
+  C:0877H         LINE#         136
+  C:0877H         LINE#         137
+  C:087AH         LINE#         138
+  C:087DH         LINE#         139
+  C:087FH         LINE#         141
+  C:0882H         LINE#         142
+  C:0885H         LINE#         143
+  C:0887H         LINE#         145
+  C:088AH         LINE#         146
+  C:088DH         LINE#         147
+  C:088FH         LINE#         148
+  C:0892H         LINE#         149
+  C:0895H         LINE#         150
+  C:0897H         LINE#         151
+  C:089AH         LINE#         152
+  C:089DH         LINE#         153
+  C:089FH         LINE#         154
+  C:08A2H         LINE#         155
+  C:08A5H         LINE#         156
+  C:08A7H         LINE#         157
+  C:08AAH         LINE#         158
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  02/20/2022  13:12:13  PAGE 6
+
+
+  C:08ADH         LINE#         159
+  C:08AFH         LINE#         160
+  C:08B2H         LINE#         161
+  C:08B5H         LINE#         162
+  C:08B7H         LINE#         163
+  C:08BAH         LINE#         164
+  C:08BDH         LINE#         165
+  C:08BFH         LINE#         166
+  C:08C2H         LINE#         167
+  C:08C5H         LINE#         168
+  C:08C5H         LINE#         169
+  C:08C5H         LINE#         170
+  C:08C5H         LINE#         174
+  C:08D0H         LINE#         175
+  C:08D0H         LINE#         176
+  C:08D6H         LINE#         177
+  C:08DDH         LINE#         178
+  C:08DDH         LINE#         180
+  C:08E3H         LINE#         182
+  C:08E3H         LINE#         184
+  C:08E6H         LINE#         185
+  C:08E9H         LINE#         186
+  -------         ENDPROC       TIMER0_INTRUPT
+  -------         ENDMOD        TASK_18_PART_3_8BIT_COUNTER
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0251H BYTE (28%) *
+******************************************************************************
+
+Program Size: data=58.0 xdata=0 code=737
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

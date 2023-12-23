@@ -1,0 +1,3 @@
+".\Objects\New Text Document.obj" 
+TO ".\Objects\jogarh" 
+PRINT(".\Listings\jogarh.m51") RAMSIZE(256) 

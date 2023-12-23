@@ -1,0 +1,367 @@
+C51 COMPILER V9.60.0.0   FRIDAYPROTEUS                                                     10/07/2021 23:40:36 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE FRIDAYPROTEUS
+OBJECT MODULE PLACED IN .\Objects\fridayproteus.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE fridayproteus.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\fridayproteus.lst) TABS(2) OBJECT(.\Objects\fridayproteus.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          
+   3          
+   4          
+   5          #define lcd_data P1
+   6          
+   7          void rtcWrite(unsigned char address, unsigned char byte);
+   8          void oneSecondDelay(void);
+   9          void delay (int);
+  10          void command (char);
+  11          void display (char);
+  12          void string (char *);
+  13          void init (void);
+  14          void initializeAll(void);
+  15          void initializeSerial(void);
+  16          void systemView(void);
+  17           void displayTime(void);
+  18          unsigned char rtcRead(unsigned char address);
+  19          void asciiDisplay(unsigned char byte, unsigned char flag, unsigned char entity);
+  20            unsigned char h,m,s,y,mt,d,day;
+  21            unsigned char z;
+  22            void customDelay(unsigned char h, unsigned char l);
+  23            void rtcCommand1(unsigned char c);
+  24            
+  25          sbit SCLK=P2^5;
+  26          sbit CE=P2^4;
+  27          sbit IO=P2^6; 
+  28          sbit time=P0^7;
+  29          sbit exit=P0^6;
+  30          
+  31          //some functional register
+  32          unsigned char bdata shiftRegister;
+  33          sbit lowBit = shiftRegister^0;
+  34          sbit highBit = shiftRegister^7;
+  35          sbit rs=P2^2;
+  36          sbit en=P2^0;
+  37          sbit wr=P2^1;                           
+  38          void delay (int d)
+  39          {
+  40   1        unsigned char i;
+  41   1        for(;d>0;d--)
+  42   1        {
+  43   2          for(i=250;i>0;i--);
+  44   2          for(i=248;i>0;i--);
+  45   2        }
+  46   1      }
+  47          void command (char c)
+  48          {
+  49   1        lcd_data=c;
+  50   1        rs=0;            // To send a command to the LCD
+  51   1        en=1;
+  52   1         wr=0;       // for write mode wr=0 and for read mode wr=1
+  53   1        delay(5);
+  54   1        en=0;
+C51 COMPILER V9.60.0.0   FRIDAYPROTEUS                                                     10/07/2021 23:40:36 PAGE 2   
+
+  55   1      }
+  56          void display (char c)
+  57          {
+  58   1        lcd_data=c;      
+  59   1        rs=1;           // displaying a character or Data
+  60   1        en=1;
+  61   1              wr=0;
+  62   1        delay(5);
+  63   1        en=0;
+  64   1      }
+  65          
+  66          
+  67          void string (char *p)
+  68          {
+  69   1        while(*p)
+  70   1        {
+  71   2          display(*p++);
+  72   2        }
+  73   1      }
+  74          void init (void)
+  75          {
+  76   1        command(0x38);      //Use two lines and 5x7 matrix
+  77   1        command(0x0c);         // display on
+  78   1        command(0x01);      //Clearing the screen
+  79   1        command(0x80);       // Force cursor to beginning of the first line
+  80   1        command(0xc0);       // 2nd line
+  81   1      }
+  82          
+  83          
+  84          void main(void)
+  85          {
+  86   1        
+  87   1        initializeAll();
+  88   1        while(1)
+  89   1      {
+  90   2          systemView();
+  91   2      } 
+  92   1      }
+  93          
+  94          void displayTime(){
+  95   1      
+  96   1        //rtcWrite(0x84,0x10);
+  97   1        //rtcWrite(0x82,0x10);
+  98   1        //rtcWrite(0x80,0x10);
+  99   1      h = rtcRead(0x85);
+ 100   1        m = rtcRead(0x83);
+ 101   1        s = rtcRead(0x81);
+ 102   1        //y = rtcRead(0x8D);
+ 103   1        //mt = rtcRead(0x89);
+ 104   1        //d = rtcRead(0x87);
+ 105   1        //day = rtcRead(0x8B);
+ 106   1        asciiDisplay(h,'h','t');
+ 107   1        asciiDisplay(m,'m','t');
+ 108   1        asciiDisplay(s,'s','t');
+ 109   1        /*asciiDisplay(day,'b','t');
+ 110   1        asciiDisplay(y,'y','t');
+ 111   1        asciiDisplay(mt,'c','t');
+ 112   1        asciiDisplay(d,'d','t');*/
+ 113   1      }
+ 114          
+ 115          
+ 116          
+C51 COMPILER V9.60.0.0   FRIDAYPROTEUS                                                     10/07/2021 23:40:36 PAGE 3   
+
+ 117          void rtcCommand(unsigned char c){
+ 118   1        unsigned char z;
+ 119   1        shiftRegister = c;
+ 120   1        CE = 1;
+ 121   1        for(z=0; z<8; z++){
+ 122   2          IO = lowBit;
+ 123   2          SCLK = 1;
+ 124   2          customDelay(0xFF,0x00);
+ 125   2          SCLK = 0;
+ 126   2          customDelay(0xFF,0x00);
+ 127   2          shiftRegister = shiftRegister >> 1;
+ 128   2        }
+ 129   1      }
+ 130          unsigned char rtcRead(unsigned char address)
+ 131            {
+ 132   1        unsigned char z;
+ 133   1        rtcCommand(address);
+ 134   1        for(z = 0; z<8; z++)
+ 135   1          {
+ 136   2          shiftRegister = shiftRegister >> 1;
+ 137   2          highBit = IO;
+ 138   2          SCLK = 1;
+ 139   2          customDelay(0xFF,0x00);
+ 140   2          SCLK = 0;
+ 141   2          customDelay(0xFF,0x00);
+ 142   2        }
+ 143   1        CE = 0;
+ 144   1        return shiftRegister;
+ 145   1      }
+ 146          void initializeAll(){
+ 147   1        initializeSerial();
+ 148   1        CE = 0;
+ 149   1        SCLK = 0;
+ 150   1        init();
+ 151   1        IO = 1; 
+ 152   1        oneSecondDelay();
+ 153   1      }
+ 154          void initializeSerial(){
+ 155   1        TMOD = 0x21;
+ 156   1        TH1 = 0xFD;
+ 157   1        SCON = 0x50;
+ 158   1        TR1 = 1;
+ 159   1      }
+ 160          void oneSecondDelay(){
+ 161   1        unsigned char z;
+ 162   1        for(z = 0; z<0x0E; z++){
+ 163   2          customDelay(0x00,0x00);
+ 164   2        }
+ 165   1      }
+ 166          void customDelay(unsigned char h, unsigned char l){
+ 167   1        TH0 = h;
+ 168   1        TL0 = l;
+ 169   1        TR0 = 1;
+ 170   1        while(TF0 == 0);
+ 171   1        TR0 = 0;
+ 172   1        TF0 = 0;
+ 173   1      }
+ 174          void asciiDisplay(unsigned char byte, unsigned char flag, unsigned char entity){
+ 175   1        if(entity == 'h'){
+ 176   2          unsigned char a,b,c;
+ 177   2          a = byte / 100;
+ 178   2          byte = byte %100;
+C51 COMPILER V9.60.0.0   FRIDAYPROTEUS                                                     10/07/2021 23:40:36 PAGE 4   
+
+ 179   2          b = byte / 10;
+ 180   2          byte = byte % 10;
+ 181   2          c =  byte;
+ 182   2          a = a | 0x30;
+ 183   2          b = b | 0x30;
+ 184   2          c = c | 0x30;
+ 185   2          if(flag == 'a'){
+ 186   3            command(0xC9);
+ 187   3            if(a == 0x30);
+ 188   3            else{ display(a); }
+ 189   3            if (a == 0x30 && b == 0x30);
+ 190   3            else{display(b);}
+ 191   3            display(c);
+ 192   3          }
+ 193   2          else if(flag == 'b'){
+ 194   3            command(0xCB);
+ 195   3            display('.');
+ 196   3            display(a);
+ 197   3            display(b);
+ 198   3            if(c == 0x30);
+ 199   3            else
+ 200   3              display(c);
+ 201   3            display('%');
+ 202   3          }
+ 203   2          else if(flag == 'c'){
+ 204   3            command(0x85);
+ 205   3            if(a == 0x30);
+ 206   3            else{ display(a); }
+ 207   3            if (a == 0x30 && b == 0x30);
+ 208   3            else{display(b);}
+ 209   3            display(c);
+ 210   3          }
+ 211   2          else if(flag == 'd'){
+ 212   3            command(0x87);
+ 213   3            display('.');
+ 214   3            display(a);
+ 215   3            display(b);
+ 216   3            if(c == 0x30);
+ 217   3            else
+ 218   3              display(c);
+ 219   3            display(0xDF);
+ 220   3            display('C');
+ 221   3          }
+ 222   2        }
+ 223   1        else{
+ 224   2          unsigned char a,b;
+ 225   2          a = byte & 0xF0;
+ 226   2          a = a >> 4;
+ 227   2          a = a | 0x30;
+ 228   2          b = byte & 0x0F;
+ 229   2          b = b | 0x30;
+ 230   2          if(flag == 'h'){
+ 231   3            command(0x85);
+ 232   3            display(a);
+ 233   3            command(0x86);
+ 234   3            display(b);
+ 235   3            command(0x87);
+ 236   3            display(':');
+ 237   3          }
+ 238   2          else if(flag == 'm'){
+ 239   3            command(0x88);
+ 240   3            display(a);
+C51 COMPILER V9.60.0.0   FRIDAYPROTEUS                                                     10/07/2021 23:40:36 PAGE 5   
+
+ 241   3            command(0x89);
+ 242   3            display(b);
+ 243   3            command(0x8A);
+ 244   3            display(':');
+ 245   3          }
+ 246   2          else if(flag == 's'){
+ 247   3            command(0x8B);
+ 248   3            display(a);
+ 249   3            command(0x8C);
+ 250   3            display(b);
+ 251   3          }
+ 252   2          else if(flag == 'd'){
+ 253   3            command(0xC5);
+ 254   3            display(a);
+ 255   3            command(0xC6);
+ 256   3            display(b);
+ 257   3            command(0xC7);
+ 258   3            display('-');
+ 259   3          }
+ 260   2          else if(flag =='c'){
+ 261   3            command(0xC8);
+ 262   3            display(a);
+ 263   3            command(0xC9);
+ 264   3            display(b);
+ 265   3            command(0xCA);
+ 266   3            display('-');
+ 267   3          }
+ 268   2          else if(flag == 'y'){
+ 269   3            command(0xCB);
+ 270   3            string("20");
+ 271   3            command(0xCD);
+ 272   3            display(a);
+ 273   3            command(0xCE);
+ 274   3            display(b);
+ 275   3          }
+ 276   2          else if(flag == 'b'){
+ 277   3            command(0xC0);
+ 278   3            if(byte == 0x01)
+ 279   3              string("SUN,");
+ 280   3            else if(byte == 0x02)
+ 281   3              string("MON,");
+ 282   3            else if(byte == 0x03)
+ 283   3              string("TUE,");
+ 284   3            else if(byte == 0x04)
+ 285   3              string("WED,");
+ 286   3            else if(byte == 0x05)
+ 287   3              string("THU,");
+ 288   3            else if(byte == 0x06)
+ 289   3              string("FRI,");
+ 290   3            else if(byte == 0x07)
+ 291   3              string("SAT,");
+ 292   3          }
+ 293   2        }
+ 294   1      }
+ 295          
+ 296          void systemView()
+ 297          {
+ 298   1        command(0x01);
+ 299   1        if(time == 0){
+ 300   2      command(0x01); 
+ 301   2      command(0x80);
+ 302   2          string("Time ");
+C51 COMPILER V9.60.0.0   FRIDAYPROTEUS                                                     10/07/2021 23:40:36 PAGE 6   
+
+ 303   2          while(exit == 1){
+ 304   3            displayTime();
+ 305   3          /*  if(configure == 0){
+ 306   3          command(0x01);
+ 307   3              string("Burst Mode Write");
+ 308   3              oneSecondDelay();
+ 309   3              writeBurst();
+ 310   3          command(0x01);*/
+ 311   3            }
+ 312   2          }
+ 313   1        }
+ 314          
+ 315            void rtcWrite(unsigned char address, unsigned char byte)
+ 316          {
+ 317   1        rtcCommand1(address);
+ 318   1        rtcCommand1(byte);
+ 319   1        CE=0;
+ 320   1      }
+ 321          void rtcCommand1(unsigned char c){
+ 322   1        unsigned char z;
+ 323   1        shiftRegister = c;
+ 324   1        CE = 1;
+ 325   1        for(z=0; z<8; z++){
+ 326   2          IO = lowBit;
+ 327   2          SCLK = 1;
+ 328   2          customDelay(0xFF,0x00);
+ 329   2          SCLK = 0;
+ 330   2          customDelay(0xFF,0x00);
+ 331   2          shiftRegister = shiftRegister >> 1;
+ 332   2        }
+ 333   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    958    ----
+   CONSTANT SIZE    =     44    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9      11
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,3 @@
+".\Objects\4bit.obj" 
+TO ".\Objects\4 Bit mode" 
+PRINT(".\Listings\4 Bit mode.m51") RAMSIZE(256) 
